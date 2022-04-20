@@ -1,0 +1,3 @@
+rootProject.name = "TestExtendActivity"
+include ':app'
+include ':TestExtendLibrary'
