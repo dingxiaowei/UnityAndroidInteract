@@ -111,7 +111,6 @@ public class MainActivity extends UnityPlayerActivity {
                 Toast.makeText(MainActivity.this,toast,Toast.LENGTH_SHORT).show();
             }
         });
-
     }
 
     /*
@@ -294,8 +293,8 @@ public class MainActivity extends UnityPlayerActivity {
      * */
     public String MonitorBatteryState() {
         UnityCallAndroidToast("获取电池信息中...");
-        IntentFilter ifilter=new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
-        Intent intent=instance.registerReceiver(null,ifilter);
+        IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+        Intent intent = instance.registerReceiver(null,ifilter);
         int rawlevel = intent.getIntExtra("level", 0);//获得当前电量
         int scale = intent.getIntExtra("scale", 0);//获得总电量
         int status = intent.getIntExtra("status", 0);//电池充电状态
@@ -334,6 +333,78 @@ public class MainActivity extends UnityPlayerActivity {
         //notifyBattery(level,scale,status);
 
         return targetStr ;
+    }
+
+    /*
+    获取电池信息
+     */
+    public String GetBatteryInfos() {
+        BatteryManager batteryManager = (BatteryManager) MainActivity.this.getSystemService(android.content.Context.BATTERY_SERVICE);
+
+        // 剩余电量百分比 BATTERY_PROPERTY_CAPACITY: 51
+        int batteryCapacity = batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY);
+        // 当前电池容量(mAH) BATTERY_PROPERTY_CHARGE_COUNTER: 2192080
+        int batteryChargeCounter = batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CHARGE_COUNTER) / 1000;
+        // 剩余能量(nWH) BATTERY_PROPERTY_ENERGY_COUNTER: -2147483648
+        long batteryEnergyCounter = batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_ENERGY_COUNTER);
+        // 瞬时电流(mA)  BATTERY_PROPERTY_CURRENT_NOW: 632324（负表示放电 正表示充电）
+        int batteryCurrentNow = batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CURRENT_NOW);
+        // 平均电流(mA)  BATTERY_PROPERTY_CURRENT_AVERAGE: -2147483648 （负表示放电 正表示充电）
+        int batteryCurrentAverage = batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CURRENT_AVERAGE);
+        // 状态
+        int status = batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_STATUS);
+
+        IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+        Intent intent = instance.registerReceiver(null,ifilter);
+        int temperature = intent.getIntExtra("temperature", 0) / 10;  //电池温度(数值) ℃
+        float batteryV = intent.getIntExtra("voltage", 0) / 1000f;  //电池电压(伏)
+
+        //电池总容量  毫安
+        int capacity = (int)(ToMA((float)batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CHARGE_COUNTER)) / ((float)batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY)/100f));
+
+//        Log.d(TAG, "电池总容量 capacity: " + capacity);
+//        Log.d(TAG, "剩余电量百分比 batteryCapacity: " + batteryCapacity);
+//        Log.d(TAG, "当前剩余容量(mAH) batteryChargeCounter: " + batteryChargeCounter);
+//        Log.d(TAG, "当前剩余能量(nWH) batteryEnergyCounter: " + batteryEnergyCounter);
+//        Log.d(TAG, "瞬时电流(mA)  batteryCurrentNow: " + batteryCurrentNow);
+//        Log.d(TAG, "平均电流(mA)  batteryCurrentAverage: " + batteryCurrentAverage);
+
+        String batteryStatus = "";
+        switch (status){
+            // 正充电
+            case BatteryManager.BATTERY_STATUS_CHARGING:
+                batteryStatus = "正在充电";
+                break;
+            // 已经充满
+            case BatteryManager.BATTERY_STATUS_FULL:
+                batteryStatus = "已经充满";
+                break;
+            // 正断开充电
+            case BatteryManager.BATTERY_STATUS_DISCHARGING:
+                batteryStatus = "正断开充电";
+                break;
+            // 没有充电
+            case BatteryManager.BATTERY_STATUS_NOT_CHARGING:
+                batteryStatus = "没有充电";
+                break;
+            // 未知状态
+            case BatteryManager.BATTERY_STATUS_UNKNOWN:
+                break;
+        }
+
+        // (当前电池容量 mAH)/(瞬时电流 mA)
+        long remainHours = batteryChargeCounter / Math.abs(batteryCurrentNow);
+
+        float useLeftHouser = capacity * batteryCapacity / 100f / Math.abs(batteryCurrentNow);
+        //瞬时功率
+        float p = (int)(batteryCurrentNow * batteryV);
+
+        return "电池总容量(毫安):" + capacity + " \n 电池温度(℃):"+ temperature+ " 电池电压(伏):" + batteryV + " 剩余电量百分比:" + batteryCapacity + " 当前剩余容量(mAH):"+ batteryChargeCounter + " 瞬时电流(mA):"+ batteryCurrentNow + " 瞬时功率:" + p + " 剩余使用时长:" + String.format("%.2f", useLeftHouser) + "小时" + " 当前电池状态:" + batteryStatus;
+    }
+
+    static float ToMA(float maOrua)
+    {
+        return maOrua < 10000 ? maOrua : maOrua / 1000f;
     }
 
     //获取详细电量信息 返回电量|是否充电中

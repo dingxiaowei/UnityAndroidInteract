@@ -140,11 +140,41 @@ public class TestAndroid : MonoBehaviour
             log.text = simType;
         }
 
+        if (GUI.Button(new Rect(10, 910, 140, 40), "显示功耗"))
+        {
+            AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+            AndroidJavaObject jo = jc.GetStatic<AndroidJavaObject>("currentActivity");
+            string a = jo.Call<string>("GetBatteryInfos");
+            log.text = a;
+        }
+
+        if (GUI.Button(new Rect(10, 970, 140, 40), "显示实时功耗"))
+        {
+            realTimeShow = !realTimeShow;
+        }
+
         if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Home))
         {
             Application.Quit();
         }
+    }
 
+    float t = 0f;
+    AndroidJavaClass jc = null;
+    bool realTimeShow = false;
+    private void Update()
+    {
+        if (!realTimeShow)
+            return;
+        if (Time.time - t > 1f)
+        {
+            t = Time.time;
+            if (jc == null)
+                jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+            var jo = jc.GetStatic<AndroidJavaObject>("currentActivity");
+            string a = jo.Call<string>("GetBatteryInfos");
+            log.text = a;
+        }
     }
 
     void GetBatteryAnWifiData()

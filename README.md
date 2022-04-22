@@ -2,7 +2,7 @@
 Unity 2020.3  AndroidStudio 4.2.1 aar交互
 
 ## 效果图
-![](Img/1.jpg)
+![](Img/2.jpg)
 
 ## 说明
 * aar要先删除libs里面的class.jar，然后将外面的class.jar导出，接着删除aar里面的class.jar，然后将外面的class.jar拖到libs里面
