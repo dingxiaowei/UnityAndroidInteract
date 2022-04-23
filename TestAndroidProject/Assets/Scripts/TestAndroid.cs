@@ -200,6 +200,13 @@ public class TestAndroid : MonoBehaviour
             string a = jo.Call<string>("GetCPUUseRate");
             log.text = a;
         }
+        if (GUI.Button(new Rect(200, 310, 140, 40), "当前APP使用内存"))
+        {
+            AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+            AndroidJavaObject jo = jc.GetStatic<AndroidJavaObject>("currentActivity");
+            float a = jo.Call<float>("GetCurAppMemorySize");
+            log.text = a +"M";
+        }
         
         
         if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Home))
