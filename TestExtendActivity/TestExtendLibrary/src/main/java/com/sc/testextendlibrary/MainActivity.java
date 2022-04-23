@@ -1,10 +1,23 @@
 package com.sc.testextendlibrary;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileFilter;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.RandomAccessFile;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import com.unity3d.player.UnityPlayer;
+import com.unity3d.player.UnityPlayerActivity;
 
+import android.app.ActivityManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -24,6 +37,7 @@ import android.net.wifi.WifiManager;
 import android.os.BatteryManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.HardwarePropertiesManager;
 import android.os.Vibrator;
 import android.telephony.TelephonyManager;
 import android.text.format.Formatter;
@@ -35,12 +49,17 @@ public class MainActivity extends UnityPlayerActivity {
     private Vibrator mVibrator01;//声明一个振动器对象
     private static Context instance;
     private String TAG = "log";
+    private HardwarePropertiesManager mHardwarePropertiesManager;
+    private ActivityManager activityManager=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         instance = getApplicationContext();
         CreateToast("默认的初始化");
+        activityManager = (ActivityManager) instance.getSystemService(Context.ACTIVITY_SERVICE);
+        if (activityManager == null)
+            CreateToast("activityManager 创建失败");
 
         onCoderReturn("pid:"+android.os.Process.myPid() +" "+getBaseContext().getPackageName());//显示进程id和包名
     }
@@ -527,4 +546,337 @@ public class MainActivity extends UnityPlayerActivity {
         }
         return SIMTypeString;
     }
+
+    public String GetAvailableMemory()
+    {
+        long availableMem = getAvailableMemory();
+        return "可用内存:"+availableMem/1024/1024+"M";
+    }
+
+    public String GetTotalMemory()
+    {
+        long totalMemory = getTotalMemory();
+        return "总内存:"+totalMemory/1024+"M";
+    }
+
+    public String GetMemoryUsedRate()
+    {
+        long availableMem = getAvailableMemory() / 1024;
+        long totalMemory = getTotalMemory();
+        int percent = (int) ((totalMemory - availableMem) / (float) totalMemory * 100);
+        return "内存使用率:"+percent+"%";
+    }
+
+    /*
+     * TODO:暂未获得数据
+     */
+    public String GetCPUUseRate()
+    {
+        return "CPU使用率:"+getCurProcessCpuRate();
+    }
+
+    /*
+     * 获取GPU的温度
+     */
+    public String GetGpuTemperature()
+    {
+        StringBuilder sb = new StringBuilder();
+        mHardwarePropertiesManager = (HardwarePropertiesManager)instance.getSystemService(Context.HARDWARE_PROPERTIES_SERVICE);
+
+        float[] gpuCores = mHardwarePropertiesManager.getDeviceTemperatures(
+                HardwarePropertiesManager.DEVICE_TEMPERATURE_GPU,
+                HardwarePropertiesManager.TEMPERATURE_CURRENT);
+
+        for(int i=0; i<gpuCores.length; i++) {
+            Log.d(TAG, "GPU Temperatures=" + gpuCores[i]);
+            sb.append(gpuCores[i]);
+            if ( i<gpuCores.length-1)
+                sb.append("|");
+        }
+
+        UnityCallAndroidToast(sb.toString());
+        return sb.toString();
+    }
+
+    /*
+     * 获取CPU温度
+     */
+    public int GetCpuTemperature()
+    {
+        String[] sensorFiles = new String[] {
+                "/sys/devices/system/cpu/cpu0/cpufreq/cpu_temp",
+                "/sys/devices/system/cpu/cpu0/cpufreq/FakeShmoo_cpu_temp",
+                "/sys/class/thermal/thermal_zone1/temp",
+                "/sys/class/i2c-adapter/i2c-4/4-004c/temperature",
+                "/sys/devices/platform/tegra-i2c.3/i2c-4/4-004c/temperature",
+                "/sys/devices/platform/omap/omap_temp_sensor.0/temperature",
+                "/sys/devices/platform/tegra_tmon/temp1_input",
+                "/sys/kernel/debug/tegra_thermal/temp_tj",
+                "/sys/devices/platform/s5p-tmu/temperature",
+                "/sys/class/thermal/thermal_zone0/temp",
+                "/sys/devices/virtual/thermal/thermal_zone0/temp",
+                "/sys/class/hwmon/hwmon0/device/temp1_input",
+                "/sys/devices/virtual/thermal/thermal_zone1/temp",
+                "/sys/devices/platform/s5p-tmu/curr_temp"
+        };
+        File correctSensorFile = null;
+        for (String file : sensorFiles) {
+            File f = new File(file);
+            if (f.exists()) {
+                correctSensorFile = f;
+                break;
+            }
+        }
+
+        if (correctSensorFile == null)
+            throw new RuntimeException("Did not find sensor file to read");
+
+        try (RandomAccessFile reader = new RandomAccessFile(correctSensorFile, "r")) {
+            String value = reader.readLine();
+            int temperature = 0;
+            if (value != null && value.length() > 0)
+            {
+                temperature = Integer.valueOf(value)/1000;
+            }
+            return temperature;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
+
+    /*
+     * 获取CPU详细信息
+     */
+    public void GetCpuDetailInfo()
+    {
+        long availableMemory = getAvailableMemory();
+        onCoderReturn("availableMemory:"+availableMemory);
+
+        long totalMemory = getTotalMemory();
+        onCoderReturn("totalMemory:"+totalMemory);
+
+        String memoryUsePercent = getUsedPercentValue();
+        onCoderReturn("memoryUsePercent:"+memoryUsePercent);
+
+        float curCpuUseRate = getCurProcessCpuRate();
+        onCoderReturn("curCpuUseRate:"+curCpuUseRate);
+        float totalCpuUseRate = getTotalCpuRate();
+        onCoderReturn("totalCpuUseRate:"+totalCpuUseRate);
+
+        long curCupTime = getAppCpuTime();
+        long totalCpuTime = getTotalCpuTime();
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(Long.toString(availableMemory));
+        sb.append("|");
+
+        sb.append(Long.toString(totalMemory));
+        sb.append("|");
+
+        sb.append(memoryUsePercent);
+        sb.append("|");
+
+        sb.append(curCpuUseRate);
+        sb.append("|");
+
+        sb.append(totalCpuUseRate);
+        sb.append("|");
+
+        sb.append(curCupTime);
+        sb.append("|");
+
+        sb.append(totalCpuTime);
+        sb.append("|");
+
+        UnityCallAndroidToast(sb.toString());
+        onCoderReturn(sb.toString());
+    }
+
+
+    private Status sStatus = new Status();
+    /**
+     * 获取当前可用内存，返回数据以字节为单位。
+     *
+     * @return 当前可用内存。
+     */
+    public long getAvailableMemory() {
+        ActivityManager.MemoryInfo mi = new ActivityManager.MemoryInfo();
+        activityManager.getMemoryInfo(mi);
+        return mi.availMem;
+    }
+    /**
+     * 获取系统总内存,返回字节单位为KB
+     *
+     * @return 系统总内存
+     */
+    public long getTotalMemory() {
+        long totalMemorySize = 0;
+        String dir = "/proc/meminfo";
+        try {
+            FileReader fr = new FileReader(dir);
+            BufferedReader br = new BufferedReader(fr, 2048);
+            String memoryLine = br.readLine();
+            String subMemoryLine = memoryLine.substring(memoryLine.indexOf("MemTotal:"));
+            br.close();
+            //将非数字的字符替换为空
+            totalMemorySize = Integer.parseInt(subMemoryLine.replaceAll("\\D+", ""));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return totalMemorySize;
+    }
+
+    /**
+     * 计算已使用内存的百分比，并返回。
+     *
+     * @return 已使用内存的百分比，以字符串形式返回。
+     */
+    public String getUsedPercentValue() {
+        long totalMemorySize = getTotalMemory();
+        long availableSize = getAvailableMemory() / 1024;
+        int percent = (int) ((totalMemorySize - availableSize) / (float) totalMemorySize * 100);
+        return percent + "%";
+    }
+
+    /**
+     * 获取当前进程的CPU使用率
+     *
+     * @return CPU的使用率
+     */
+    public float getCurProcessCpuRate() {
+        float totalCpuTime1 = getTotalCpuTime();
+        float processCpuTime1 = getAppCpuTime();
+        try {
+            Thread.sleep(360);
+        }
+        catch (Exception e) {
+        }
+        float totalCpuTime2 = getTotalCpuTime();
+        float processCpuTime2 = getAppCpuTime();
+        float cpuRate = 100 * (processCpuTime2 - processCpuTime1)
+                / (totalCpuTime2 - totalCpuTime1);
+        return cpuRate;
+    }
+
+    /**
+     * 获取总的CPU使用率
+     *
+     * @return CPU使用率
+     */
+    public float getTotalCpuRate() {
+        float totalCpuTime1 = getTotalCpuTime();
+        float totalUsedCpuTime1 = totalCpuTime1 - sStatus.idletime;
+        try {
+            Thread.sleep(360);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        float totalCpuTime2 = getTotalCpuTime();
+        float totalUsedCpuTime2 = totalCpuTime2 - sStatus.idletime;
+        float cpuRate = 100 * (totalUsedCpuTime2 - totalUsedCpuTime1)
+                / (totalCpuTime2 - totalCpuTime1);
+        return cpuRate;
+    }
+
+    /**
+     * 获取系统总CPU使用时间
+     *
+     * @return 系统CPU总的使用时间
+     */
+    public long getTotalCpuTime() {
+        String[] cpuInfos = null;
+        try {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(
+                    new FileInputStream("/proc/stat")), 1000);
+            String load = reader.readLine();
+            reader.close();
+            cpuInfos = load.split(" ");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+//   long totalCpu = Long.parseLong(cpuInfos[2])
+//       + Long.parseLong(cpuInfos[3]) + Long.parseLong(cpuInfos[4])
+//       + Long.parseLong(cpuInfos[6]) + Long.parseLong(cpuInfos[5])
+//       + Long.parseLong(cpuInfos[7]) + Long.parseLong(cpuInfos[8]);
+        sStatus.usertime = Long.parseLong(cpuInfos[2]);
+        sStatus.nicetime = Long.parseLong(cpuInfos[3]);
+        sStatus.systemtime = Long.parseLong(cpuInfos[4]);
+        sStatus.idletime = Long.parseLong(cpuInfos[5]);
+        sStatus.iowaittime = Long.parseLong(cpuInfos[6]);
+        sStatus.irqtime = Long.parseLong(cpuInfos[7]);
+        sStatus.softirqtime = Long.parseLong(cpuInfos[8]);
+        return sStatus.getTotalTime();
+    }
+
+    /**
+     * 获取当前进程的CPU使用时间
+     *
+     * @return 当前进程的CPU使用时间
+     */
+    public long getAppCpuTime() {
+        // 获取应用占用的CPU时间
+        String[] cpuInfos = null;
+        try {
+            int pid = android.os.Process.myPid();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(
+                    new FileInputStream("/proc/" + pid + "/stat")), 1000);
+            String load = reader.readLine();
+            reader.close();
+            cpuInfos = load.split(" ");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        long appCpuTime = Long.parseLong(cpuInfos[13])
+                + Long.parseLong(cpuInfos[14]) + Long.parseLong(cpuInfos[15])
+                + Long.parseLong(cpuInfos[16]);
+        return appCpuTime;
+    }
+
+    class Status {
+        public long usertime;
+        public long nicetime;
+        public long systemtime;
+        public long idletime;
+        public long iowaittime;
+        public long irqtime;
+        public long softirqtime;
+
+        public long getTotalTime() {
+            return (usertime + nicetime + systemtime + idletime + iowaittime
+                    + irqtime + softirqtime);
+        }
+    }
+    /*
+     * cpu 核数
+     */
+    private int getNumberOfCPUCores() {
+        int cores;
+        try {
+            cores = new File("/sys/devices/system/cpu/").listFiles(CPU_FILTER).length;
+        } catch (SecurityException e) {
+            cores = 0;
+        } catch (NullPointerException e) {
+            cores = 0;
+        }
+        return cores;
+    }
+    private final FileFilter CPU_FILTER = new FileFilter() {
+        public boolean accept(File pathname) {
+            String path = pathname.getName();
+            //regex is slow, so checking char by char.
+            if (path.startsWith("cpu")) {
+                for (int i = 3; i < path.length(); i++) {
+                    if (path.charAt(i) < '0' || path.charAt(i) > '9') {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            return false;
+        }
+    };
 }
