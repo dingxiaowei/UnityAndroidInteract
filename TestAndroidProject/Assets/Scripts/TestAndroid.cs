@@ -152,7 +152,56 @@ public class TestAndroid : MonoBehaviour
         {
             realTimeShow = !realTimeShow;
         }
+        
+        if (GUI.Button(new Rect(200, 10, 140, 40), "获取CPU温度"))
+        {
+            AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+            AndroidJavaObject jo = jc.GetStatic<AndroidJavaObject>("currentActivity");
+            int a = jo.Call<int>("GetCpuTemperature");
+            log.text = a +"°C";
+        }
 
+        // if (GUI.Button(new Rect(200, 70, 140, 40), "TODO:获取GPU温度"))
+        //
+        //     // AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+        //     // AndroidJavaObject jo = jc.GetStatic<AndroidJavaObject>("currentActivity");
+        //     // string a = jo.Call<string>("GetGpuTemperature");
+        //     // log.text = a;
+        // }
+        //
+        
+        if (GUI.Button(new Rect(200, 70, 140, 40), "获取可用内存"))
+        {
+            AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+            AndroidJavaObject jo = jc.GetStatic<AndroidJavaObject>("currentActivity");
+            string a = jo.Call<string>("GetAvailableMemory");
+            log.text = a;
+        }
+        
+        if (GUI.Button(new Rect(200, 130, 140, 40), "获取总可用内存"))
+        {
+            AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+            AndroidJavaObject jo = jc.GetStatic<AndroidJavaObject>("currentActivity");
+            string a = jo.Call<string>("GetTotalMemory");
+            log.text = a;
+        }
+        
+        if (GUI.Button(new Rect(200, 190, 140, 40), "内存使用率"))
+        {
+            AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+            AndroidJavaObject jo = jc.GetStatic<AndroidJavaObject>("currentActivity");
+            string a = jo.Call<string>("GetMemoryUsedRate");
+            log.text = a;
+        }
+        if (GUI.Button(new Rect(200, 250, 140, 40), "CPU使用率,未实现"))
+        {
+            AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+            AndroidJavaObject jo = jc.GetStatic<AndroidJavaObject>("currentActivity");
+            string a = jo.Call<string>("GetCPUUseRate");
+            log.text = a;
+        }
+        
+        
         if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Home))
         {
             Application.Quit();
