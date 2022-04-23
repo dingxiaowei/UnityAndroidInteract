@@ -36,6 +36,7 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.BatteryManager;
 import android.os.Bundle;
+import android.os.Debug;
 import android.os.Handler;
 import android.os.HardwarePropertiesManager;
 import android.os.Vibrator;
@@ -879,4 +880,21 @@ public class MainActivity extends UnityPlayerActivity {
             return false;
         }
     };
+
+
+    /*
+     * 获取当前App内存占用
+     */
+    public float GetCurAppMemorySize()
+    {
+        Debug.MemoryInfo memoryInfo = new Debug.MemoryInfo();
+        Debug.getMemoryInfo(memoryInfo);
+        String memMessage = String.format("App Memory: Pss=%.2f MB\nPrivate=%.2f MB\nShared=%.2f MB",
+                memoryInfo.getTotalPss() / 1024.0,
+                memoryInfo.getTotalPrivateDirty() / 1024.0,
+                memoryInfo.getTotalSharedDirty() / 1024.0);
+        Toast.makeText(this,memMessage,Toast.LENGTH_LONG).show();
+        Log.i("log_tag", memMessage);
+        return memoryInfo.getTotalPss() / 1024.0f;
+    }
 }
