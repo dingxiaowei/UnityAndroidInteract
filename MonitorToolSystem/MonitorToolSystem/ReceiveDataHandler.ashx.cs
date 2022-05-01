@@ -18,11 +18,18 @@ namespace MonitorToolSystem
             if (string.IsNullOrEmpty(packageName) || string.IsNullOrEmpty(testTime))
             {
                 Console.WriteLine("传入包名和测试时间");
+                context.Response.Write("false");
                 return;
             }
             //查看本地是否有对应的txt，如果没有则创建，如果有则新增时间
             if (string.IsNullOrEmpty(Config.RecordTextDir))
+            {
                 Config.RecordTextDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Texts/Records/");
+                if (!Directory.Exists(Config.RecordTextDir))
+                {
+                    Directory.CreateDirectory(Config.RecordTextDir);
+                }
+            }
             var packageFile = Path.Combine(Config.RecordTextDir, $"{packageName}.txt");
             if (!File.Exists(packageFile))
             {
@@ -32,6 +39,7 @@ namespace MonitorToolSystem
             {
                 FileManager.AppendLastLine(packageFile, testTime);
             }
+            context.Response.Write("success");
         }
 
         public bool IsReusable

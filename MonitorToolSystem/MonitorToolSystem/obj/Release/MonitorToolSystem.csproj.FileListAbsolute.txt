@@ -55,3 +55,4 @@ D:\Study\github\UnityAndroidInteract\MonitorToolSystem\MonitorToolSystem\obj\Rel
 D:\Study\github\UnityAndroidInteract\MonitorToolSystem\MonitorToolSystem\obj\Release\MonitorToolSystem.csproj.CopyComplete
 D:\Study\github\UnityAndroidInteract\MonitorToolSystem\MonitorToolSystem\obj\Release\MonitorToolSystem.dll
 D:\Study\github\UnityAndroidInteract\MonitorToolSystem\MonitorToolSystem\obj\Release\MonitorToolSystem.pdb
+D:\Study\github\UnityAndroidInteract\MonitorToolSystem\MonitorToolSystem\obj\Release\MonitorToolSystem.csprojAssemblyReference.cache

@@ -89,10 +89,10 @@
     <Content Include="Modules\extension\dataTool.js" />
     <Content Include="Modules\extension\dataTool.min.js" />
     <Content Include="Modules\jquery-3.3.1.min.js" />
-    <Content Include="Texts\device_2022_5_1_8_23_51.txt" />
-    <Content Include="Texts\log_2022_5_1_8_23_51.txt" />
-    <Content Include="Texts\monitor_2022_5_1_8_23_51.txt" />
-    <Content Include="Texts\test_2022_5_1_8_23_51.txt" />
+    <Content Include="Texts\device_2022_5_1_17_33_28.txt" />
+    <Content Include="Texts\log_2022_5_1_17_33_28.txt" />
+    <Content Include="Texts\monitor_2022_5_1_17_33_28.txt" />
+    <Content Include="Texts\test_2022_5_1_17_33_28.txt" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -117,8 +117,8 @@
     <Content Include="Modules\extension\dataTool.js.map" />
     <None Include="packages.config" />
     <Content Include="ReceiveDataHandler.ashx" />
-    <Content Include="Texts\funcAnalysis_2022_5_1_8_23_51.csv" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
+    <Content Include="Texts\funcAnalysis_2022_5_1_17_33_28.csv" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

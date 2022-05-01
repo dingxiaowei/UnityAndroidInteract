@@ -13,10 +13,10 @@
       <publishTime>05/24/2018 13:38:22</publishTime>
     </File>
     <File Include="bin/MonitorToolSystem.dll">
-      <publishTime>05/01/2022 08:29:42</publishTime>
+      <publishTime>05/01/2022 21:36:53</publishTime>
     </File>
     <File Include="bin/MonitorToolSystem.pdb">
-      <publishTime>05/01/2022 08:29:42</publishTime>
+      <publishTime>05/01/2022 21:36:53</publishTime>
     </File>
     <File Include="bin/Newtonsoft.Json.dll">
       <publishTime>03/17/2021 20:03:36</publishTime>
@@ -231,17 +231,32 @@
     <File Include="ReceiveDataHandler.ashx">
       <publishTime>04/27/2022 08:24:42</publishTime>
     </File>
+    <File Include="Texts/device_2022_5_1_17_33_28.txt">
+      <publishTime>05/01/2022 19:47:11</publishTime>
+    </File>
     <File Include="Texts/device_2022_5_1_8_23_51.txt">
       <publishTime>05/01/2022 08:24:36</publishTime>
+    </File>
+    <File Include="Texts/funcAnalysis_2022_5_1_17_33_28.csv">
+      <publishTime>05/01/2022 17:33:32</publishTime>
     </File>
     <File Include="Texts/funcAnalysis_2022_5_1_8_23_51.csv">
       <publishTime>05/01/2022 08:23:56</publishTime>
     </File>
+    <File Include="Texts/log_2022_5_1_17_33_28.txt">
+      <publishTime>05/01/2022 17:33:32</publishTime>
+    </File>
     <File Include="Texts/log_2022_5_1_8_23_51.txt">
       <publishTime>05/01/2022 08:23:56</publishTime>
     </File>
+    <File Include="Texts/monitor_2022_5_1_17_33_28.txt">
+      <publishTime>05/01/2022 17:33:32</publishTime>
+    </File>
     <File Include="Texts/monitor_2022_5_1_8_23_51.txt">
       <publishTime>05/01/2022 08:23:56</publishTime>
+    </File>
+    <File Include="Texts/test_2022_5_1_17_33_28.txt">
+      <publishTime>05/01/2022 17:33:32</publishTime>
     </File>
     <File Include="Texts/test_2022_5_1_8_23_51.txt">
       <publishTime>05/01/2022 08:24:51</publishTime>
