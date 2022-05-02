@@ -16,10 +16,10 @@
         <div>
             <div id="RecordListModule" runat="server">
                 <%--<asp:Label ID="lbl" Text=" 性别:" runat="server"></asp:Label>--%>
-                <a>最近访问报告列表</a>
+                <a>报告列表</a>
                 <br />
-                <asp:DropDownList ID="ddlPackageNameList" runat="server" AutoPostBack="true"></asp:DropDownList><br />
-                <asp:DropDownList ID="ddlReportTimeList" runat="server" AutoPostBack="true"></asp:DropDownList><br />
+                <asp:DropDownList ID="ddlPackageNameList" runat="server" AutoPostBack="True" OnLoad="ddlPackageNameList_Load"></asp:DropDownList><br />
+                <asp:DropDownList ID="ddlReportTimeList" runat="server" AutoPostBack="True" OnLoad="ddlReportTimeList_Load"></asp:DropDownList><br />
             </div>
             <div id="TestInfoModule">
                 <h2>测试信息</h2>

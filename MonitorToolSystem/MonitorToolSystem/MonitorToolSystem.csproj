@@ -124,6 +124,9 @@
     <Compile Include="ReceiveDataHandler.ashx.cs">
       <DependentUpon>ReceiveDataHandler.ashx</DependentUpon>
     </Compile>
+    <Compile Include="TestInfoHandler.ashx.cs">
+      <DependentUpon>TestInfoHandler.ashx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Modules\echarts-en.js.map" />
@@ -135,6 +138,7 @@
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Texts\funcAnalysis_2022_5_1_23_45_43.csv" />
     <Content Include="Texts\funcAnalysis_2022_5_2_23_45_43.csv" />
+    <Content Include="TestInfoHandler.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

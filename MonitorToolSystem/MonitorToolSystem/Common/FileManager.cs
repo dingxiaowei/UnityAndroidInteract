@@ -77,7 +77,7 @@ namespace MonitorToolSystem.Common
         public static string ReadAllByLine(string path)
         {
             StringBuilder sb = new StringBuilder();
-            using (StreamReader sr = new StreamReader(path, Encoding.Default))
+            using (StreamReader sr = new StreamReader(path, Encoding.UTF8))
             {
                 string line;
                 while ((line = sr.ReadLine()) != null)
