@@ -12,13 +12,15 @@
 	<script src="https://cdn.staticfile.org/echarts/4.3.0/echarts.min.js"></script>--%>
 </head>
 <body>
+    <h1>Unity性能监控报表工具</h1>
     <form id="form1" runat="server">
         <div>
             <div id="RecordListModule" runat="server">
-                <%--<asp:Label ID="lbl" Text=" 性别:" runat="server"></asp:Label>--%>
                 <h2>报告列表</h2>
-                <asp:DropDownList ID="ddlPackageNameList" runat="server" AutoPostBack="True" OnLoad="ddlPackageNameList_Load"></asp:DropDownList><br />
-                <asp:DropDownList ID="ddlReportTimeList" runat="server" AutoPostBack="True" OnLoad="ddlReportTimeList_Load"></asp:DropDownList><br />
+                <h5>请选择应用(包名)</h5>
+                <asp:DropDownList ID="ddlPackageNameList" runat="server" AutoPostBack="True" OnLoad="ddlPackageNameList_Load"></asp:DropDownList>
+                <h5>请选择测试时间</h5>
+                <asp:DropDownList ID="ddlReportTimeList" runat="server" AutoPostBack="True" OnLoad="ddlReportTimeList_Load"></asp:DropDownList>
             </div>
             <div id="TestInfoModule">
                 <h2>测试信息</h2>
@@ -35,16 +37,16 @@
                 <div id="MonitorMemoryDiv" style="height: 500px" runat="server"></div>
                 <div id="MonitorProfilerDiv" style="height: 500px" runat="server"></div>
             </div>
-            <div id="FunctionAnalysisModule" runat="server">
+            <div id="FunctionAnalysisModule">
                 <h2>函数性能</h2>
-                <div id="FunctionAnalysisDiv" runat="server"></div>
+                <div id="FunctionAnalysisDiv"></div>
             </div>
-            <div id="LogModule" runat="server">
+            <div id="LogModule">
                 <h2>Log信息</h2>
-                <div id="LogDiv" runat="server"></div>
+                <div id="LogDiv"></div>
             </div>
-            <div id="AuthorDiv" style="position: relative" runat="server">
-                <label style="position: absolute; right: 0">Powerd By Aladdin 2022/4/24</label>
+            <div id="AuthorDiv" style="position: relative">
+                <label style="position: absolute; right: 0">Powerd By Aladdin 2022/5/1</label>
             </div>
         </div>
     </form>
@@ -112,7 +114,8 @@
                     }
                     else {
                         let deviceDiv = document.getElementById('LogDiv');
-                        deviceDiv.innerHTML = data;
+                        var logInnerText = data.replace(/\n|\r/g, '<br/>');
+                        deviceDiv.innerHTML = logInnerText;
                     }
                 },
                 error: function (jqXHR) {

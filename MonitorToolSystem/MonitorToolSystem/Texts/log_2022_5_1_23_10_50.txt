@@ -1,35 +1,35 @@
-[2022/5/1 23:10:50]<font color="#FF0000">[Error]测试Error Log</font> <br/>
-stackTrace:UnityEngine.Debug:LogError(Object)<br/>
-GOTProfiler:<Start>b__30_0(Boolean) (at Assets/GOT/Scripts/GOTProfiler.cs:116)<br/>
-GOTProfiler:OnGUI() (at Assets/GOT/Scripts/GOTProfiler.cs:331)<br/>
-[2022/5/1 23:10:50]<font color="#FFD700">[Warning]测试Warning Log</font> <br/>
-stackTrace:UnityEngine.Debug:LogWarning(Object)<br/>
-GOTProfiler:<Start>b__30_0(Boolean) (at Assets/GOT/Scripts/GOTProfiler.cs:117)<br/>
-GOTProfiler:OnGUI() (at Assets/GOT/Scripts/GOTProfiler.cs:331)<br/>
-[2022/5/1 23:10:50]<font color="#0000FF">[Log]Uploading Progreess: 50</font> <br/>
-stackTrace:UnityEngine.Debug:Log(Object)<br/>
-GOTProfiler:<UploadFile>b__38_0(Object, UploadProgressChangedEventArgs) (at Assets/GOT/Scripts/GOTProfiler.cs:301)<br/>
-UnityEngine.UnitySynchronizationContext:ExecuteTasks()<br/>
-[2022/5/1 23:10:50]<font color="#0000FF">[Log]Uploading Progreess: 100</font> <br/>
-stackTrace:UnityEngine.Debug:Log(Object)<br/>
-GOTProfiler:<UploadFile>b__38_0(Object, UploadProgressChangedEventArgs) (at Assets/GOT/Scripts/GOTProfiler.cs:301)<br/>
-UnityEngine.UnitySynchronizationContext:ExecuteTasks()<br/>
-[2022/5/1 23:10:50]<font color="#0000FF">[Log]File Uploaded :System.Byte[]</font> <br/>
-stackTrace:UnityEngine.Debug:Log(Object)<br/>
-<>c:<UploadFile>b__38_1(Object, UploadFileCompletedEventArgs) (at Assets/GOT/Scripts/GOTProfiler.cs:319)<br/>
-UnityEngine.UnitySynchronizationContext:ExecuteTasks()<br/>
-[2022/5/1 23:10:53]<font color="#0000FF">[Log]停止监控</font> <br/>
-stackTrace:UnityEngine.Debug:Log(Object)<br/>
-GOTProfiler:<Start>b__30_0(Boolean) (at Assets/GOT/Scripts/GOTProfiler.cs:123)<br/>
-GOTProfiler:OnGUI() (at Assets/GOT/Scripts/GOTProfiler.cs:331)<br/>
-[2022/5/1 23:10:53]<font color="#0000FF">[Log]当前没有函数分析数据,请运行菜单栏中的函数注入并运行</font> <br/>
-stackTrace:UnityEngine.Debug:Log(Object)<br/>
-MonitorLib.GOT.HookUtil:MethodAnalysisReport(String) (at D:/Work/GitHub/MonitorTool/MonitorLib/MonitorLib/GOT/HookUtil.cs:70)<br/>
-GOTProfiler:FuncAnalysisReport() (at Assets/GOT/Scripts/GOTProfiler.cs:259)<br/>
-GOTProfiler:<Start>b__30_0(Boolean) (at Assets/GOT/Scripts/GOTProfiler.cs:132)<br/>
-GOTProfiler:OnGUI() (at Assets/GOT/Scripts/GOTProfiler.cs:331)<br/>
-[2022/5/1 23:10:53]<font color="#FF0000">[Error]当前函数性能分析报告  C:/Users/12132/AppData/LocalLow/Aladdin/MonitorToolRef/funcAnalysis_2022_5_1_23_10_50.csv不存在</font><br/>
-stackTrace:UnityEngine.Debug:LogError(Object)<br/>
-GOTProfiler:FuncAnalysisReport() (at Assets/GOT/Scripts/GOTProfiler.cs:266)<br/>
-GOTProfiler:<Start>b__30_0(Boolean) (at Assets/GOT/Scripts/GOTProfiler.cs:132)<br/>
-GOTProfiler:OnGUI() (at Assets/GOT/Scripts/GOTProfiler.cs:331)<br/>
+[2022/5/1 23:10:50]<font color="#FF0000">[Error]测试Error Log</font> 
+stackTrace:UnityEngine.Debug:LogError(Object)
+GOTProfiler:<Start>b__30_0(Boolean) (at Assets/GOT/Scripts/GOTProfiler.cs:116)
+GOTProfiler:OnGUI() (at Assets/GOT/Scripts/GOTProfiler.cs:331)
+[2022/5/1 23:10:50]<font color="#FFD700">[Warning]测试Warning Log</font> 
+stackTrace:UnityEngine.Debug:LogWarning(Object)
+GOTProfiler:<Start>b__30_0(Boolean) (at Assets/GOT/Scripts/GOTProfiler.cs:117)
+GOTProfiler:OnGUI() (at Assets/GOT/Scripts/GOTProfiler.cs:331)
+[2022/5/1 23:10:50]<font color="#0000FF">[Log]Uploading Progreess: 50</font> 
+stackTrace:UnityEngine.Debug:Log(Object)
+GOTProfiler:<UploadFile>b__38_0(Object, UploadProgressChangedEventArgs) (at Assets/GOT/Scripts/GOTProfiler.cs:301)
+UnityEngine.UnitySynchronizationContext:ExecuteTasks()
+[2022/5/1 23:10:50]<font color="#0000FF">[Log]Uploading Progreess: 100</font> 
+stackTrace:UnityEngine.Debug:Log(Object)
+GOTProfiler:<UploadFile>b__38_0(Object, UploadProgressChangedEventArgs) (at Assets/GOT/Scripts/GOTProfiler.cs:301)
+UnityEngine.UnitySynchronizationContext:ExecuteTasks()
+[2022/5/1 23:10:50]<font color="#0000FF">[Log]File Uploaded :System.Byte[]</font> 
+stackTrace:UnityEngine.Debug:Log(Object)
+<>c:<UploadFile>b__38_1(Object, UploadFileCompletedEventArgs) (at Assets/GOT/Scripts/GOTProfiler.cs:319)
+UnityEngine.UnitySynchronizationContext:ExecuteTasks()
+[2022/5/1 23:10:53]<font color="#0000FF">[Log]停止监控</font> 
+stackTrace:UnityEngine.Debug:Log(Object)
+GOTProfiler:<Start>b__30_0(Boolean) (at Assets/GOT/Scripts/GOTProfiler.cs:123)
+GOTProfiler:OnGUI() (at Assets/GOT/Scripts/GOTProfiler.cs:331)
+[2022/5/1 23:10:53]<font color="#0000FF">[Log]当前没有函数分析数据,请运行菜单栏中的函数注入并运行</font> 
+stackTrace:UnityEngine.Debug:Log(Object)
+MonitorLib.GOT.HookUtil:MethodAnalysisReport(String) (at D:/Work/GitHub/MonitorTool/MonitorLib/MonitorLib/GOT/HookUtil.cs:70)
+GOTProfiler:FuncAnalysisReport() (at Assets/GOT/Scripts/GOTProfiler.cs:259)
+GOTProfiler:<Start>b__30_0(Boolean) (at Assets/GOT/Scripts/GOTProfiler.cs:132)
+GOTProfiler:OnGUI() (at Assets/GOT/Scripts/GOTProfiler.cs:331)
+[2022/5/1 23:10:53]<font color="#FF0000">[Error]当前函数性能分析报告  C:/Users/12132/AppData/LocalLow/Aladdin/MonitorToolRef/funcAnalysis_2022_5_1_23_10_50.csv不存在</font> 
+stackTrace:UnityEngine.Debug:LogError(Object)
+GOTProfiler:FuncAnalysisReport() (at Assets/GOT/Scripts/GOTProfiler.cs:266)
+GOTProfiler:<Start>b__30_0(Boolean) (at Assets/GOT/Scripts/GOTProfiler.cs:132)
+GOTProfiler:OnGUI() (at Assets/GOT/Scripts/GOTProfiler.cs:331)
