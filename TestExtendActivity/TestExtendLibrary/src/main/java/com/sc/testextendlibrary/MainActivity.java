@@ -360,7 +360,6 @@ public class MainActivity extends UnityPlayerActivity {
      */
     public String GetBatteryInfos() {
         BatteryManager batteryManager = (BatteryManager) MainActivity.this.getSystemService(android.content.Context.BATTERY_SERVICE);
-
         // 剩余电量百分比 BATTERY_PROPERTY_CAPACITY: 51
         int batteryCapacity = batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY);
         // 当前电池容量(mAH) BATTERY_PROPERTY_CHARGE_COUNTER: 2192080
@@ -896,5 +895,65 @@ public class MainActivity extends UnityPlayerActivity {
         Toast.makeText(this,memMessage,Toast.LENGTH_LONG).show();
         Log.i("log_tag", memMessage);
         return memoryInfo.getTotalPss() / 1024.0f;
+    }
+
+    // [电池温度 CPU温度]
+    // [电池电流 电压 功耗]
+
+    /*
+        获取功耗参数
+        [电池电流 电压 功耗]
+     */
+    public String GetCurPowerConsumeArgs()
+    {
+        BatteryManager batteryManager = (BatteryManager) MainActivity.this.getSystemService(android.content.Context.BATTERY_SERVICE);
+        // 剩余电量百分比 BATTERY_PROPERTY_CAPACITY: 51
+        int batteryCapacity = batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY);
+        // 当前电池容量(mAH) BATTERY_PROPERTY_CHARGE_COUNTER: 2192080
+        int batteryChargeCounter = batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CHARGE_COUNTER) / 1000;
+        // 剩余能量(nWH) BATTERY_PROPERTY_ENERGY_COUNTER: -2147483648
+        long batteryEnergyCounter = batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_ENERGY_COUNTER);
+        // 瞬时电流(mA)  BATTERY_PROPERTY_CURRENT_NOW: 632324（负表示放电 正表示充电）
+        int batteryCurrentNow = batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CURRENT_NOW);
+        // 平均电流(mA)  BATTERY_PROPERTY_CURRENT_AVERAGE: -2147483648 （负表示放电 正表示充电）
+        //int batteryCurrentAverage = batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CURRENT_AVERAGE);
+
+        //电池状态
+        //int status = batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_STATUS);
+
+        IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+        Intent intent = instance.registerReceiver(null,ifilter);
+        int temperature = intent.getIntExtra("temperature", 0) / 10;  //电池温度(数值) ℃
+        float batteryV = intent.getIntExtra("voltage", 0) / 1000f;  //电池电压(伏)
+        //电池总容量  毫安
+        int capacity = (int)(ToMA((float)batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CHARGE_COUNTER)) / ((float)batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY)/100f));
+        float useLeftHouser = capacity * batteryCapacity / 100f / Math.abs(batteryCurrentNow);
+        //瞬时功率
+        float p = (int)(batteryCurrentNow * batteryV);
+        //cpu温度
+        int cpuTemperature = GetCpuTemperature();
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(capacity);                //电池总容量(毫安)int
+        sb.append("|");
+        sb.append(temperature);             //电池温度(℃)int
+        sb.append("|");
+        sb.append(batteryV);                //电池电压(伏)float
+        sb.append("|");
+        sb.append(batteryCapacity);         //剩余电量百分比int
+        sb.append("|");
+        sb.append(batteryChargeCounter);    //当前剩余容量(mAH)int
+        sb.append("|");
+        sb.append(batteryCurrentNow);       //瞬时电流(mA)int
+        sb.append("|");
+        sb.append(p);                       //瞬时功率float
+        sb.append("|");
+        sb.append(useLeftHouser);           //剩余使用时长float
+        sb.append("|");
+        sb.append(cpuTemperature);          //cpu温度 int
+        sb.append("|");
+
+        return sb.toString();
+
     }
 }
