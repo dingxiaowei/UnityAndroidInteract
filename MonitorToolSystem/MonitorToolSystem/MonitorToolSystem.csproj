@@ -113,6 +113,9 @@
     <Compile Include="Common\Config.cs" />
     <Compile Include="Common\FileManager.cs" />
     <Compile Include="Common\Utility.cs" />
+    <Compile Include="DeviceInfoHandler.ashx.cs">
+      <DependentUpon>DeviceInfoHandler.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Index.aspx.cs">
       <DependentUpon>Index.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -133,6 +136,7 @@
     <Content Include="Modules\echarts.js.map" />
     <Content Include="Modules\extension\bmap.js.map" />
     <Content Include="Modules\extension\dataTool.js.map" />
+    <Content Include="DeviceInfoHandler.ashx" />
     <None Include="packages.config" />
     <Content Include="ReceiveDataHandler.ashx" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
