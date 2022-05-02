@@ -123,6 +123,9 @@
     <Compile Include="Index.aspx.designer.cs">
       <DependentUpon>Index.aspx</DependentUpon>
     </Compile>
+    <Compile Include="LogHandler.ashx.cs">
+      <DependentUpon>LogHandler.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReceiveDataHandler.ashx.cs">
       <DependentUpon>ReceiveDataHandler.ashx</DependentUpon>
@@ -137,6 +140,7 @@
     <Content Include="Modules\extension\bmap.js.map" />
     <Content Include="Modules\extension\dataTool.js.map" />
     <Content Include="DeviceInfoHandler.ashx" />
+    <Content Include="LogHandler.ashx" />
     <None Include="packages.config" />
     <Content Include="ReceiveDataHandler.ashx" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />

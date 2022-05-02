@@ -100,6 +100,26 @@
                     HideElement('DeviceInfoModule');
                 }
             });
+
+            //Log信息
+            $.ajax({
+                type: "POST",
+                url: "/LogHandler.ashx?PackageName=" + packageNameValue + "&TestTime=" + timeValue,
+                data: String,
+                success: function (data) {
+                    if (data.includes('error')) {
+                        HideElement('LogModule');
+                    }
+                    else {
+                        let deviceDiv = document.getElementById('LogDiv');
+                        deviceDiv.innerHTML = data;
+                    }
+                },
+                error: function (jqXHR) {
+                    console.error(jqXHR);
+                    HideElement('LogModule');
+                }
+            });
         });
     </script>
 </body>
