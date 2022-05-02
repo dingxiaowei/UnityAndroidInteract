@@ -1,0 +1,30 @@
+[2022/5/1 23:45:43]<font color="#FF0000">[Error]测试Error Log</font><br/>
+stackTrace:UnityEngine.Debug:LogError (object)<br/>
+GOTProfiler:<Start>b__30_0 (bool)<br/>
+GOTProfiler:OnGUI ()<br/>
+[2022/5/1 23:45:43]<font color="#FFD700">[Warning]测试Warning Log</font> <br/>
+stackTrace:UnityEngine.Debug:LogWarning (object)<br/>
+GOTProfiler:<Start>b__30_0 (bool)<br/>
+GOTProfiler:OnGUI ()<br/>
+[2022/5/1 23:45:43]<font color="#0000FF">[Log]Uploading Progreess: 50</font> <br/>
+stackTrace:UnityEngine.Debug:Log (object)<br/>
+GOTProfiler:<UploadFile>b__38_0 (object,System.Net.UploadProgressChangedEventArgs)<br/>
+UnityEngine.UnitySynchronizationContext:ExecuteTasks ()<br/>
+[2022/5/1 23:45:43]<font color="#0000FF">[Log]Uploading Progreess: 100</font> <br/>
+stackTrace:UnityEngine.Debug:Log (object)<br/>
+GOTProfiler:<UploadFile>b__38_0 (object,System.Net.UploadProgressChangedEventArgs)<br/>
+UnityEngine.UnitySynchronizationContext:ExecuteTasks ()<br/>
+[2022/5/1 23:45:43]<font color="#0000FF">[Log]File Uploaded :System.Byte[]</font> <br/>
+stackTrace:UnityEngine.Debug:Log (object)<br/>
+GOTProfiler/<>c:<UploadFile>b__38_1 (object,System.Net.UploadFileCompletedEventArgs)<br/>
+UnityEngine.UnitySynchronizationContext:ExecuteTasks ()<br/>
+[2022/5/1 23:45:49]<font color="#0000FF">[Log]停止监控</font> <br/>
+stackTrace:UnityEngine.Debug:Log (object)<br/>
+GOTProfiler:<Start>b__30_0 (bool)<br/>
+GOTProfiler:OnGUI ()<br/>
+[2022/5/1 23:45:49]<font color="#0000FF">[Log]函数性能报告C:/Users/d00605132/AppData/LocalLow/Aladdin/MonitorToolRef\funcAnalysis_2022_5_1_23_45_43.csv文件输出完成</font> <br/>
+stackTrace:UnityEngine.Debug:Log (object)
+MonitorLib.GOT.HookUtil:MethodAnalysisReport (string) (at MonitorLib/MonitorLib/GOT/HookUtil.cs:104)<br/>
+GOTProfiler:FuncAnalysisReport ()<br/>
+GOTProfiler:<Start>b__30_0 (bool)<br/>
+GOTProfiler:OnGUI ()<br/>
