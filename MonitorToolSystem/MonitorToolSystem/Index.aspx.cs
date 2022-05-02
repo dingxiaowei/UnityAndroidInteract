@@ -47,16 +47,12 @@ namespace MonitorToolSystem
                 //this.div2.Style["display"] = "block";
             }
             this.ddlPackageNameList.SelectedIndexChanged += OnPackageNameListValueChanged;
-            this.ddlReportTimeList.SelectedIndexChanged += OnReportListValueChanged;
+            this.ddlReportTimeList.SelectedIndexChanged += OnReportTimeListValueChanged;
         }
 
-        void OnReportListValueChanged(object sender, EventArgs e)
+        void OnReportTimeListValueChanged(object sender, EventArgs e)
         {
-            if (!Session["selectedtime"].Equals(this.ddlReportTimeList.SelectedValue))
-            {
-                Response.Write("<script>alert('" + this.ddlReportTimeList.SelectedValue + "')</script>");
-                Session["selectedtime"] = this.ddlReportTimeList.SelectedValue;
-            }
+            //Response.Write("<script>alert('" + this.ddlReportTimeList.SelectedValue + "')</script>");
         }
 
         void OnPackageNameListValueChanged(object sender, EventArgs e)
@@ -79,7 +75,11 @@ namespace MonitorToolSystem
         protected void ddlPackageNameList_Load(object sender, EventArgs e)
         {
             //Response.Write("<script>alert('" + this.ddlPackageNameList.SelectedValue + "')</script>");
-            OnPackageNameListSelected(this.ddlPackageNameList.SelectedValue);
+            var fileMd5 = Utility.GetMD5ByFile(Path.Combine(recordsDir, $"{ddlPackageNameList.SelectedValue}.txt"));
+            if (ddlReportTimeList.Items.Count == 0 || !ViewState[ddlPackageNameList.SelectedValue].Equals(fileMd5))
+            {
+                OnPackageNameListSelected(ddlPackageNameList.SelectedValue);
+            }
         }
 
         protected void ddlReportTimeList_Load(object sender, EventArgs e)

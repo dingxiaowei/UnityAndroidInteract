@@ -49,7 +49,6 @@ D:\Study\github\UnityAndroidInteract\MonitorToolSystem\MonitorToolSystem\bin\ros
 D:\Study\github\UnityAndroidInteract\MonitorToolSystem\MonitorToolSystem\bin\roslyn\VBCSCompiler.exe.config
 D:\Study\github\UnityAndroidInteract\MonitorToolSystem\MonitorToolSystem\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
 D:\Study\github\UnityAndroidInteract\MonitorToolSystem\MonitorToolSystem\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
-D:\Study\github\UnityAndroidInteract\MonitorToolSystem\MonitorToolSystem\obj\Debug\MonitorToolSystem.csprojAssemblyReference.cache
 D:\Study\github\UnityAndroidInteract\MonitorToolSystem\MonitorToolSystem\obj\Debug\MonitorToolSystem.csproj.CoreCompileInputs.cache
 D:\Study\github\UnityAndroidInteract\MonitorToolSystem\MonitorToolSystem\obj\Debug\MonitorToolSystem.csproj.CopyComplete
 D:\Study\github\UnityAndroidInteract\MonitorToolSystem\MonitorToolSystem\obj\Debug\MonitorToolSystem.dll
