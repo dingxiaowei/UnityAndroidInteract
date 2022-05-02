@@ -89,15 +89,30 @@
     <Content Include="Modules\extension\dataTool.js" />
     <Content Include="Modules\extension\dataTool.min.js" />
     <Content Include="Modules\jquery-3.3.1.min.js" />
-    <Content Include="Texts\device_2022_5_1_17_33_28.txt" />
-    <Content Include="Texts\log_2022_5_1_17_33_28.txt" />
-    <Content Include="Texts\monitor_2022_5_1_17_33_28.txt" />
-    <Content Include="Texts\test_2022_5_1_17_33_28.txt" />
+    <Content Include="Texts\device_2022_5_1_23_10_50.txt" />
+    <Content Include="Texts\device_2022_5_1_23_45_43.txt" />
+    <Content Include="Texts\device_2022_5_2_23_10_50.txt" />
+    <Content Include="Texts\device_2022_5_2_23_45_43.txt" />
+    <Content Include="Texts\log_2022_5_1_23_10_50.txt" />
+    <Content Include="Texts\log_2022_5_1_23_45_43.txt" />
+    <Content Include="Texts\log_2022_5_2_23_10_50.txt" />
+    <Content Include="Texts\log_2022_5_2_23_45_43.txt" />
+    <Content Include="Texts\monitor_2022_5_1_23_10_50.txt" />
+    <Content Include="Texts\monitor_2022_5_1_23_45_43.txt" />
+    <Content Include="Texts\monitor_2022_5_2_23_10_50.txt" />
+    <Content Include="Texts\monitor_2022_5_2_23_45_43.txt" />
+    <Content Include="Texts\Records\com.Aladdin.MonitorToolRef.txt" />
+    <Content Include="Texts\Records\com.Aladdin.Test.txt" />
+    <Content Include="Texts\test_2022_5_1_23_10_50.txt" />
+    <Content Include="Texts\test_2022_5_1_23_45_43.txt" />
+    <Content Include="Texts\test_2022_5_2_23_10_50.txt" />
+    <Content Include="Texts\test_2022_5_2_23_45_43.txt" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\Config.cs" />
     <Compile Include="Common\FileManager.cs" />
+    <Compile Include="Common\Utility.cs" />
     <Compile Include="Index.aspx.cs">
       <DependentUpon>Index.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -118,7 +133,8 @@
     <None Include="packages.config" />
     <Content Include="ReceiveDataHandler.ashx" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
-    <Content Include="Texts\funcAnalysis_2022_5_1_17_33_28.csv" />
+    <Content Include="Texts\funcAnalysis_2022_5_1_23_45_43.csv" />
+    <Content Include="Texts\funcAnalysis_2022_5_2_23_45_43.csv" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -128,7 +144,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Model\" />
-    <Folder Include="Texts\Records\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
@@ -86,6 +87,21 @@ namespace MonitorToolSystem.Common
                 sr.Close();
             }
             return sb.ToString();
+        }
+
+        public static List<string> ReadAllLines(string path)
+        {
+            List<string> datas = new List<string>();
+            using (StreamReader sr = new StreamReader(path, Encoding.Default))
+            {
+                string line;
+                while ((line = sr.ReadLine()) != null)
+                {
+                    datas.Add(line);
+                }
+                sr.Close();
+            }
+            return datas;
         }
 
         /// <summary>
@@ -179,23 +195,6 @@ namespace MonitorToolSystem.Common
             }
             return true;
         }
-
-        //public static bool InsertFirstLine(string fileName, string content)
-        //{
-        //    if (string.IsNullOrEmpty(fileName) || string.IsNullOrEmpty(content))
-        //    {
-        //        return false;
-        //    }
-        //    if (!File.Exists(fileName))
-        //    { 
-        //        CreateText(fileName, content);
-        //    }
-        //    else
-        //    {
-
-        //    }
-        //    return true;
-        //}
 
         public static void CreateText(string filePath, string content = null)
         {
