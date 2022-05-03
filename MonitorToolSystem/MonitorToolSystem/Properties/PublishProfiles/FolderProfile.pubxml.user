@@ -13,10 +13,10 @@
       <publishTime>05/24/2018 13:38:22</publishTime>
     </File>
     <File Include="bin/MonitorToolSystem.dll">
-      <publishTime>05/03/2022 09:29:04</publishTime>
+      <publishTime>05/03/2022 20:09:17</publishTime>
     </File>
     <File Include="bin/MonitorToolSystem.pdb">
-      <publishTime>05/03/2022 09:29:04</publishTime>
+      <publishTime>05/03/2022 20:09:17</publishTime>
     </File>
     <File Include="bin/Newtonsoft.Json.dll">
       <publishTime>03/17/2021 20:03:36</publishTime>
@@ -169,7 +169,7 @@
       <publishTime>05/02/2022 22:32:32</publishTime>
     </File>
     <File Include="Index.aspx">
-      <publishTime>05/03/2022 09:27:29</publishTime>
+      <publishTime>05/03/2022 20:08:20</publishTime>
     </File>
     <File Include="LogHandler.ashx">
       <publishTime>05/02/2022 18:20:47</publishTime>
@@ -236,6 +236,9 @@
     </File>
     <File Include="Modules/jquery-3.3.1.min.js">
       <publishTime>02/16/2022 23:11:54</publishTime>
+    </File>
+    <File Include="MonitorHandler.ashx">
+      <publishTime>05/03/2022 19:50:28</publishTime>
     </File>
     <File Include="ReceiveDataHandler.ashx">
       <publishTime>04/27/2022 08:24:42</publishTime>

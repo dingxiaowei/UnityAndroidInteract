@@ -134,6 +134,9 @@
       <DependentUpon>LogHandler.ashx</DependentUpon>
     </Compile>
     <Compile Include="Models\FuncAnalysisInfo.cs" />
+    <Compile Include="MonitorHandler.ashx.cs">
+      <DependentUpon>MonitorHandler.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReceiveDataHandler.ashx.cs">
       <DependentUpon>ReceiveDataHandler.ashx</DependentUpon>
@@ -150,6 +153,7 @@
     <Content Include="DeviceInfoHandler.ashx" />
     <Content Include="LogHandler.ashx" />
     <Content Include="FuncAnalysisHandler.ashx" />
+    <Content Include="MonitorHandler.ashx" />
     <None Include="packages.config" />
     <Content Include="ReceiveDataHandler.ashx" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />

@@ -42,11 +42,11 @@
                 <h2>函数性能</h2>
                 <div id="FunctionAnalysisDiv">
                     <table>
-                        <tbody id ="FuncTBody">
+                        <tbody id="FuncTBody">
                         </tbody>
                     </table>
                     <br />
-                    <label style="color:orangered">说明:关注高频调用，平均执行时间超过10ms的函数，要重点优化！</label>
+                    <label style="color: orangered">说明:关注高频调用，平均执行时间超过10ms的函数，要重点优化！</label>
                 </div>
             </div>
             <div id="LogModule">
@@ -108,6 +108,262 @@
                 error: function (jqXHR) {
                     console.error(jqXHR);
                     HideElement('DeviceInfoModule');
+                }
+            });
+            //Monitor信息
+            $.ajax({
+                type: "POST",
+                url: "/MonitorHandler.ashx?PackageName=" + packageNameValue + "&TestTime=" + timeValue,
+                data: JSON,
+                success: function (data) {
+                    if (data.includes('error')) {
+                        HideElement('MonitorInfoModule');
+                    }
+                    else {
+                        var myJson = JSON.parse(data);
+                        var frameIndexArrayData = [];
+                        var frameArrayData = [];
+                        var batteryArrayData = [];
+                        var memoryArrayData = [];
+                        var monoHeapSizeArrayData = [];
+                        var monoUsedSizeArrayData = [];
+                        var totalAllocatedMemoryArrayData = [];
+                        var unityTotalReservedMemoryArrayData = [];
+                        var totalUnusedReservedMemoryArrayData = [];
+                        var mb = 1024 * 1024;
+                        for (var i in myJson.MonitorInfoList) {
+                            frameIndexArrayData.push(myJson.MonitorInfoList[i].FrameIndex);
+                            frameArrayData.push(myJson.MonitorInfoList[i].Frame);
+                            batteryArrayData.push(Math.floor(myJson.MonitorInfoList[i].BatteryLevel * 100) / 100 * 100);
+                            memoryArrayData.push(myJson.MonitorInfoList[i].MemorySize);
+                            monoHeapSizeArrayData.push(myJson.MonitorInfoList[i].MonoHeapSize / mb);
+                            monoUsedSizeArrayData.push(myJson.MonitorInfoList[i].MonoUsedSize / mb);
+                            totalAllocatedMemoryArrayData.push(myJson.MonitorInfoList[i].TotalAllocatedMemory / mb);
+                            unityTotalReservedMemoryArrayData.push(myJson.MonitorInfoList[i].UnityTotalReservedMemory / mb);
+                            totalUnusedReservedMemoryArrayData.push(myJson.MonitorInfoList[i].TotalUnusedReservedMemory / mb);
+                        }
+                        var monitorchart = echarts.init(document.getElementById("MonitorFrameDiv"));
+                        //指定图表的配置项和数据
+                        var option = {
+                            tooltip: {
+                                trigger: 'axis'
+                            },
+                            //标题
+                            title: {
+                                text: '帧率报表'
+                            },
+                            //工具箱
+                            //保存图片
+                            toolbox: {
+                                show: true,
+                                feature: {
+                                    saveAsImage: {
+                                        show: true
+                                    }
+                                }
+                            },
+                            //图例-每一条数据的名字叫帧率
+                            legend: {
+                                data: ['帧率']
+                            },
+                            //x轴
+                            xAxis: {
+                                data: frameIndexArrayData
+                            },
+                            //y轴没有显式设置，根据值自动生成y轴
+                            yAxis: [{
+                                type: 'value',
+                                scale: true,
+                                max: 75,
+                                min: 0,
+                                splitNumber: 5,
+                                boundaryGap: [0.2, 0.2]
+                            }],
+                            dataZoom: [
+                                {   // 这个dataZoom组件，默认控制x轴。
+                                    type: 'slider', // 这个 dataZoom 组件是 slider 型 dataZoom 组件
+                                    start: 0,      // 左边在 0% 的位置。
+                                    end: 100         // 右边在 100% 的位置。
+                                }
+                            ],
+                            //数据-data是最终要显示的数据
+                            series: [{
+                                name: '数值',
+                                type: 'line',
+                                data: frameArrayData
+                            }]
+                        };
+                        //使用刚刚指定的配置项和数据项显示图表
+                        monitorchart.setOption(option);
+                        //电量报表
+                        var monitorBatteryChart = echarts.init(document.getElementById("MonitorBatteryLevelDiv"));
+                        //指定图表的配置项和数据
+                        var batteryOption = {
+                            tooltip: {
+                                trigger: 'axis'
+                            },
+                            //标题
+                            title: {
+                                text: '电量报表'
+                            },
+                            //工具箱
+                            //保存图片
+                            toolbox: {
+                                show: true,
+                                feature: {
+                                    saveAsImage: {
+                                        show: true
+                                    }
+                                }
+                            },
+                            //图例-每一条数据的名字叫电量
+                            legend: {
+                                data: ['电量(百分比)']
+                            },
+                            //x轴
+                            xAxis: {
+                                data: frameIndexArrayData
+                            },
+                            //y轴没有显式设置，根据值自动生成y轴
+                            yAxis: {
+                            },
+                            dataZoom: [
+                                {   // 这个dataZoom组件，默认控制x轴。
+                                    type: 'slider', // 这个 dataZoom 组件是 slider 型 dataZoom 组件
+                                    start: 0,      // 左边在 0% 的位置。
+                                    end: 100         // 右边在 100% 的位置。
+                                }
+                            ],
+                            //数据-data是最终要显示的数据
+                            series: [{
+                                name: '数值',
+                                type: 'line',
+                                data: batteryArrayData
+                            }]
+                        };
+                        //使用刚刚指定的配置项和数据项显示图表
+                        monitorBatteryChart.setOption(batteryOption);
+                        //内存使用报表
+                        var monitorMemoryChart = echarts.init(document.getElementById("MonitorMemoryDiv"));
+                        //指定图表的配置项和数据
+                        var memoryOption = {
+                            tooltip: {
+                                trigger: 'axis'
+                            },
+                            //标题
+                            title: {
+                                text: '内存使用报表'
+                            },
+                            //工具箱
+                            //保存图片
+                            toolbox: {
+                                show: true,
+                                feature: {
+                                    saveAsImage: {
+                                        show: true
+                                    }
+                                }
+                            },
+                            legend: {
+                                data: ['内存使用 MB']
+                            },
+                            //x轴
+                            xAxis: {
+                                data: frameIndexArrayData
+                            },
+                            //y轴没有显式设置，根据值自动生成y轴
+                            yAxis: {
+                            },
+                            dataZoom: [
+                                {   // 这个dataZoom组件，默认控制x轴。
+                                    type: 'slider', // 这个 dataZoom 组件是 slider 型 dataZoom 组件
+                                    start: 0,      // 左边在 0% 的位置。
+                                    end: 100         // 右边在 100% 的位置。
+                                }
+                            ],
+                            //数据-data是最终要显示的数据
+                            series: [{
+                                name: '数值',
+                                type: 'line',
+                                data: memoryArrayData
+                            }]
+                        };
+                        //使用刚刚指定的配置项和数据项显示图表
+                        monitorMemoryChart.setOption(memoryOption);
+                        //Profiler数据
+                        var profilerChart = echarts.init(document.getElementById("MonitorProfilerDiv"));
+                        var profilerOption = {
+                            title: {
+                                text: 'Profiler分析'
+                            },
+                            tooltip: {
+                                trigger: 'axis'
+                            },
+                            legend: {
+                                data: ['堆内存(MonoHeapSize)MB', '堆使用内存(MonoUsedSize)MB', 'Unity分配内存(TotalAllocatedMemory)MB', 'Unity总内存(TotalReservedMemory)MB', '未使用内存(TotalUnusedReservedMemory)MB']
+                            },
+                            grid: {
+                                left: '3%',
+                                right: '4%',
+                                bottom: '3%',
+                                containLabel: true
+                            },
+                            toolbox: {
+                                feature: {
+                                    saveAsImage: {}
+                                }
+                            },
+                            xAxis: {
+                                data: frameIndexArrayData
+                            },
+                            yAxis: {
+                                type: 'value'
+                            },
+                            dataZoom: [
+                                {   // 这个dataZoom组件，默认控制x轴。
+                                    type: 'slider', // 这个 dataZoom 组件是 slider 型 dataZoom 组件
+                                    start: 0,      // 左边在 0% 的位置。
+                                    end: 100         // 右边在 100% 的位置。
+                                }
+                            ],
+                            series: [
+                                {
+                                    name: '堆内存(MonoHeapSize)MB',
+                                    type: 'line',
+                                    stack: 'Total',
+                                    data: monoHeapSizeArrayData
+                                },
+                                {
+                                    name: '堆使用内存(MonoUsedSize)MB',
+                                    type: 'line',
+                                    stack: 'Total',
+                                    data: monoUsedSizeArrayData
+                                },
+                                {
+                                    name: 'Unity分配内存(TotalAllocatedMemory)MB',
+                                    type: 'line',
+                                    stack: 'Total',
+                                    data: totalAllocatedMemoryArrayData
+                                },
+                                {
+                                    name: 'Unity总内存(TotalReservedMemory)MB',
+                                    type: 'line',
+                                    stack: 'Total',
+                                    data: unityTotalReservedMemoryArrayData
+                                },
+                                {
+                                    name: '未使用内存(TotalUnusedReservedMemory)MB',
+                                    type: 'line',
+                                    stack: 'Total',
+                                    data: totalUnusedReservedMemoryArrayData
+                                }]
+                        };
+                        profilerChart.setOption(profilerOption);
+                    }
+                },
+                error: function (jqXHR) {
+                    console.error(jqXHR);
+                    HideElement('MonitorInfoModule');
                 }
             });
             //函数性能信息
