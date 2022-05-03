@@ -45,6 +45,8 @@
                         <tbody id ="FuncTBody">
                         </tbody>
                     </table>
+                    <br />
+                    <label style="color:orangered">说明:关注高频调用，平均执行时间超过10ms的函数，要重点优化！</label>
                 </div>
             </div>
             <div id="LogModule">
