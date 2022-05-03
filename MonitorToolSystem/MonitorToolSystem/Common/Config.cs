@@ -4,6 +4,7 @@
     {
         public const string BinaryExt = ".data";
         public const string TextExt = ".txt";
+        public const string CSVExt = ".csv";
 
         //文件前缀
         public const string LogPrefix = "log_";

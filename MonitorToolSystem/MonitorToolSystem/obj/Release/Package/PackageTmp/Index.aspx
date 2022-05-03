@@ -8,6 +8,7 @@
     <title>性能报告</title>
     <script src="Modules/echarts.min.js"></script>
     <script src="Modules/jquery-3.3.1.min.js"></script>
+    <link href="StyleSheet.css" rel="stylesheet" />
     <%--<script src="https://cdn.staticfile.org/jquery/2.2.4/jquery.min.js"></script>
 	<script src="https://cdn.staticfile.org/echarts/4.3.0/echarts.min.js"></script>--%>
 </head>
@@ -39,14 +40,19 @@
             </div>
             <div id="FunctionAnalysisModule">
                 <h2>函数性能</h2>
-                <div id="FunctionAnalysisDiv"></div>
+                <div id="FunctionAnalysisDiv">
+                    <table>
+                        <tbody id ="FuncTBody">
+                        </tbody>
+                    </table>
+                </div>
             </div>
             <div id="LogModule">
                 <h2>Log信息</h2>
                 <div id="LogDiv"></div>
             </div>
             <div id="AuthorDiv" style="position: relative">
-                <label style="position: absolute; right: 0">Powerd By Aladdin 2022/5/1</label>
+                <label style="position: absolute; right: 0">Powerd By 阿拉丁 2022/5/1</label>
             </div>
         </div>
     </form>
@@ -102,7 +108,44 @@
                     HideElement('DeviceInfoModule');
                 }
             });
-
+            //函数性能信息
+            $.ajax({
+                type: "POST",
+                url: "/FuncAnalysisHandler.ashx?PackageName=" + packageNameValue + "&TestTime=" + timeValue,
+                data: JSON,
+                success: function (data) {
+                    if (data.includes('error')) {
+                        HideElement('FunctionAnalysisModule');
+                    }
+                    else {
+                        //let funcAnalysisDiv = document.getElementById('FunctionAnalysisDiv');
+                        var jsonObj = JSON.parse(data);
+                        var tableData = "<tr>";
+                        tableData += "<td>函数名</td>";
+                        tableData += "<td>函数消耗总内存(k)</td>";
+                        tableData += "<td>函数平均消耗内存(k)</td>";
+                        tableData += "<td>函数总执行时间(s)</td>";
+                        tableData += "<td>函数平均执行时间(ms)</td>";
+                        tableData += "<td>函数调用次数</td>";
+                        tableData += "</tr>"
+                        for (var p in jsonObj) {
+                            tableData += "<tr>";
+                            tableData += "<td>" + jsonObj[p]["Name"] + "</td>";
+                            tableData += "<td>" + jsonObj[p]["Memory"] + "</td>";
+                            tableData += "<td>" + jsonObj[p]["AverageMemory"] + "</td>";
+                            tableData += "<td>" + jsonObj[p]["UseTime"] + "</td>";
+                            tableData += "<td>" + jsonObj[p]["AverageTime"] + "</td>";
+                            tableData += "<td>" + jsonObj[p]["Calls"] + "</td>";
+                            tableData += "</tr>";
+                        }
+                        $("#FuncTBody").html(tableData);
+                    }
+                },
+                error: function (jqXHR) {
+                    console.error(jqXHR);
+                    HideElement('FunctionAnalysisModule');
+                }
+            });
             //Log信息
             $.ajax({
                 type: "POST",
