@@ -43,6 +43,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=1.3.3.11, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpZipLib.1.3.3\lib\net45\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -116,9 +119,13 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CaptureFrameHandler.ashx.cs">
+      <DependentUpon>CaptureFrameHandler.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Common\Config.cs" />
     <Compile Include="Common\FileManager.cs" />
     <Compile Include="Common\Utility.cs" />
+    <Compile Include="Common\ZipUtils.cs" />
     <Compile Include="DeviceInfoHandler.ashx.cs">
       <DependentUpon>DeviceInfoHandler.ashx</DependentUpon>
     </Compile>
@@ -164,11 +171,13 @@
     <Content Include="FuncAnalysisHandler.ashx" />
     <Content Include="MonitorHandler.ashx" />
     <Content Include="FuncCodeAnalysisHandler.ashx" />
+    <Content Include="CaptureFrameHandler.ashx" />
     <None Include="packages.config" />
     <Content Include="ReceiveDataHandler.ashx" />
     <Content Include="PowerConsumeHandler.ashx" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="TestInfoHandler.ashx" />
+    <Content Include="Texts\captureFrame_2022_05_04_22_52_28.zip" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

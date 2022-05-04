@@ -5,6 +5,7 @@
         public const string BinaryExt = ".data";
         public const string TextExt = ".txt";
         public const string CSVExt = ".csv";
+        public const string ZIPExt = ".zip";
 
         //文件前缀
         public const string LogPrefix = "log_";
@@ -16,6 +17,7 @@
         //函数规划范分析
         public const string FuncCodeAnalysisPrefix = "funcCodeAnalysis_";
         public const string PowerConsumePrefix = "powerConsume_";
+        public const string CapturePrefix = "captureFrame_";
     }
     public class Config
     {

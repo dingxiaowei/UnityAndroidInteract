@@ -11,6 +11,16 @@
     <link href="StyleSheet.css" rel="stylesheet" />
     <%--<script src="https://cdn.staticfile.org/jquery/2.2.4/jquery.min.js"></script>
 	<script src="https://cdn.staticfile.org/echarts/4.3.0/echarts.min.js"></script>--%>
+    <style>
+        img {
+            width: 100px;
+            height: 100px;
+            /* 定位 */
+            position: absolute;
+            /* top: 300px;
+            left: 100px */
+        }
+    </style>
 </head>
 <body>
     <h1>Unity性能监控报表工具</h1>
@@ -40,7 +50,7 @@
             </div>
             <div id="PowerConsumeModule">
                 <h2>手机功耗报告</h2>
-                <div id="TemptureDiv" style="height:500px"></div>
+                <div id="TemptureDiv" style="height: 500px"></div>
             </div>
             <div id="FunctionAnalysisModule">
                 <h2>函数性能</h2>
@@ -72,8 +82,17 @@
                 <label style="position: absolute; right: 0">Powerd By 阿拉丁 2022/5/1</label>
             </div>
         </div>
+        <img src="./Texts/captureFrame_2022_05_04_22_52_28/img_2022_05_04_22_52_28_95.png" alt="" style="display: none" />
     </form>
     <script type="text/javascript">
+
+        var img = document.querySelector('img')
+        //document.addEventListener('mouseclick', function(e) {
+        //    img.style.left = e.clientX + 'px'
+        //    img.style.top = e.clientY + 'px'
+        //    alert(e.clientX);
+        //})
+
         function HideElement(divName) {
             var testInfoDiv = document.getElementById(divName);
             testInfoDiv.style.display = 'none';
@@ -146,7 +165,7 @@
                             cpuTemptureData.push(myJson.devicePowerConsumeInfos[i].CpuTemperate);
                             powerData.push(myJson.devicePowerConsumeInfos[i].BatteryPower);
                         }
-                         //温度
+                        //温度
                         var temptureChart = echarts.init(document.getElementById("TemptureDiv"));
                         var temptureOption = {
                             title: {
@@ -176,7 +195,7 @@
                                 itemWidth: 10,
                                 itemHeight: 4,
                                 textStyle: {
-                                     color: '#1a1a1a',
+                                    color: '#1a1a1a',
                                     fontSize: 12,
                                 },
                                 data: ['电池温度℃', 'CPU温度℃']
@@ -220,6 +239,22 @@
                                 }]
                         };
                         temptureChart.setOption(temptureOption);
+                        temptureChart.getZr().on('click', function (params) {
+                            // 获取像素坐标点
+                            const pointInPixel = [params.offsetX, params.offsetY]
+                            //img.style.display = "block";
+                            //img.style.left = params.offsetX + 'px'
+                            //img.style.top = params.offsetY + 'px'
+
+                        })
+                        // 将可以响应点击事件的范围内，鼠标样式设为pointer--------------------
+                        //temptureChart.getZr().on('mousemove', function (params) {
+                        //    const { topTarget } = params
+                        //    // 给折线的鼠标悬浮 变为 小手
+                        //    if (topTarget?.z === 2) {
+                        //        temptureChart.getZr().setCursorStyle('pointer')
+                        //    }
+                        //})
                     }
                 },
                 error: function (jqXHR) {
@@ -535,7 +570,7 @@
                     HideElement('FunctionAnalysisModule');
                 }
             });
-             //代码规范化检测
+            //代码规范化检测
             $.ajax({
                 type: "POST",
                 url: "/FuncCodeAnalysisHandler.ashx?PackageName=" + packageNameValue + "&TestTime=" + timeValue,
