@@ -97,6 +97,7 @@
     <Content Include="Texts\funcAnalysis_2022_5_1_23_10_50.txt" />
     <Content Include="Texts\funcAnalysis_2022_5_1_23_45_43.txt" />
     <Content Include="Texts\funcAnalysis_2022_5_2_23_45_43.txt" />
+    <Content Include="Texts\funcCodeAnalysis_2022_5_1_23_10_50.txt" />
     <Content Include="Texts\log_2022_5_1_23_10_50.txt" />
     <Content Include="Texts\log_2022_5_1_23_45_43.txt" />
     <Content Include="Texts\log_2022_5_2_23_10_50.txt" />
@@ -123,6 +124,9 @@
     <Compile Include="FuncAnalysisHandler.ashx.cs">
       <DependentUpon>FuncAnalysisHandler.ashx</DependentUpon>
     </Compile>
+    <Compile Include="FuncCodeAnalysisHandler.ashx.cs">
+      <DependentUpon>FuncCodeAnalysisHandler.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Index.aspx.cs">
       <DependentUpon>Index.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -134,6 +138,7 @@
       <DependentUpon>LogHandler.ashx</DependentUpon>
     </Compile>
     <Compile Include="Models\FuncAnalysisInfo.cs" />
+    <Compile Include="Models\FuncCodeAnalysisInfo.cs" />
     <Compile Include="MonitorHandler.ashx.cs">
       <DependentUpon>MonitorHandler.ashx</DependentUpon>
     </Compile>
@@ -154,6 +159,7 @@
     <Content Include="LogHandler.ashx" />
     <Content Include="FuncAnalysisHandler.ashx" />
     <Content Include="MonitorHandler.ashx" />
+    <Content Include="FuncCodeAnalysisHandler.ashx" />
     <None Include="packages.config" />
     <Content Include="ReceiveDataHandler.ashx" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />

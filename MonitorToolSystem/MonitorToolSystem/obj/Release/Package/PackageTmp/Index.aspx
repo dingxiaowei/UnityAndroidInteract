@@ -49,6 +49,17 @@
                     <label style="color: orangered">说明:关注高频调用，平均执行时间超过10ms的函数，要重点优化！</label>
                 </div>
             </div>
+            <div id="FunctionCodeAnalysisModule">
+                <h2>不规范的代码列表</h2>
+                <div id="FunctionCodeAnalysisDiv">
+                    <table>
+                        <tbody id="FuncCodeTBody">
+                        </tbody>
+                    </table>
+                    <br />
+                    <label style="color: orangered">说明:以上是不规范的代码列表，可能会造成性能问题，请按照表格中修改建议进行修改！</label>
+                </div>
+            </div>
             <div id="LogModule">
                 <h2>Log信息</h2>
                 <div id="LogDiv"></div>
@@ -402,6 +413,41 @@
                 error: function (jqXHR) {
                     console.error(jqXHR);
                     HideElement('FunctionAnalysisModule');
+                }
+            });
+             //代码规范化检测
+            $.ajax({
+                type: "POST",
+                url: "/FuncCodeAnalysisHandler.ashx?PackageName=" + packageNameValue + "&TestTime=" + timeValue,
+                data: JSON,
+                success: function (data) {
+                    if (data.includes('error')) {
+                        HideElement('FunctionCodeAnalysisModule');
+                    }
+                    else {
+                        var jsonObj = JSON.parse(data);
+                        var tableData = "<tr>";
+                        tableData += "<td>ID</td>";
+                        tableData += "<td>文件名</td>";
+                        tableData += "<td>不规范代码以及修改建议</td>";
+                        tableData += "<td>行号</td>";
+                        tableData += "<td>列号</td>";
+                        tableData += "</tr>"
+                        for (var p in jsonObj) {
+                            tableData += "<tr>";
+                            tableData += "<td>" + jsonObj[p]["Id"] + "</td>";
+                            tableData += "<td>" + jsonObj[p]["FileName"] + "</td>";
+                            tableData += "<td>" + jsonObj[p]["Tip"] + "</td>";
+                            tableData += "<td>" + jsonObj[p]["LineNumber"] + "</td>";
+                            tableData += "<td>" + jsonObj[p]["CharaterPosition"] + "</td>";
+                            tableData += "</tr>";
+                        }
+                        $("#FuncCodeTBody").html(tableData);
+                    }
+                },
+                error: function (jqXHR) {
+                    console.error(jqXHR);
+                    HideElement('FunctionCodeAnalysisModule');
                 }
             });
             //Log信息
