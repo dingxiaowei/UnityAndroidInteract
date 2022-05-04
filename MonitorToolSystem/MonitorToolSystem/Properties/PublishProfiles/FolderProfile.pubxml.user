@@ -13,10 +13,10 @@
       <publishTime>05/24/2018 13:38:22</publishTime>
     </File>
     <File Include="bin/MonitorToolSystem.dll">
-      <publishTime>05/04/2022 08:10:45</publishTime>
+      <publishTime>05/04/2022 21:54:55</publishTime>
     </File>
     <File Include="bin/MonitorToolSystem.pdb">
-      <publishTime>05/04/2022 08:10:45</publishTime>
+      <publishTime>05/04/2022 21:54:55</publishTime>
     </File>
     <File Include="bin/Newtonsoft.Json.dll">
       <publishTime>03/17/2021 20:03:36</publishTime>
@@ -172,7 +172,7 @@
       <publishTime>05/04/2022 07:40:34</publishTime>
     </File>
     <File Include="Index.aspx">
-      <publishTime>05/04/2022 07:50:10</publishTime>
+      <publishTime>05/04/2022 21:54:48</publishTime>
     </File>
     <File Include="LogHandler.ashx">
       <publishTime>05/02/2022 18:20:47</publishTime>
@@ -243,11 +243,14 @@
     <File Include="MonitorHandler.ashx">
       <publishTime>05/03/2022 19:50:28</publishTime>
     </File>
+    <File Include="PowerConsumeHandler.ashx">
+      <publishTime>05/04/2022 19:15:08</publishTime>
+    </File>
     <File Include="ReceiveDataHandler.ashx">
       <publishTime>04/27/2022 08:24:42</publishTime>
     </File>
     <File Include="StyleSheet.css">
-      <publishTime>05/03/2022 09:28:10</publishTime>
+      <publishTime>05/04/2022 18:36:03</publishTime>
     </File>
     <File Include="TestInfoHandler.ashx">
       <publishTime>05/02/2022 15:54:04</publishTime>
@@ -329,6 +332,9 @@
     </File>
     <File Include="Texts/monitor_2022_5_2_23_45_43.txt">
       <publishTime>05/01/2022 23:47:30</publishTime>
+    </File>
+    <File Include="Texts/powerConsume_2022_5_1_23_10_50.txt">
+      <publishTime>05/04/2022 17:15:53</publishTime>
     </File>
     <File Include="Texts/Records/com.Aladdin.MonitorToolRef.txt">
       <publishTime>05/01/2022 23:47:06</publishTime>

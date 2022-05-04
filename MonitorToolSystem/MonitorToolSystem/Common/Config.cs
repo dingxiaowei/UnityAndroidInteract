@@ -15,7 +15,7 @@
         public const string FuncAnalysisPrefix = "funcAnalysis_";
         //函数规划范分析
         public const string FuncCodeAnalysisPrefix = "funcCodeAnalysis_";
-        public const string CPUTemperaturePrefix = "cpuTemperature_";
+        public const string PowerConsumePrefix = "powerConsume_";
     }
     public class Config
     {

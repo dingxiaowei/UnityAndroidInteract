@@ -33,10 +33,14 @@
             </div>
             <div id="MonitorInfoModule">
                 <h2>性能报告</h2>
-                <div id="MonitorFrameDiv" style="height: 500px" runat="server"></div>
-                <div id="MonitorBatteryLevelDiv" style="height: 500px" runat="server"></div>
-                <div id="MonitorMemoryDiv" style="height: 500px" runat="server"></div>
-                <div id="MonitorProfilerDiv" style="height: 500px" runat="server"></div>
+                <div id="MonitorFrameDiv" style="height: 500px"></div>
+                <div id="MonitorBatteryLevelDiv" style="height: 500px"></div>
+                <div id="MonitorMemoryDiv" style="height: 500px"></div>
+                <div id="MonitorProfilerDiv" style="height: 500px"></div>
+            </div>
+            <div id="PowerConsumeModule">
+                <h2>手机功耗报告</h2>
+                <div id="TemptureDiv" style="height:500px"></div>
             </div>
             <div id="FunctionAnalysisModule">
                 <h2>函数性能</h2>
@@ -121,6 +125,109 @@
                     HideElement('DeviceInfoModule');
                 }
             });
+            //PowerConsume信息
+            $.ajax({
+                type: "POST",
+                url: "/PowerConsumeHandler.ashx?PackageName=" + packageNameValue + "&TestTime=" + timeValue,
+                data: JSON,
+                success: function (data) {
+                    if (data.includes('error')) {
+                        HideElement('PowerConsumeModule');
+                    }
+                    else {
+                        var myJson = JSON.parse(data);
+                        var frameIndexArrayData = []; //帧率
+                        var batteryTemptureData = []; //电池温度
+                        var cpuTemptureData = []; //cpu温度
+                        var powerData = []; //功率
+                        for (var i in myJson.devicePowerConsumeInfos) {
+                            frameIndexArrayData.push(myJson.devicePowerConsumeInfos[i].FrameIndex);
+                            batteryTemptureData.push(myJson.devicePowerConsumeInfos[i].Temperature);
+                            cpuTemptureData.push(myJson.devicePowerConsumeInfos[i].CpuTemperate);
+                            powerData.push(myJson.devicePowerConsumeInfos[i].BatteryPower);
+                        }
+                         //温度
+                        var temptureChart = echarts.init(document.getElementById("TemptureDiv"));
+                        var temptureOption = {
+                            title: {
+                                text: '温度报告',
+                                textStyle: {
+                                    fountSize: 12,
+                                    fountWeight: 400,
+                                    color: '#000000'
+                                },
+                                //left: 5,
+                                //top: -5,
+                            },
+                            tooltip: {
+                                trigger: 'axis',
+                                //axisPointer: {
+                                //    type: 'shadow'
+                                //}
+                            },
+                            color: ['#FA660A', '#0E76E4'],
+                            legend: {
+                                show: true,
+                                right: '15%',
+                                top: 12,
+                                width: 300,
+                                height: 100,
+                                icon: 'rect',
+                                itemWidth: 10,
+                                itemHeight: 4,
+                                textStyle: {
+                                     color: '#1a1a1a',
+                                    fontSize: 12,
+                                },
+                                data: ['电池温度℃', 'CPU温度℃']
+                            },
+                            ////grid: {
+                            ////    left: '3%',
+                            ////    right: '4%',
+                            ////    bottom: '3%',
+                            ////    containLabel: true
+                            ////},
+                            toolbox: {
+                                feature: {
+                                    saveAsImage: {}
+                                }
+                            },
+                            xAxis: {
+                                data: frameIndexArrayData
+                            },
+                            yAxis: {
+                                type: 'value'
+                            },
+                            dataZoom: [
+                                {   // 这个dataZoom组件，默认控制x轴。
+                                    type: 'slider', // 这个 dataZoom 组件是 slider 型 dataZoom 组件
+                                    start: 0,      // 左边在 0% 的位置。
+                                    end: 100         // 右边在 100% 的位置。
+                                }
+                            ],
+                            series: [
+                                {
+                                    name: '电池温度℃',
+                                    type: 'line',
+                                    //stack: 'Total', //累加属性，这样线不会重叠
+                                    data: batteryTemptureData
+                                },
+                                {
+                                    name: 'CPU温度℃',
+                                    type: 'line',
+                                    //stack: 'Total',
+                                    data: cpuTemptureData
+                                }]
+                        };
+                        temptureChart.setOption(temptureOption);
+                    }
+                },
+                error: function (jqXHR) {
+                    console.error(jqXHR);
+                    HideElement('PowerConsumeModule');
+                }
+            });
+
             //Monitor信息
             $.ajax({
                 type: "POST",
@@ -310,15 +417,28 @@
                             tooltip: {
                                 trigger: 'axis'
                             },
+                            color: ['#FA660A', '#0E76E4', '#8923F1', '#FF0000', "#339966"],
                             legend: {
+                                show: true,
+                                right: '15%',
+                                top: 0,
+                                width: 300,
+                                height: 100,
+                                icon: 'rect',
+                                itemWidth: 10,
+                                itemHeight: 4,
+                                textStyle: {
+                                    color: '#1a1a1a',
+                                    fontSize: 12,
+                                },
                                 data: ['堆内存(MonoHeapSize)MB', '堆使用内存(MonoUsedSize)MB', 'Unity分配内存(TotalAllocatedMemory)MB', 'Unity总内存(TotalReservedMemory)MB', '未使用内存(TotalUnusedReservedMemory)MB']
                             },
-                            grid: {
-                                left: '3%',
-                                right: '4%',
-                                bottom: '3%',
-                                containLabel: true
-                            },
+                            //grid: {
+                            //    left: '3%',
+                            //    right: '4%',
+                            //    bottom: '3%',
+                            //    containLabel: true
+                            //},
                             toolbox: {
                                 feature: {
                                     saveAsImage: {}
@@ -341,31 +461,31 @@
                                 {
                                     name: '堆内存(MonoHeapSize)MB',
                                     type: 'line',
-                                    stack: 'Total',
+                                    //stack: 'Total',
                                     data: monoHeapSizeArrayData
                                 },
                                 {
                                     name: '堆使用内存(MonoUsedSize)MB',
                                     type: 'line',
-                                    stack: 'Total',
+                                    //stack: 'Total',
                                     data: monoUsedSizeArrayData
                                 },
                                 {
                                     name: 'Unity分配内存(TotalAllocatedMemory)MB',
                                     type: 'line',
-                                    stack: 'Total',
+                                    //stack: 'Total',
                                     data: totalAllocatedMemoryArrayData
                                 },
                                 {
                                     name: 'Unity总内存(TotalReservedMemory)MB',
                                     type: 'line',
-                                    stack: 'Total',
+                                    //stack: 'Total',
                                     data: unityTotalReservedMemoryArrayData
                                 },
                                 {
                                     name: '未使用内存(TotalUnusedReservedMemory)MB',
                                     type: 'line',
-                                    stack: 'Total',
+                                    //stack: 'Total',
                                     data: totalUnusedReservedMemoryArrayData
                                 }]
                         };

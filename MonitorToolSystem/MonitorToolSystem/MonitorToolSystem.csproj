@@ -106,6 +106,7 @@
     <Content Include="Texts\monitor_2022_5_1_23_45_43.txt" />
     <Content Include="Texts\monitor_2022_5_2_23_10_50.txt" />
     <Content Include="Texts\monitor_2022_5_2_23_45_43.txt" />
+    <Content Include="Texts\powerConsume_2022_5_1_23_10_50.txt" />
     <Content Include="Texts\Records\com.Aladdin.MonitorToolRef.txt" />
     <Content Include="Texts\Records\com.Aladdin.Test.txt" />
     <Content Include="Texts\test_2022_5_1_23_10_50.txt" />
@@ -142,6 +143,9 @@
     <Compile Include="MonitorHandler.ashx.cs">
       <DependentUpon>MonitorHandler.ashx</DependentUpon>
     </Compile>
+    <Compile Include="PowerConsumeHandler.ashx.cs">
+      <DependentUpon>PowerConsumeHandler.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReceiveDataHandler.ashx.cs">
       <DependentUpon>ReceiveDataHandler.ashx</DependentUpon>
@@ -162,6 +166,7 @@
     <Content Include="FuncCodeAnalysisHandler.ashx" />
     <None Include="packages.config" />
     <Content Include="ReceiveDataHandler.ashx" />
+    <Content Include="PowerConsumeHandler.ashx" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="TestInfoHandler.ashx" />
     <None Include="Web.Debug.config">
