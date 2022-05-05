@@ -72,7 +72,7 @@
                 <label style="position: absolute; right: 0">Powerd By 阿拉丁 2022/5/1</label>
             </div>
         </div>
-        <img id="TemptureImg" src="./Texts/captureFrame_2022_5_1_23_10_50/img_2022_5_1_23_10_50_100.png" alt="" style="width: 150px; display: none" />
+        <img id="TemptureImg" src="./Texts/placeholder.png" alt="" style="width: 150px; display: none" />
     </form>
     <script type="text/javascript">
         var img = document.querySelector('img');
@@ -83,10 +83,11 @@
             //console.log("clientX:" + e.clientX + "   clentY:" + e.clientY); //屏幕坐标-TOP栏坐标(页面内的屏幕坐标)
             //console.log("pageX:" + e.pageX + "    pageY:" + e.pageY); //页面坐标
             //console.log("screenX:" + e.screenX + "   screenY:" + e.screenY); //屏幕坐标
+            console.log("frameIndex:" + frameIndex);
             if (funcCallback) {
                 $.ajax({
                     type: "POST",
-                    url: "/CaptureFrameHandler.ashx?PackageName=" + packageNameValue + "&TestTime=" + timeValue + "&FrameIndex=" + 101,
+                    url: "/CaptureFrameHandler.ashx?PackageName=" + packageNameValue + "&TestTime=" + timeValue + "&FrameIndex=" + frameIndex,
                     data: String,
                     success: function (data) {
                         if (data.includes('error')) {
@@ -94,8 +95,7 @@
                             frameIndex = -1;
                         }
                         else {
-                            console.log("^^^^^^^^");
-                            console.log(data);
+                            img.src = data;
                             funcCallback(e.pageX, e.pageY, data);
                             funcCallback = null;
                             frameIndex = -1;
@@ -266,12 +266,14 @@
                         temptureChart.setOption(temptureOption);
                         temptureChart.getZr().on('click', function (params) {
                             var yOffset = 99;
+                            frameIndex = frameIndexArrayData[temptureChart.getOption().xAxis[0].axisPointer.value];
+                            console.log("x坐标:" + frameIndex);
                             funcCallback = function (x, y, src) {
                                 if (src) {
-                                    console.log("**************")
+                                    console.log("*******funcCallback*******")
                                     console.log(src);
                                     img.style.display = "block";
-                                    img.style.src = src;
+                                    img.src = src;
                                     img.style.position = "absolute";
                                     img.style.left = x + xOffset + 'px';
                                     img.style.top = y + yOffset + 'px';
@@ -281,6 +283,19 @@
                                 }
                             };
                         })
+                        //temptureChart.on('click', 'xAxis.data', function (params, node) {
+                        //    var v = params.value;
+                        //    temptureChart.resize();
+                        //    console.log("--------");
+                        //    console.log(v);
+                        //});
+                        //const pointInPixel = [params.offsetX, params.offsetY]
+                        //if (temptureChart.containPixel('grid', pointInPixel)) {
+                        //    const xIndex = temptureChart.convertFromPixel({ seriesIndex: 0 }, [params.offsetX, params.offsetY])[0]
+                        //    d = option.xAxis[0].data[xIndex]
+                        //    temptureChart.resize();
+                        //    console.log(d)
+                        //};
                     }
                 },
                 error: function (jqXHR) {
@@ -376,12 +391,22 @@
                         monitorchart.setOption(option);
                         monitorchart.getZr().on('click', function (params) {
                             var yOffset = 75;
-                            funcCallback = function (x, y) {
-                                img.style.display = "block";
-                                img.style.position = "absolute";
-                                img.style.left = x + xOffset + 'px';
-                                img.style.top = y + yOffset + 'px';
-                            }
+                            frameIndex = frameIndexArrayData[monitorchart.getOption().xAxis[0].axisPointer.value];
+                            console.log("x坐标:" + frameIndex);
+                            funcCallback = function (x, y, src) {
+                                if (src) {
+                                    console.log("*******funcCallback*******")
+                                    console.log(src);
+                                    img.style.display = "block";
+                                    img.src = src;
+                                    img.style.position = "absolute";
+                                    img.style.left = x + xOffset + 'px';
+                                    img.style.top = y + yOffset + 'px';
+                                }
+                                else {
+                                    img.style.display = "none";
+                                }
+                            };
                         })
 
                         //电量报表
@@ -434,6 +459,8 @@
                         monitorBatteryChart.setOption(batteryOption);
                         monitorBatteryChart.getZr().on('click', function (params) {
                             var yOffset = 80;
+                            frameIndex = frameIndexArrayData[monitorBatteryChart.getOption().xAxis[0].axisPointer.value];
+                            console.log("x坐标:" + frameIndex);
                             funcCallback = function (x, y) {
                                 img.style.display = "block";
                                 img.style.position = "absolute";
@@ -489,12 +516,22 @@
                         //使用刚刚指定的配置项和数据项显示图表
                         monitorMemoryChart.setOption(memoryOption);                        monitorMemoryChart.getZr().on('click', function (params) {
                             var yOffset = 80;
-                            funcCallback = function (x, y) {
-                                img.style.display = "block";
-                                img.style.position = "absolute";
-                                img.style.left = x + xOffset + 'px';
-                                img.style.top = y + yOffset + 'px';
-                            }
+                            frameIndex = frameIndexArrayData[monitorMemoryChart.getOption().xAxis[0].axisPointer.value];
+                            console.log("x坐标:" + frameIndex);
+                            funcCallback = function (x, y, src) {
+                                if (src) {
+                                    console.log("*******funcCallback*******")
+                                    console.log(src);
+                                    img.style.display = "block";
+                                    img.src = src;
+                                    img.style.position = "absolute";
+                                    img.style.left = x + xOffset + 'px';
+                                    img.style.top = y + yOffset + 'px';
+                                }
+                                else {
+                                    img.style.display = "none";
+                                }
+                            };
                         });
                         //Profiler数据
                         var profilerChart = echarts.init(document.getElementById("MonitorProfilerDiv"));
@@ -580,12 +617,22 @@
                         profilerChart.setOption(profilerOption);
                         profilerChart.getZr().on('click', function (params) {
                             var yOffset = 160;
-                            funcCallback = function (x, y) {
-                                img.style.display = "block";
-                                img.style.position = "absolute";
-                                img.style.left = x + xOffset + 'px';
-                                img.style.top = y + yOffset + 'px';
-                            }
+                            frameIndex = frameIndexArrayData[profilerChart.getOption().xAxis[0].axisPointer.value];
+                            console.log("x坐标:" + frameIndex);
+                            funcCallback = function (x, y, src) {
+                                if (src) {
+                                    console.log("*******funcCallback*******")
+                                    console.log(src);
+                                    img.style.display = "block";
+                                    img.src = src;
+                                    img.style.position = "absolute";
+                                    img.style.left = x + xOffset + 'px';
+                                    img.style.top = y + yOffset + 'px';
+                                }
+                                else {
+                                    img.style.display = "none";
+                                }
+                            };
                         });
                     }
                 },

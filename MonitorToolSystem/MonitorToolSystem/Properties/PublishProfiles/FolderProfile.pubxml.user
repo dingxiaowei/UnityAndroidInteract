@@ -19,10 +19,10 @@
       <publishTime>05/24/2018 13:38:22</publishTime>
     </File>
     <File Include="bin/MonitorToolSystem.dll">
-      <publishTime>05/05/2022 20:34:27</publishTime>
+      <publishTime>05/06/2022 07:50:01</publishTime>
     </File>
     <File Include="bin/MonitorToolSystem.pdb">
-      <publishTime>05/05/2022 20:34:27</publishTime>
+      <publishTime>05/06/2022 07:50:01</publishTime>
     </File>
     <File Include="bin/Newtonsoft.Json.dll">
       <publishTime>03/17/2021 20:03:36</publishTime>
@@ -181,7 +181,7 @@
       <publishTime>05/04/2022 07:40:34</publishTime>
     </File>
     <File Include="Index.aspx">
-      <publishTime>05/05/2022 20:34:10</publishTime>
+      <publishTime>05/06/2022 07:49:44</publishTime>
     </File>
     <File Include="LogHandler.ashx">
       <publishTime>05/02/2022 18:20:47</publishTime>
@@ -265,7 +265,34 @@
       <publishTime>05/02/2022 15:54:04</publishTime>
     </File>
     <File Include="Texts/captureFrame_2022_05_04_22_52_28.zip">
-      <publishTime>05/04/2022 22:54:14</publishTime>
+      <publishTime>05/05/2022 22:22:07</publishTime>
+    </File>
+    <File Include="Texts/captureFrame_2022_5_1_23_10_50.zip">
+      <publishTime>05/05/2022 22:26:27</publishTime>
+    </File>
+    <File Include="Texts/captureFrame_2022_5_1_23_10_50/img_2022_5_1_23_10_50_100.png">
+      <publishTime>05/05/2022 22:26:55</publishTime>
+    </File>
+    <File Include="Texts/captureFrame_2022_5_1_23_10_50/img_2022_5_1_23_10_50_200.png">
+      <publishTime>05/05/2022 22:26:55</publishTime>
+    </File>
+    <File Include="Texts/captureFrame_2022_5_1_23_10_50/img_2022_5_1_23_10_50_300.png">
+      <publishTime>05/05/2022 22:26:55</publishTime>
+    </File>
+    <File Include="Texts/captureFrame_2022_5_1_23_10_50/img_2022_5_1_23_10_50_400.png">
+      <publishTime>05/05/2022 22:26:55</publishTime>
+    </File>
+    <File Include="Texts/captureFrame_2022_5_1_23_10_50/img_2022_5_1_23_10_50_500.png">
+      <publishTime>05/05/2022 22:26:55</publishTime>
+    </File>
+    <File Include="Texts/captureFrame_2022_5_1_23_10_50/img_2022_5_1_23_10_50_600.png">
+      <publishTime>05/05/2022 22:26:55</publishTime>
+    </File>
+    <File Include="Texts/captureFrame_2022_5_1_23_10_50/img_2022_5_1_23_10_50_700.png">
+      <publishTime>05/05/2022 22:26:55</publishTime>
+    </File>
+    <File Include="Texts/captureFrame_2022_5_1_23_10_50/img_2022_5_1_23_10_50_800.png">
+      <publishTime>05/05/2022 22:26:55</publishTime>
     </File>
     <File Include="Texts/device_2022_5_1_17_33_28.txt">
       <publishTime>05/01/2022 19:47:11</publishTime>
@@ -358,19 +385,19 @@
       <publishTime>05/01/2022 17:33:32</publishTime>
     </File>
     <File Include="Texts/test_2022_5_1_23_10_50.txt">
-      <publishTime>05/01/2022 23:47:30</publishTime>
+      <publishTime>05/05/2022 22:04:56</publishTime>
     </File>
     <File Include="Texts/test_2022_5_1_23_45_43.txt">
-      <publishTime>05/01/2022 23:47:30</publishTime>
+      <publishTime>05/05/2022 22:05:06</publishTime>
     </File>
     <File Include="Texts/test_2022_5_1_8_23_51.txt">
       <publishTime>05/01/2022 08:24:51</publishTime>
     </File>
     <File Include="Texts/test_2022_5_2_23_10_50.txt">
-      <publishTime>05/01/2022 23:47:30</publishTime>
+      <publishTime>05/05/2022 22:05:12</publishTime>
     </File>
     <File Include="Texts/test_2022_5_2_23_45_43.txt">
-      <publishTime>05/01/2022 23:47:30</publishTime>
+      <publishTime>05/05/2022 22:05:18</publishTime>
     </File>
     <File Include="Web.config">
       <publishTime>05/01/2022 08:29:42</publishTime>
