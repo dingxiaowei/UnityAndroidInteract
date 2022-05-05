@@ -1,1 +1,1 @@
-{"ProductName":"MonitorToolRef","PackageName":"com.Aladdin.MonitorToolRef","Platform":"WindowsEditor","Version":"0.1","TestTime":"3秒"}
+{"ProductName":"MonitorToolRef","PackageName":"com.Aladdin.MonitorToolRef","Platform":"WindowsEditor","Version":"0.1","TestTime":"3秒","IntervalFrame":100}

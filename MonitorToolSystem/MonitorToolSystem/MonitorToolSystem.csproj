@@ -93,6 +93,14 @@
     <Content Include="Modules\extension\dataTool.min.js" />
     <Content Include="Modules\jquery-3.3.1.min.js" />
     <Content Include="StyleSheet.css" />
+    <Content Include="Texts\captureFrame_2022_5_1_23_10_50\img_2022_5_1_23_10_50_100.png" />
+    <Content Include="Texts\captureFrame_2022_5_1_23_10_50\img_2022_5_1_23_10_50_200.png" />
+    <Content Include="Texts\captureFrame_2022_5_1_23_10_50\img_2022_5_1_23_10_50_300.png" />
+    <Content Include="Texts\captureFrame_2022_5_1_23_10_50\img_2022_5_1_23_10_50_400.png" />
+    <Content Include="Texts\captureFrame_2022_5_1_23_10_50\img_2022_5_1_23_10_50_500.png" />
+    <Content Include="Texts\captureFrame_2022_5_1_23_10_50\img_2022_5_1_23_10_50_600.png" />
+    <Content Include="Texts\captureFrame_2022_5_1_23_10_50\img_2022_5_1_23_10_50_700.png" />
+    <Content Include="Texts\captureFrame_2022_5_1_23_10_50\img_2022_5_1_23_10_50_800.png" />
     <Content Include="Texts\device_2022_5_1_23_10_50.txt" />
     <Content Include="Texts\device_2022_5_1_23_45_43.txt" />
     <Content Include="Texts\device_2022_5_2_23_10_50.txt" />
@@ -147,6 +155,7 @@
     </Compile>
     <Compile Include="Models\FuncAnalysisInfo.cs" />
     <Compile Include="Models\FuncCodeAnalysisInfo.cs" />
+    <Compile Include="Models\TestInfo.cs" />
     <Compile Include="MonitorHandler.ashx.cs">
       <DependentUpon>MonitorHandler.ashx</DependentUpon>
     </Compile>
@@ -178,6 +187,7 @@
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="TestInfoHandler.ashx" />
     <Content Include="Texts\captureFrame_2022_05_04_22_52_28.zip" />
+    <Content Include="Texts\captureFrame_2022_5_1_23_10_50.zip" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
