@@ -56,3 +56,6 @@ D:\Study\github\UnityAndroidInteract\MonitorToolSystem\MonitorToolSystem\obj\Rel
 D:\Study\github\UnityAndroidInteract\MonitorToolSystem\MonitorToolSystem\obj\Release\MonitorToolSystem.dll
 D:\Study\github\UnityAndroidInteract\MonitorToolSystem\MonitorToolSystem\obj\Release\MonitorToolSystem.pdb
 D:\Study\github\UnityAndroidInteract\MonitorToolSystem\MonitorToolSystem\obj\Release\MonitorToolSystem.csprojAssemblyReference.cache
+D:\Study\github\UnityAndroidInteract\MonitorToolSystem\MonitorToolSystem\bin\ICSharpCode.SharpZipLib.dll
+D:\Study\github\UnityAndroidInteract\MonitorToolSystem\MonitorToolSystem\bin\ICSharpCode.SharpZipLib.pdb
+D:\Study\github\UnityAndroidInteract\MonitorToolSystem\MonitorToolSystem\bin\ICSharpCode.SharpZipLib.xml

@@ -40,7 +40,9 @@
             </div>
             <div id="PowerConsumeModule">
                 <h2>手机功耗报告</h2>
-                <div id="TemptureDiv" style="height:500px"></div>
+                <div id="TemptureDiv" style="height: 500px">
+                    <%--<img id="TemptureImg" src="./Texts/captureFrame_2022_05_04_22_52_28/img_2022_05_04_22_52_28_95.png" alt="" style="width: 150px; display: none" />--%>
+                </div>
             </div>
             <div id="FunctionAnalysisModule">
                 <h2>函数性能</h2>
@@ -72,8 +74,30 @@
                 <label style="position: absolute; right: 0">Powerd By 阿拉丁 2022/5/1</label>
             </div>
         </div>
+        <img id="TemptureImg" src="./Texts/captureFrame_2022_05_04_22_52_28/img_2022_05_04_22_52_28_95.png" alt="" style="width: 150px; display: none" />
     </form>
     <script type="text/javascript">
+        var img = document.querySelector('img');
+        var funcCallback = null;
+        var xOffset = 22;
+        document.addEventListener('click', function (e) {
+            //console.log("clientX:" + e.clientX + "   clentY:" + e.clientY); //屏幕坐标-TOP栏坐标(页面内的屏幕坐标)
+            //console.log("pageX:" + e.pageX + "    pageY:" + e.pageY); //页面坐标
+            //console.log("screenX:" + e.screenX + "   screenY:" + e.screenY); //屏幕坐标
+            if (funcCallback) {
+                funcCallback(e.pageX, e.pageY);
+                funcCallback = null;
+            }
+            else {
+                img.style.display = "none";
+            }
+        })
+        var scrollHight = 0;
+        window.onscroll = function () {
+            //获取滚动条到顶部的垂直高度
+            scrollHight = document.documentElement.scrollTop || document.body.scrollTop;
+        }
+
         function HideElement(divName) {
             var testInfoDiv = document.getElementById(divName);
             testInfoDiv.style.display = 'none';
@@ -146,7 +170,7 @@
                             cpuTemptureData.push(myJson.devicePowerConsumeInfos[i].CpuTemperate);
                             powerData.push(myJson.devicePowerConsumeInfos[i].BatteryPower);
                         }
-                         //温度
+                        //温度
                         var temptureChart = echarts.init(document.getElementById("TemptureDiv"));
                         var temptureOption = {
                             title: {
@@ -164,6 +188,7 @@
                                 //axisPointer: {
                                 //    type: 'shadow'
                                 //}
+                                textStyle: { color: '#ffff', align: 'center', fontSize: 18, }
                             },
                             color: ['#FA660A', '#0E76E4'],
                             legend: {
@@ -176,7 +201,7 @@
                                 itemWidth: 10,
                                 itemHeight: 4,
                                 textStyle: {
-                                     color: '#1a1a1a',
+                                    color: '#1a1a1a',
                                     fontSize: 12,
                                 },
                                 data: ['电池温度℃', 'CPU温度℃']
@@ -220,6 +245,23 @@
                                 }]
                         };
                         temptureChart.setOption(temptureOption);
+                        temptureChart.getZr().on('click', function (params) {
+                            var yOffset = 115;
+                            funcCallback = function (x, y) {
+                                img.style.display = "block";
+                                img.style.position = "absolute";
+                                img.style.left = x + xOffset + 'px';
+                                img.style.top = y + yOffset + 'px';
+                            }
+                        });
+                        // 将可以响应点击事件的范围内，鼠标样式设为pointer--------------------
+                        //temptureChart.getZr().on('mousemove', function (params) {
+                        //    const { topTarget } = params
+                        //    // 给折线的鼠标悬浮 变为 小手
+                        //    if (topTarget?.z === 2) {
+                        //        temptureChart.getZr().setCursorStyle('pointer')
+                        //    }
+                        //})
                     }
                 },
                 error: function (jqXHR) {
@@ -313,6 +355,16 @@
                         };
                         //使用刚刚指定的配置项和数据项显示图表
                         monitorchart.setOption(option);
+                        monitorchart.getZr().on('click', function (params) {
+                            var yOffset = 75;
+                            funcCallback = function (x, y) {
+                                img.style.display = "block";
+                                img.style.position = "absolute";
+                                img.style.left = x + xOffset + 'px';
+                                img.style.top = y + yOffset + 'px';
+                            }
+                        })
+
                         //电量报表
                         var monitorBatteryChart = echarts.init(document.getElementById("MonitorBatteryLevelDiv"));
                         //指定图表的配置项和数据
@@ -361,6 +413,16 @@
                         };
                         //使用刚刚指定的配置项和数据项显示图表
                         monitorBatteryChart.setOption(batteryOption);
+                        monitorBatteryChart.getZr().on('click', function (params) {
+                            var yOffset = 80;
+                            funcCallback = function (x, y) {
+                                img.style.display = "block";
+                                img.style.position = "absolute";
+                                img.style.left = x + xOffset + 'px';
+                                img.style.top = y + yOffset + 'px';
+                            }
+                        });
+
                         //内存使用报表
                         var monitorMemoryChart = echarts.init(document.getElementById("MonitorMemoryDiv"));
                         //指定图表的配置项和数据
@@ -373,7 +435,6 @@
                                 text: '内存使用报表'
                             },
                             //工具箱
-                            //保存图片
                             toolbox: {
                                 show: true,
                                 feature: {
@@ -407,7 +468,15 @@
                             }]
                         };
                         //使用刚刚指定的配置项和数据项显示图表
-                        monitorMemoryChart.setOption(memoryOption);
+                        monitorMemoryChart.setOption(memoryOption);                        monitorMemoryChart.getZr().on('click', function (params) {
+                            var yOffset = 80;
+                            funcCallback = function (x, y) {
+                                img.style.display = "block";
+                                img.style.position = "absolute";
+                                img.style.left = x + xOffset + 'px';
+                                img.style.top = y + yOffset + 'px';
+                            }
+                        });
                         //Profiler数据
                         var profilerChart = echarts.init(document.getElementById("MonitorProfilerDiv"));
                         var profilerOption = {
@@ -490,6 +559,15 @@
                                 }]
                         };
                         profilerChart.setOption(profilerOption);
+                        profilerChart.getZr().on('click', function (params) {
+                            var yOffset = 160;
+                            funcCallback = function (x, y) {
+                                img.style.display = "block";
+                                img.style.position = "absolute";
+                                img.style.left = x + xOffset + 'px';
+                                img.style.top = y + yOffset + 'px';
+                            }
+                        });
                     }
                 },
                 error: function (jqXHR) {
@@ -535,7 +613,7 @@
                     HideElement('FunctionAnalysisModule');
                 }
             });
-             //代码规范化检测
+            //代码规范化检测
             $.ajax({
                 type: "POST",
                 url: "/FuncCodeAnalysisHandler.ashx?PackageName=" + packageNameValue + "&TestTime=" + timeValue,

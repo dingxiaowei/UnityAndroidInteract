@@ -11,16 +11,6 @@
     <link href="StyleSheet.css" rel="stylesheet" />
     <%--<script src="https://cdn.staticfile.org/jquery/2.2.4/jquery.min.js"></script>
 	<script src="https://cdn.staticfile.org/echarts/4.3.0/echarts.min.js"></script>--%>
-    <style>
-        img {
-            width: 100px;
-            height: 100px;
-            /* 定位 */
-            position: absolute;
-            /* top: 300px;
-            left: 100px */
-        }
-    </style>
 </head>
 <body>
     <h1>Unity性能监控报表工具</h1>
@@ -82,16 +72,29 @@
                 <label style="position: absolute; right: 0">Powerd By 阿拉丁 2022/5/1</label>
             </div>
         </div>
-        <img src="./Texts/captureFrame_2022_05_04_22_52_28/img_2022_05_04_22_52_28_95.png" alt="" style="display: none" />
+        <img id="TemptureImg" src="./Texts/captureFrame_2022_05_04_22_52_28/img_2022_05_04_22_52_28_95.png" alt="" style="width: 150px; display: none" />
     </form>
     <script type="text/javascript">
-
-        var img = document.querySelector('img')
-        //document.addEventListener('mouseclick', function(e) {
-        //    img.style.left = e.clientX + 'px'
-        //    img.style.top = e.clientY + 'px'
-        //    alert(e.clientX);
-        //})
+        var img = document.querySelector('img');
+        var funcCallback = null;
+        var xOffset = 22;
+        document.addEventListener('click', function (e) {
+            //console.log("clientX:" + e.clientX + "   clentY:" + e.clientY); //屏幕坐标-TOP栏坐标(页面内的屏幕坐标)
+            //console.log("pageX:" + e.pageX + "    pageY:" + e.pageY); //页面坐标
+            //console.log("screenX:" + e.screenX + "   screenY:" + e.screenY); //屏幕坐标
+            if (funcCallback) {
+                funcCallback(e.pageX, e.pageY);
+                funcCallback = null;
+            }
+            else {
+                img.style.display = "none";
+            }
+        })
+        var scrollHight = 0;
+        window.onscroll = function () {
+            //获取滚动条到顶部的垂直高度
+            scrollHight = document.documentElement.scrollTop || document.body.scrollTop;
+        }
 
         function HideElement(divName) {
             var testInfoDiv = document.getElementById(divName);
@@ -240,21 +243,14 @@
                         };
                         temptureChart.setOption(temptureOption);
                         temptureChart.getZr().on('click', function (params) {
-                            // 获取像素坐标点
-                            const pointInPixel = [params.offsetX, params.offsetY]
-                            //img.style.display = "block";
-                            //img.style.left = params.offsetX + 'px'
-                            //img.style.top = params.offsetY + 'px'
-
+                            var yOffset = 99;
+                            funcCallback = function (x, y) {
+                                img.style.display = "block";
+                                img.style.position = "absolute";
+                                img.style.left = x + xOffset + 'px';
+                                img.style.top = y + yOffset + 'px';
+                            };
                         })
-                        // 将可以响应点击事件的范围内，鼠标样式设为pointer--------------------
-                        //temptureChart.getZr().on('mousemove', function (params) {
-                        //    const { topTarget } = params
-                        //    // 给折线的鼠标悬浮 变为 小手
-                        //    if (topTarget?.z === 2) {
-                        //        temptureChart.getZr().setCursorStyle('pointer')
-                        //    }
-                        //})
                     }
                 },
                 error: function (jqXHR) {
@@ -263,368 +259,404 @@
                 }
             });
 
-            //Monitor信息
-            $.ajax({
-                type: "POST",
-                url: "/MonitorHandler.ashx?PackageName=" + packageNameValue + "&TestTime=" + timeValue,
-                data: JSON,
-                success: function (data) {
-                    if (data.includes('error')) {
-                        HideElement('MonitorInfoModule');
-                    }
-                    else {
-                        var myJson = JSON.parse(data);
-                        var frameIndexArrayData = [];
-                        var frameArrayData = [];
-                        var batteryArrayData = [];
-                        var memoryArrayData = [];
-                        var monoHeapSizeArrayData = [];
-                        var monoUsedSizeArrayData = [];
-                        var totalAllocatedMemoryArrayData = [];
-                        var unityTotalReservedMemoryArrayData = [];
-                        var totalUnusedReservedMemoryArrayData = [];
-                        var mb = 1024 * 1024;
-                        for (var i in myJson.MonitorInfoList) {
-                            frameIndexArrayData.push(myJson.MonitorInfoList[i].FrameIndex);
-                            frameArrayData.push(myJson.MonitorInfoList[i].Frame);
-                            batteryArrayData.push(Math.floor(myJson.MonitorInfoList[i].BatteryLevel * 100) / 100 * 100);
-                            memoryArrayData.push(myJson.MonitorInfoList[i].MemorySize);
-                            monoHeapSizeArrayData.push(myJson.MonitorInfoList[i].MonoHeapSize / mb);
-                            monoUsedSizeArrayData.push(myJson.MonitorInfoList[i].MonoUsedSize / mb);
-                            totalAllocatedMemoryArrayData.push(myJson.MonitorInfoList[i].TotalAllocatedMemory / mb);
-                            unityTotalReservedMemoryArrayData.push(myJson.MonitorInfoList[i].UnityTotalReservedMemory / mb);
-                            totalUnusedReservedMemoryArrayData.push(myJson.MonitorInfoList[i].TotalUnusedReservedMemory / mb);
-                        }
-                        var monitorchart = echarts.init(document.getElementById("MonitorFrameDiv"));
-                        //指定图表的配置项和数据
-                        var option = {
-                            tooltip: {
-                                trigger: 'axis'
-                            },
-                            //标题
-                            title: {
-                                text: '帧率报表'
-                            },
-                            //工具箱
-                            //保存图片
-                            toolbox: {
-                                show: true,
-                                feature: {
-                                    saveAsImage: {
-                                        show: true
-                                    }
-                                }
-                            },
-                            //图例-每一条数据的名字叫帧率
-                            legend: {
-                                data: ['帧率']
-                            },
-                            //x轴
-                            xAxis: {
-                                data: frameIndexArrayData
-                            },
-                            //y轴没有显式设置，根据值自动生成y轴
-                            yAxis: [{
-                                type: 'value',
-                                scale: true,
-                                max: 75,
-                                min: 0,
-                                splitNumber: 5,
-                                boundaryGap: [0.2, 0.2]
-                            }],
-                            dataZoom: [
-                                {   // 这个dataZoom组件，默认控制x轴。
-                                    type: 'slider', // 这个 dataZoom 组件是 slider 型 dataZoom 组件
-                                    start: 0,      // 左边在 0% 的位置。
-                                    end: 100         // 右边在 100% 的位置。
-                                }
-                            ],
-                            //数据-data是最终要显示的数据
-                            series: [{
-                                name: '数值',
-                                type: 'line',
-                                data: frameArrayData
-                            }]
-                        };
-                        //使用刚刚指定的配置项和数据项显示图表
-                        monitorchart.setOption(option);
-                        //电量报表
-                        var monitorBatteryChart = echarts.init(document.getElementById("MonitorBatteryLevelDiv"));
-                        //指定图表的配置项和数据
-                        var batteryOption = {
-                            tooltip: {
-                                trigger: 'axis'
-                            },
-                            //标题
-                            title: {
-                                text: '电量报表'
-                            },
-                            //工具箱
-                            //保存图片
-                            toolbox: {
-                                show: true,
-                                feature: {
-                                    saveAsImage: {
-                                        show: true
-                                    }
-                                }
-                            },
-                            //图例-每一条数据的名字叫电量
-                            legend: {
-                                data: ['电量(百分比)']
-                            },
-                            //x轴
-                            xAxis: {
-                                data: frameIndexArrayData
-                            },
-                            //y轴没有显式设置，根据值自动生成y轴
-                            yAxis: {
-                            },
-                            dataZoom: [
-                                {   // 这个dataZoom组件，默认控制x轴。
-                                    type: 'slider', // 这个 dataZoom 组件是 slider 型 dataZoom 组件
-                                    start: 0,      // 左边在 0% 的位置。
-                                    end: 100         // 右边在 100% 的位置。
-                                }
-                            ],
-                            //数据-data是最终要显示的数据
-                            series: [{
-                                name: '数值',
-                                type: 'line',
-                                data: batteryArrayData
-                            }]
-                        };
-                        //使用刚刚指定的配置项和数据项显示图表
-                        monitorBatteryChart.setOption(batteryOption);
-                        //内存使用报表
-                        var monitorMemoryChart = echarts.init(document.getElementById("MonitorMemoryDiv"));
-                        //指定图表的配置项和数据
-                        var memoryOption = {
-                            tooltip: {
-                                trigger: 'axis'
-                            },
-                            //标题
-                            title: {
-                                text: '内存使用报表'
-                            },
-                            //工具箱
-                            //保存图片
-                            toolbox: {
-                                show: true,
-                                feature: {
-                                    saveAsImage: {
-                                        show: true
-                                    }
-                                }
-                            },
-                            legend: {
-                                data: ['内存使用 MB']
-                            },
-                            //x轴
-                            xAxis: {
-                                data: frameIndexArrayData
-                            },
-                            //y轴没有显式设置，根据值自动生成y轴
-                            yAxis: {
-                            },
-                            dataZoom: [
-                                {   // 这个dataZoom组件，默认控制x轴。
-                                    type: 'slider', // 这个 dataZoom 组件是 slider 型 dataZoom 组件
-                                    start: 0,      // 左边在 0% 的位置。
-                                    end: 100         // 右边在 100% 的位置。
-                                }
-                            ],
-                            //数据-data是最终要显示的数据
-                            series: [{
-                                name: '数值',
-                                type: 'line',
-                                data: memoryArrayData
-                            }]
-                        };
-                        //使用刚刚指定的配置项和数据项显示图表
-                        monitorMemoryChart.setOption(memoryOption);
-                        //Profiler数据
-                        var profilerChart = echarts.init(document.getElementById("MonitorProfilerDiv"));
-                        var profilerOption = {
-                            title: {
-                                text: 'Profiler分析'
-                            },
-                            tooltip: {
-                                trigger: 'axis'
-                            },
-                            color: ['#FA660A', '#0E76E4', '#8923F1', '#FF0000', "#339966"],
-                            legend: {
-                                show: true,
-                                right: '15%',
-                                top: 0,
-                                width: 300,
-                                height: 100,
-                                icon: 'rect',
-                                itemWidth: 10,
-                                itemHeight: 4,
-                                textStyle: {
-                                    color: '#1a1a1a',
-                                    fontSize: 12,
-                                },
-                                data: ['堆内存(MonoHeapSize)MB', '堆使用内存(MonoUsedSize)MB', 'Unity分配内存(TotalAllocatedMemory)MB', 'Unity总内存(TotalReservedMemory)MB', '未使用内存(TotalUnusedReservedMemory)MB']
-                            },
-                            //grid: {
-                            //    left: '3%',
-                            //    right: '4%',
-                            //    bottom: '3%',
-                            //    containLabel: true
-                            //},
-                            toolbox: {
-                                feature: {
-                                    saveAsImage: {}
-                                }
-                            },
-                            xAxis: {
-                                data: frameIndexArrayData
-                            },
-                            yAxis: {
-                                type: 'value'
-                            },
-                            dataZoom: [
-                                {   // 这个dataZoom组件，默认控制x轴。
-                                    type: 'slider', // 这个 dataZoom 组件是 slider 型 dataZoom 组件
-                                    start: 0,      // 左边在 0% 的位置。
-                                    end: 100         // 右边在 100% 的位置。
-                                }
-                            ],
-                            series: [
-                                {
-                                    name: '堆内存(MonoHeapSize)MB',
-                                    type: 'line',
-                                    //stack: 'Total',
-                                    data: monoHeapSizeArrayData
-                                },
-                                {
-                                    name: '堆使用内存(MonoUsedSize)MB',
-                                    type: 'line',
-                                    //stack: 'Total',
-                                    data: monoUsedSizeArrayData
-                                },
-                                {
-                                    name: 'Unity分配内存(TotalAllocatedMemory)MB',
-                                    type: 'line',
-                                    //stack: 'Total',
-                                    data: totalAllocatedMemoryArrayData
-                                },
-                                {
-                                    name: 'Unity总内存(TotalReservedMemory)MB',
-                                    type: 'line',
-                                    //stack: 'Total',
-                                    data: unityTotalReservedMemoryArrayData
-                                },
-                                {
-                                    name: '未使用内存(TotalUnusedReservedMemory)MB',
-                                    type: 'line',
-                                    //stack: 'Total',
-                                    data: totalUnusedReservedMemoryArrayData
-                                }]
-                        };
-                        profilerChart.setOption(profilerOption);
-                    }
-                },
-                error: function (jqXHR) {
-                    console.error(jqXHR);
+        //Monitor信息
+        $.ajax({
+            type: "POST",
+            url: "/MonitorHandler.ashx?PackageName=" + packageNameValue + "&TestTime=" + timeValue,
+            data: JSON,
+            success: function (data) {
+                if (data.includes('error')) {
                     HideElement('MonitorInfoModule');
                 }
-            });
-            //函数性能信息
-            $.ajax({
-                type: "POST",
-                url: "/FuncAnalysisHandler.ashx?PackageName=" + packageNameValue + "&TestTime=" + timeValue,
-                data: JSON,
-                success: function (data) {
-                    if (data.includes('error')) {
-                        HideElement('FunctionAnalysisModule');
-                    }
-                    else {
-                        //let funcAnalysisDiv = document.getElementById('FunctionAnalysisDiv');
-                        var jsonObj = JSON.parse(data);
-                        var tableData = "<tr>";
-                        tableData += "<td>函数名</td>";
-                        tableData += "<td>函数消耗总内存(k)</td>";
-                        tableData += "<td>函数平均消耗内存(k)</td>";
-                        tableData += "<td>函数总执行时间(s)</td>";
-                        tableData += "<td>函数平均执行时间(ms)</td>";
-                        tableData += "<td>函数调用次数</td>";
-                        tableData += "</tr>"
-                        for (var p in jsonObj) {
-                            tableData += "<tr>";
-                            tableData += "<td>" + jsonObj[p]["Name"] + "</td>";
-                            tableData += "<td>" + jsonObj[p]["Memory"] + "</td>";
-                            tableData += "<td>" + jsonObj[p]["AverageMemory"] + "</td>";
-                            tableData += "<td>" + jsonObj[p]["UseTime"] + "</td>";
-                            tableData += "<td>" + jsonObj[p]["AverageTime"] + "</td>";
-                            tableData += "<td>" + jsonObj[p]["Calls"] + "</td>";
-                            tableData += "</tr>";
+                else {
+                    var myJson = JSON.parse(data);
+                    var frameIndexArrayData = [];
+                    var frameArrayData = [];
+                    var batteryArrayData = [];
+                    var memoryArrayData = [];
+                    var monoHeapSizeArrayData = [];
+                    var monoUsedSizeArrayData = [];
+                    var totalAllocatedMemoryArrayData = [];
+                    var unityTotalReservedMemoryArrayData = [];
+                    var totalUnusedReservedMemoryArrayData = [];
+                    var mb = 1024 * 1024;
+                    for (var i in myJson.MonitorInfoList) {
+                        frameIndexArrayData.push(myJson.MonitorInfoList[i].FrameIndex);
+                        frameArrayData.push(myJson.MonitorInfoList[i].Frame);
+                        batteryArrayData.push(Math.floor(myJson.MonitorInfoList[i].BatteryLevel * 100) / 100 * 100);
+                        memoryArrayData.push(myJson.MonitorInfoList[i].MemorySize);
+                        monoHeapSizeArrayData.push(myJson.MonitorInfoList[i].MonoHeapSize / mb);
+                        monoUsedSizeArrayData.push(myJson.MonitorInfoList[i].MonoUsedSize / mb);
+                        totalAllocatedMemoryArrayData.push(myJson.MonitorInfoList[i].TotalAllocatedMemory / mb);
+                        unityTotalReservedMemoryArrayData.push(myJson.MonitorInfoList[i].UnityTotalReservedMemory / mb);
+                        totalUnusedReservedMemoryArrayData.push(myJson.MonitorInfoList[i].TotalUnusedReservedMemory / mb);
+                    }
+                    var monitorchart = echarts.init(document.getElementById("MonitorFrameDiv"));
+                    //指定图表的配置项和数据
+                    var option = {
+                        tooltip: {
+                            trigger: 'axis'
+                        },
+                        //标题
+                        title: {
+                            text: '帧率报表'
+                        },
+                        //工具箱
+                        //保存图片
+                        toolbox: {
+                            show: true,
+                            feature: {
+                                saveAsImage: {
+                                    show: true
+                                }
+                            }
+                        },
+                        //图例-每一条数据的名字叫帧率
+                        legend: {
+                            data: ['帧率']
+                        },
+                        //x轴
+                        xAxis: {
+                            data: frameIndexArrayData
+                        },
+                        //y轴没有显式设置，根据值自动生成y轴
+                        yAxis: [{
+                            type: 'value',
+                            scale: true,
+                            max: 75,
+                            min: 0,
+                            splitNumber: 5,
+                            boundaryGap: [0.2, 0.2]
+                        }],
+                        dataZoom: [
+                            {   // 这个dataZoom组件，默认控制x轴。
+                                type: 'slider', // 这个 dataZoom 组件是 slider 型 dataZoom 组件
+                                start: 0,      // 左边在 0% 的位置。
+                                end: 100         // 右边在 100% 的位置。
+                            }
+                        ],
+                        //数据-data是最终要显示的数据
+                        series: [{
+                            name: '数值',
+                            type: 'line',
+                            data: frameArrayData
+                        }]
+                    };
+                    //使用刚刚指定的配置项和数据项显示图表
+                    monitorchart.setOption(option);
+                    monitorchart.getZr().on('click', function (params) {
+                        var yOffset = 75;
+                        funcCallback = function (x, y) {
+                            img.style.display = "block";
+                            img.style.position = "absolute";
+                            img.style.left = x + xOffset + 'px';
+                            img.style.top = y + yOffset + 'px';
                         }
-                        $("#FuncTBody").html(tableData);
-                    }
-                },
-                error: function (jqXHR) {
-                    console.error(jqXHR);
+                    })
+
+                    //电量报表
+                    var monitorBatteryChart = echarts.init(document.getElementById("MonitorBatteryLevelDiv"));
+                    //指定图表的配置项和数据
+                    var batteryOption = {
+                        tooltip: {
+                            trigger: 'axis'
+                        },
+                        //标题
+                        title: {
+                            text: '电量报表'
+                        },
+                        //工具箱
+                        //保存图片
+                        toolbox: {
+                            show: true,
+                            feature: {
+                                saveAsImage: {
+                                    show: true
+                                }
+                            }
+                        },
+                        //图例-每一条数据的名字叫电量
+                        legend: {
+                            data: ['电量(百分比)']
+                        },
+                        //x轴
+                        xAxis: {
+                            data: frameIndexArrayData
+                        },
+                        //y轴没有显式设置，根据值自动生成y轴
+                        yAxis: {
+                        },
+                        dataZoom: [
+                            {   // 这个dataZoom组件，默认控制x轴。
+                                type: 'slider', // 这个 dataZoom 组件是 slider 型 dataZoom 组件
+                                start: 0,      // 左边在 0% 的位置。
+                                end: 100         // 右边在 100% 的位置。
+                            }
+                        ],
+                        //数据-data是最终要显示的数据
+                        series: [{
+                            name: '数值',
+                            type: 'line',
+                            data: batteryArrayData
+                        }]
+                    };
+                    //使用刚刚指定的配置项和数据项显示图表
+                    monitorBatteryChart.setOption(batteryOption);
+                    monitorBatteryChart.getZr().on('click', function (params) {
+                        var yOffset = 80;
+                        funcCallback = function (x, y) {
+                            img.style.display = "block";
+                            img.style.position = "absolute";
+                            img.style.left = x + xOffset + 'px';
+                            img.style.top = y + yOffset + 'px';
+                        }
+                    });
+
+                    //内存使用报表
+                    var monitorMemoryChart = echarts.init(document.getElementById("MonitorMemoryDiv"));
+                    //指定图表的配置项和数据
+                    var memoryOption = {
+                        tooltip: {
+                            trigger: 'axis'
+                        },
+                        //标题
+                        title: {
+                            text: '内存使用报表'
+                        },
+                        //工具箱
+                        toolbox: {
+                            show: true,
+                            feature: {
+                                saveAsImage: {
+                                    show: true
+                                }
+                            }
+                        },
+                        legend: {
+                            data: ['内存使用 MB']
+                        },
+                        //x轴
+                        xAxis: {
+                            data: frameIndexArrayData
+                        },
+                        //y轴没有显式设置，根据值自动生成y轴
+                        yAxis: {
+                        },
+                        dataZoom: [
+                            {   // 这个dataZoom组件，默认控制x轴。
+                                type: 'slider', // 这个 dataZoom 组件是 slider 型 dataZoom 组件
+                                start: 0,      // 左边在 0% 的位置。
+                                end: 100         // 右边在 100% 的位置。
+                            }
+                        ],
+                        //数据-data是最终要显示的数据
+                        series: [{
+                            name: '数值',
+                            type: 'line',
+                            data: memoryArrayData
+                        }]
+                    };
+                    //使用刚刚指定的配置项和数据项显示图表
+                    monitorMemoryChart.setOption(memoryOption);                    monitorMemoryChart.getZr().on('click', function (params) {
+                        var yOffset = 80;
+                        funcCallback = function (x, y) {
+                            img.style.display = "block";
+                            img.style.position = "absolute";
+                            img.style.left = x + xOffset + 'px';
+                            img.style.top = y + yOffset + 'px';
+                        }
+                    });
+                    //Profiler数据
+                    var profilerChart = echarts.init(document.getElementById("MonitorProfilerDiv"));
+                    var profilerOption = {
+                        title: {
+                            text: 'Profiler分析'
+                        },
+                        tooltip: {
+                            trigger: 'axis'
+                        },
+                        color: ['#FA660A', '#0E76E4', '#8923F1', '#FF0000', "#339966"],
+                        legend: {
+                            show: true,
+                            right: '15%',
+                            top: 0,
+                            width: 300,
+                            height: 100,
+                            icon: 'rect',
+                            itemWidth: 10,
+                            itemHeight: 4,
+                            textStyle: {
+                                color: '#1a1a1a',
+                                fontSize: 12,
+                            },
+                            data: ['堆内存(MonoHeapSize)MB', '堆使用内存(MonoUsedSize)MB', 'Unity分配内存(TotalAllocatedMemory)MB', 'Unity总内存(TotalReservedMemory)MB', '未使用内存(TotalUnusedReservedMemory)MB']
+                        },
+                        //grid: {
+                        //    left: '3%',
+                        //    right: '4%',
+                        //    bottom: '3%',
+                        //    containLabel: true
+                        //},
+                        toolbox: {
+                            feature: {
+                                saveAsImage: {}
+                            }
+                        },
+                        xAxis: {
+                            data: frameIndexArrayData
+                        },
+                        yAxis: {
+                            type: 'value'
+                        },
+                        dataZoom: [
+                            {   // 这个dataZoom组件，默认控制x轴。
+                                type: 'slider', // 这个 dataZoom 组件是 slider 型 dataZoom 组件
+                                start: 0,      // 左边在 0% 的位置。
+                                end: 100         // 右边在 100% 的位置。
+                            }
+                        ],
+                        series: [
+                            {
+                                name: '堆内存(MonoHeapSize)MB',
+                                type: 'line',
+                                //stack: 'Total',
+                                data: monoHeapSizeArrayData
+                            },
+                            {
+                                name: '堆使用内存(MonoUsedSize)MB',
+                                type: 'line',
+                                //stack: 'Total',
+                                data: monoUsedSizeArrayData
+                            },
+                            {
+                                name: 'Unity分配内存(TotalAllocatedMemory)MB',
+                                type: 'line',
+                                //stack: 'Total',
+                                data: totalAllocatedMemoryArrayData
+                            },
+                            {
+                                name: 'Unity总内存(TotalReservedMemory)MB',
+                                type: 'line',
+                                //stack: 'Total',
+                                data: unityTotalReservedMemoryArrayData
+                            },
+                            {
+                                name: '未使用内存(TotalUnusedReservedMemory)MB',
+                                type: 'line',
+                                //stack: 'Total',
+                                data: totalUnusedReservedMemoryArrayData
+                            }]
+                    };
+                    profilerChart.setOption(profilerOption);
+                    profilerChart.getZr().on('click', function (params) {
+                        var yOffset = 160;
+                        funcCallback = function (x, y) {
+                            img.style.display = "block";
+                            img.style.position = "absolute";
+                            img.style.left = x + xOffset + 'px';
+                            img.style.top = y + yOffset + 'px';
+                        }
+                    });
+                }
+            },
+            error: function (jqXHR) {
+                console.error(jqXHR);
+                HideElement('MonitorInfoModule');
+            }
+        });
+        //函数性能信息
+        $.ajax({
+            type: "POST",
+            url: "/FuncAnalysisHandler.ashx?PackageName=" + packageNameValue + "&TestTime=" + timeValue,
+            data: JSON,
+            success: function (data) {
+                if (data.includes('error')) {
                     HideElement('FunctionAnalysisModule');
                 }
-            });
-            //代码规范化检测
-            $.ajax({
-                type: "POST",
-                url: "/FuncCodeAnalysisHandler.ashx?PackageName=" + packageNameValue + "&TestTime=" + timeValue,
-                data: JSON,
-                success: function (data) {
-                    if (data.includes('error')) {
-                        HideElement('FunctionCodeAnalysisModule');
+                else {
+                    //let funcAnalysisDiv = document.getElementById('FunctionAnalysisDiv');
+                    var jsonObj = JSON.parse(data);
+                    var tableData = "<tr>";
+                    tableData += "<td>函数名</td>";
+                    tableData += "<td>函数消耗总内存(k)</td>";
+                    tableData += "<td>函数平均消耗内存(k)</td>";
+                    tableData += "<td>函数总执行时间(s)</td>";
+                    tableData += "<td>函数平均执行时间(ms)</td>";
+                    tableData += "<td>函数调用次数</td>";
+                    tableData += "</tr>"
+                    for (var p in jsonObj) {
+                        tableData += "<tr>";
+                        tableData += "<td>" + jsonObj[p]["Name"] + "</td>";
+                        tableData += "<td>" + jsonObj[p]["Memory"] + "</td>";
+                        tableData += "<td>" + jsonObj[p]["AverageMemory"] + "</td>";
+                        tableData += "<td>" + jsonObj[p]["UseTime"] + "</td>";
+                        tableData += "<td>" + jsonObj[p]["AverageTime"] + "</td>";
+                        tableData += "<td>" + jsonObj[p]["Calls"] + "</td>";
+                        tableData += "</tr>";
                     }
-                    else {
-                        var jsonObj = JSON.parse(data);
-                        var tableData = "<tr>";
-                        tableData += "<td>ID</td>";
-                        tableData += "<td>文件名</td>";
-                        tableData += "<td>不规范代码以及修改建议</td>";
-                        tableData += "<td>行号</td>";
-                        tableData += "<td>列号</td>";
-                        tableData += "</tr>"
-                        for (var p in jsonObj) {
-                            tableData += "<tr>";
-                            tableData += "<td>" + jsonObj[p]["Id"] + "</td>";
-                            tableData += "<td>" + jsonObj[p]["FileName"] + "</td>";
-                            tableData += "<td>" + jsonObj[p]["Tip"] + "</td>";
-                            tableData += "<td>" + jsonObj[p]["LineNumber"] + "</td>";
-                            tableData += "<td>" + jsonObj[p]["CharaterPosition"] + "</td>";
-                            tableData += "</tr>";
-                        }
-                        $("#FuncCodeTBody").html(tableData);
-                    }
-                },
-                error: function (jqXHR) {
-                    console.error(jqXHR);
+                    $("#FuncTBody").html(tableData);
+                }
+            },
+            error: function (jqXHR) {
+                console.error(jqXHR);
+                HideElement('FunctionAnalysisModule');
+            }
+        });
+        //代码规范化检测
+        $.ajax({
+            type: "POST",
+            url: "/FuncCodeAnalysisHandler.ashx?PackageName=" + packageNameValue + "&TestTime=" + timeValue,
+            data: JSON,
+            success: function (data) {
+                if (data.includes('error')) {
                     HideElement('FunctionCodeAnalysisModule');
                 }
-            });
-            //Log信息
-            $.ajax({
-                type: "POST",
-                url: "/LogHandler.ashx?PackageName=" + packageNameValue + "&TestTime=" + timeValue,
-                data: String,
-                success: function (data) {
-                    if (data.includes('error')) {
-                        HideElement('LogModule');
+                else {
+                    var jsonObj = JSON.parse(data);
+                    var tableData = "<tr>";
+                    tableData += "<td>ID</td>";
+                    tableData += "<td>文件名</td>";
+                    tableData += "<td>不规范代码以及修改建议</td>";
+                    tableData += "<td>行号</td>";
+                    tableData += "<td>列号</td>";
+                    tableData += "</tr>"
+                    for (var p in jsonObj) {
+                        tableData += "<tr>";
+                        tableData += "<td>" + jsonObj[p]["Id"] + "</td>";
+                        tableData += "<td>" + jsonObj[p]["FileName"] + "</td>";
+                        tableData += "<td>" + jsonObj[p]["Tip"] + "</td>";
+                        tableData += "<td>" + jsonObj[p]["LineNumber"] + "</td>";
+                        tableData += "<td>" + jsonObj[p]["CharaterPosition"] + "</td>";
+                        tableData += "</tr>";
                     }
-                    else {
-                        let deviceDiv = document.getElementById('LogDiv');
-                        var logInnerText = data.replace(/\n|\r/g, '<br/>');
-                        deviceDiv.innerHTML = logInnerText;
-                    }
-                },
-                error: function (jqXHR) {
-                    console.error(jqXHR);
+                    $("#FuncCodeTBody").html(tableData);
+                }
+            },
+            error: function (jqXHR) {
+                console.error(jqXHR);
+                HideElement('FunctionCodeAnalysisModule');
+            }
+        });
+        //Log信息
+        $.ajax({
+            type: "POST",
+            url: "/LogHandler.ashx?PackageName=" + packageNameValue + "&TestTime=" + timeValue,
+            data: String,
+            success: function (data) {
+                if (data.includes('error')) {
                     HideElement('LogModule');
                 }
-            });
+                else {
+                    let deviceDiv = document.getElementById('LogDiv');
+                    var logInnerText = data.replace(/\n|\r/g, '<br/>');
+                    deviceDiv.innerHTML = logInnerText;
+                }
+            },
+            error: function (jqXHR) {
+                console.error(jqXHR);
+                HideElement('LogModule');
+            }
+        });
         });
     </script>
 </body>
