@@ -38,6 +38,10 @@
                 <div id="MonitorMemoryDiv" style="height: 500px"></div>
                 <div id="MonitorProfilerDiv" style="height: 500px"></div>
             </div>
+            <div id="RenderModule">
+                <h2>渲染报告</h2>
+                <div id="RenderDiv" style="height: 500px"></div>
+            </div>
             <div id="PowerConsumeModule">
                 <h2>手机功耗报告</h2>
                 <div id="TemptureDiv" style="height: 500px"></div>
@@ -169,6 +173,138 @@
                     HideElement('DeviceInfoModule');
                 }
             });
+            //Render信息
+            $.ajax({
+                type: "POST",
+                url: "/RenderHandler.ashx?PackageName=" + packageNameValue + "&TestTime=" + timeValue,
+                data: JSON,
+                success: function (data) {
+                    if (data.includes('error')) {
+                        HideElement('RenderModule');
+                    }
+                    else {
+                        var myJson = JSON.parse(data);
+                        var frameIndexArrayData = [];
+                        var drawCallData = [];
+                        var setPassCallData = [];
+                        var verticesData = [];
+                        var trianglesData = [];
+                        for (var i in myJson.RenderInfoList) {
+                            frameIndexArrayData.push(myJson.RenderInfoList[i].FrameIndex);
+                            setPassCallData.push(myJson.RenderInfoList[i].SetPassCall);
+                            drawCallData.push(myJson.RenderInfoList[i].DrawCall);
+                            verticesData.push(myJson.RenderInfoList[i].Vertices);
+                            trianglesData.push(myJson.RenderInfoList[i].Triangles);
+                        }
+                        //渲染
+                        var renderChart = echarts.init(document.getElementById("RenderDiv"));
+                        var renderOption = {
+                            title: {
+                                text: '渲染报告',
+                                textStyle: {
+                                    fountSize: 12,
+                                    fountWeight: 400,
+                                    color: '#000000'
+                                },
+                                //left: 5,
+                                //top: -5,
+                            },
+                            tooltip: {
+                                trigger: 'axis',
+                                //axisPointer: {
+                                //    type: 'shadow'
+                                //}
+                            },
+                            color: ['#FF0000', '#0E76E4', '#F18A31', '#00F063'],
+                            legend: {
+                                show: true,
+                                right: '15%',
+                                top: 12,
+                                width: 300,
+                                height: 100,
+                                icon: 'rect',
+                                itemWidth: 10,
+                                itemHeight: 4,
+                                textStyle: {
+                                    color: '#1a1a1a',
+                                    fontSize: 12,
+                                },
+                                data: ['SetPassCall', 'DrawCall', '顶点', '三角面']
+                            },
+                            ////grid: {
+                            ////    left: '3%',
+                            ////    right: '4%',
+                            ////    bottom: '3%',
+                            ////    containLabel: true
+                            ////},
+                            toolbox: {
+                                feature: {
+                                    saveAsImage: {}
+                                }
+                            },
+                            xAxis: {
+                                data: frameIndexArrayData
+                            },
+                            yAxis: {
+                                type: 'value'
+                            },
+                            dataZoom: [
+                                {   // 这个dataZoom组件，默认控制x轴。
+                                    type: 'slider', // 这个 dataZoom 组件是 slider 型 dataZoom 组件
+                                    start: 0,      // 左边在 0% 的位置。
+                                    end: 100         // 右边在 100% 的位置。
+                                }
+                            ],
+                            series: [
+                                {
+                                    name: 'SetPassCall',
+                                    type: 'line',
+                                    //stack: 'Total', //累加属性，这样线不会重叠
+                                    data: setPassCallData
+                                },
+                                {
+                                    name: 'DrawCall',
+                                    type: 'line',
+                                    //stack: 'Total',
+                                    data: drawCallData
+                                },
+                                {
+                                    name: '顶点',
+                                    type: 'line',
+                                    //stack: 'Total',
+                                    data: verticesData
+                                },
+                                {
+                                    name: '三角面',
+                                    type: 'line',
+                                    //stack: 'Total',
+                                    data: trianglesData
+                                }
+                            ]
+                        };
+                        renderChart.setOption(renderOption);
+                        renderChart.getZr().on('click', function (params) {
+                            var yOffset = 145;
+                            frameIndex = frameIndexArrayData[renderChart.getOption().xAxis[0].axisPointer.value];
+                            console.log("x坐标:" + frameIndex);
+                            funcCallback = function (x, y, src) {
+                                if (src) {
+                                    console.log("*******funcCallback*******")
+                                    console.log(src);
+                                    img.style.display = "block";
+                                    img.src = src;
+                                    img.style.position = "absolute";
+                                    img.style.left = x + xOffset + 'px';
+                                    img.style.top = y + yOffset + 'px';
+                                }
+                                else {
+                                    img.style.display = "none";
+                                }
+                            };
+                        });
+                    }
+                }
+            });
             //PowerConsume信息
             $.ajax({
                 type: "POST",
@@ -283,19 +419,6 @@
                                 }
                             };
                         })
-                        //temptureChart.on('click', 'xAxis.data', function (params, node) {
-                        //    var v = params.value;
-                        //    temptureChart.resize();
-                        //    console.log("--------");
-                        //    console.log(v);
-                        //});
-                        //const pointInPixel = [params.offsetX, params.offsetY]
-                        //if (temptureChart.containPixel('grid', pointInPixel)) {
-                        //    const xIndex = temptureChart.convertFromPixel({ seriesIndex: 0 }, [params.offsetX, params.offsetY])[0]
-                        //    d = option.xAxis[0].data[xIndex]
-                        //    temptureChart.resize();
-                        //    console.log(d)
-                        //};
                     }
                 },
                 error: function (jqXHR) {

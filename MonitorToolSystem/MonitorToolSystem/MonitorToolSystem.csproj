@@ -117,9 +117,11 @@
     <Content Include="Texts\monitor_2022_5_1_23_45_43.txt" />
     <Content Include="Texts\monitor_2022_5_2_23_10_50.txt" />
     <Content Include="Texts\monitor_2022_5_2_23_45_43.txt" />
+    <Content Include="Texts\placeholder.png" />
     <Content Include="Texts\powerConsume_2022_5_1_23_10_50.txt" />
     <Content Include="Texts\Records\com.Aladdin.MonitorToolRef.txt" />
     <Content Include="Texts\Records\com.Aladdin.Test.txt" />
+    <Content Include="Texts\renderInfo_2022_5_1_23_10_50.txt" />
     <Content Include="Texts\test_2022_5_1_23_10_50.txt" />
     <Content Include="Texts\test_2022_5_1_23_45_43.txt" />
     <Content Include="Texts\test_2022_5_2_23_10_50.txt" />
@@ -166,6 +168,9 @@
     <Compile Include="ReceiveDataHandler.ashx.cs">
       <DependentUpon>ReceiveDataHandler.ashx</DependentUpon>
     </Compile>
+    <Compile Include="RenderHandler.ashx.cs">
+      <DependentUpon>RenderHandler.ashx</DependentUpon>
+    </Compile>
     <Compile Include="TestInfoHandler.ashx.cs">
       <DependentUpon>TestInfoHandler.ashx</DependentUpon>
     </Compile>
@@ -188,6 +193,7 @@
     <Content Include="TestInfoHandler.ashx" />
     <Content Include="Texts\captureFrame_2022_05_04_22_52_28.zip" />
     <Content Include="Texts\captureFrame_2022_5_1_23_10_50.zip" />
+    <Content Include="RenderHandler.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

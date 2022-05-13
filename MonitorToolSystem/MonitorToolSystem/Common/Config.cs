@@ -18,6 +18,8 @@
         public const string FuncCodeAnalysisPrefix = "funcCodeAnalysis_";
         public const string PowerConsumePrefix = "powerConsume_";
         public const string CapturePrefix = "captureFrame_";
+        //渲染信息
+        public const string RenderPrefix = "renderInfo_";
     }
     public class Config
     {
