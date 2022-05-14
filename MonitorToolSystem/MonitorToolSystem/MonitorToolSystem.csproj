@@ -84,7 +84,6 @@
     <Content Include="Modules\echarts.common.min.js" />
     <Content Include="Modules\echarts.js" />
     <Content Include="Modules\echarts.min.js" />
-    <Content Include="EchartsDemo.html" />
     <Content Include="Modules\echarts.simple.js" />
     <Content Include="Modules\echarts.simple.min.js" />
     <Content Include="Modules\extension\bmap%281%29.js" />

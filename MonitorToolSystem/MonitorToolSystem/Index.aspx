@@ -45,6 +45,7 @@
             <div id="PowerConsumeModule">
                 <h2>手机功耗报告</h2>
                 <div id="TemptureDiv" style="height: 500px"></div>
+                <div id="PowerDiv" style="height:500px"></div>
             </div>
             <div id="FunctionAnalysisModule">
                 <h2>函数性能</h2>
@@ -319,37 +320,33 @@
                         var frameIndexArrayData = []; //帧率
                         var batteryTemptureData = []; //电池温度
                         var cpuTemptureData = []; //cpu温度
+                        var voltageData = [];//电压
+                        var electricData = [];//电流
                         var powerData = []; //功率
+                        var leftTime = [];//剩余时长
                         for (var i in myJson.devicePowerConsumeInfos) {
                             frameIndexArrayData.push(myJson.devicePowerConsumeInfos[i].FrameIndex);
                             batteryTemptureData.push(myJson.devicePowerConsumeInfos[i].Temperature);
                             cpuTemptureData.push(myJson.devicePowerConsumeInfos[i].CpuTemperate);
-                            powerData.push(myJson.devicePowerConsumeInfos[i].BatteryPower);
+                            voltageData.push(myJson.devicePowerConsumeInfos[i].BatteryV.toFixed(1));
+                            electricData.push(Math.abs(myJson.devicePowerConsumeInfos[i].BatteryCurrentNow));
+                            powerData.push(Math.abs(myJson.devicePowerConsumeInfos[i].BatteryPower));
+                            leftTime.push(myJson.devicePowerConsumeInfos[i].UseLeftHours.toFixed(1));
                         }
                         //温度
                         var temptureChart = echarts.init(document.getElementById("TemptureDiv"));
                         var temptureOption = {
                             title: {
-                                text: '温度报告',
-                                textStyle: {
-                                    fountSize: 12,
-                                    fountWeight: 400,
-                                    color: '#000000'
-                                },
-                                //left: 5,
-                                //top: -5,
+                                text: '温度报告'
                             },
                             tooltip: {
-                                trigger: 'axis',
-                                //axisPointer: {
-                                //    type: 'shadow'
-                                //}
+                                trigger: 'axis'
                             },
                             color: ['#FA660A', '#0E76E4'],
                             legend: {
                                 show: true,
                                 right: '15%',
-                                top: 12,
+                                top: 0,
                                 width: 300,
                                 height: 100,
                                 icon: 'rect',
@@ -419,6 +416,95 @@
                                 }
                             };
                         })
+                        //功耗数据
+                        var powerChart = echarts.init(document.getElementById("PowerDiv"));
+                        var powerOption = {
+                            title: {
+                                text: '功耗报告'
+                            },
+                            tooltip: {
+                                trigger: 'axis'
+                            },
+                            color: ['#FA660A', '#0E76E4', '#8923F1', '#FF00F0'],
+                            legend: {
+                                show: true,
+                                right: '15%',
+                                top: 0,
+                                width: 500,
+                                height: 100,
+                                icon: 'rect',
+                                itemWidth: 10,
+                                itemHeight: 4,
+                                textStyle: {
+                                    color: '#1a1a1a',
+                                    fontSize: 12,
+                                },
+                                data: ['电流(毫安)', '电压(伏)', '功耗', '剩余使用时长(小时)']
+                            },
+                            toolbox: {
+                                feature: {
+                                    saveAsImage: {}
+                                }
+                            },
+                            xAxis: {
+                                data: frameIndexArrayData
+                            },
+                            yAxis: {
+                                type: 'value'
+                            },
+                            dataZoom: [
+                                {   // 这个dataZoom组件，默认控制x轴。
+                                    type: 'slider', // 这个 dataZoom 组件是 slider 型 dataZoom 组件
+                                    start: 0,      // 左边在 0% 的位置。
+                                    end: 100         // 右边在 100% 的位置。
+                                }
+                            ],
+                            series: [
+                                {
+                                    name: '电流(毫安)',
+                                    type: 'line',
+                                    //stack: 'Total',
+                                    data: electricData
+                                },
+                                {
+                                    name: '电压(伏)',
+                                    type: 'line',
+                                    //stack: 'Total',
+                                    data: voltageData
+                                },
+                                {
+                                    name: '功耗',
+                                    type: 'line',
+                                    //stack: 'Total',
+                                    data: powerData
+                                },
+                                {
+                                    name: '剩余使用时长(小时)',
+                                    type: 'line',
+                                    //stack: 'Total',
+                                    data: leftTime
+                                }]
+                        };
+                        powerChart.setOption(powerOption);
+                        powerChart.getZr().on('click', function (params) {
+                            var yOffset = 143;
+                            frameIndex = frameIndexArrayData[powerChart.getOption().xAxis[0].axisPointer.value];
+                            console.log("x坐标:" + frameIndex);
+                            funcCallback = function (x, y, src) {
+                                if (src) {
+                                    console.log("*******funcCallback*******")
+                                    console.log(src);
+                                    img.style.display = "block";
+                                    img.src = src;
+                                    img.style.position = "absolute";
+                                    img.style.left = x + xOffset + 'px';
+                                    img.style.top = y + yOffset + 'px';
+                                }
+                                else {
+                                    img.style.display = "none";
+                                }
+                            };
+                        });
                     }
                 },
                 error: function (jqXHR) {
