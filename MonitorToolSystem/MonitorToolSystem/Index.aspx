@@ -34,7 +34,7 @@
             <div id="MonitorInfoModule">
                 <h2>性能报告</h2>
                 <div id="MonitorFrameDiv" style="height: 500px"></div>
-                <div id="MonitorBatteryLevelDiv" style="height: 500px"></div>
+                <%--<div id="MonitorBatteryLevelDiv" style="height: 500px"></div>--%>
                 <div id="MonitorMemoryDiv" style="height: 500px"></div>
                 <div id="MonitorProfilerDiv" style="height: 500px"></div>
             </div>
@@ -45,7 +45,8 @@
             <div id="PowerConsumeModule">
                 <h2>手机功耗报告</h2>
                 <div id="TemptureDiv" style="height: 500px"></div>
-                <div id="PowerDiv" style="height:500px"></div>
+                <div id="BatteryLevelDiv" style="height: 500px"></div>
+                <div id="PowerDiv" style="height: 500px"></div>
             </div>
             <div id="FunctionAnalysisModule">
                 <h2>函数性能</h2>
@@ -324,6 +325,7 @@
                         var electricData = [];//电流
                         var powerData = []; //功率
                         var leftTime = [];//剩余时长
+                        var batteryCapacity = [];//剩余电量百分比
                         for (var i in myJson.devicePowerConsumeInfos) {
                             frameIndexArrayData.push(myJson.devicePowerConsumeInfos[i].FrameIndex);
                             batteryTemptureData.push(myJson.devicePowerConsumeInfos[i].Temperature);
@@ -332,6 +334,7 @@
                             electricData.push(Math.abs(myJson.devicePowerConsumeInfos[i].BatteryCurrentNow));
                             powerData.push(Math.abs(myJson.devicePowerConsumeInfos[i].BatteryPower));
                             leftTime.push(myJson.devicePowerConsumeInfos[i].UseLeftHours.toFixed(1));
+                            batteryCapacity.push(myJson.devicePowerConsumeInfos[i].BatteryCapacity);
                         }
                         //温度
                         var temptureChart = echarts.init(document.getElementById("TemptureDiv"));
@@ -358,12 +361,6 @@
                                 },
                                 data: ['电池温度℃', 'CPU温度℃']
                             },
-                            ////grid: {
-                            ////    left: '3%',
-                            ////    right: '4%',
-                            ////    bottom: '3%',
-                            ////    containLabel: true
-                            ////},
                             toolbox: {
                                 feature: {
                                     saveAsImage: {}
@@ -416,6 +413,80 @@
                                 }
                             };
                         })
+
+                        //电量报表
+                        var batteryLevelChart = echarts.init(document.getElementById("BatteryLevelDiv"));
+                        //指定图表的配置项和数据
+                        var batteryLevelOption = {
+                            title: {
+                                text: '电量报告'
+                            },
+                            tooltip: {
+                                trigger: 'axis'
+                            },
+                            color: ['#FA660A'],
+                            legend: {
+                                show: true,
+                                right: '15%',
+                                top: 0,
+                                width: 300,
+                                height: 100,
+                                icon: 'rect',
+                                itemWidth: 10,
+                                itemHeight: 4,
+                                textStyle: {
+                                    color: '#1a1a1a',
+                                    fontSize: 12,
+                                },
+                                data: ['剩余电量(%)']
+                            },
+                            toolbox: {
+                                feature: {
+                                    saveAsImage: {}
+                                }
+                            },
+                            xAxis: {
+                                data: frameIndexArrayData
+                            },
+                            yAxis: {
+                                type: 'value'
+                            },
+                            dataZoom: [
+                                {   // 这个dataZoom组件，默认控制x轴。
+                                    type: 'slider', // 这个 dataZoom 组件是 slider 型 dataZoom 组件
+                                    start: 0,      // 左边在 0% 的位置。
+                                    end: 100         // 右边在 100% 的位置。
+                                }
+                            ],
+                            series: [
+                                {
+                                    name: '剩余电量(%)',
+                                    type: 'line',
+                                    //stack: 'Total',
+                                    data: batteryCapacity
+                                }]
+                        };
+                        batteryLevelChart.setOption(batteryLevelOption);
+                        batteryLevelChart.getZr().on('click', function (params) {
+                            var yOffset = 80;
+                            frameIndex = frameIndexArrayData[batteryLevelChart.getOption().xAxis[0].axisPointer.value];
+                            console.log("x坐标:" + frameIndex);
+                            funcCallback = function (x, y, src) {
+                                if (src) {
+                                    console.log("*******funcCallback*******")
+                                    console.log(src);
+                                    img.style.display = "block";
+                                    img.src = src;
+                                    img.style.position = "absolute";
+                                    img.style.left = x + xOffset + 'px';
+                                    img.style.top = y + yOffset + 'px';
+                                }
+                                else {
+                                    img.style.display = "none";
+                                }
+                            };
+                        })
+
                         //功耗数据
                         var powerChart = echarts.init(document.getElementById("PowerDiv"));
                         var powerOption = {
@@ -618,65 +689,65 @@
                             };
                         })
 
-                        //电量报表
-                        var monitorBatteryChart = echarts.init(document.getElementById("MonitorBatteryLevelDiv"));
-                        //指定图表的配置项和数据
-                        var batteryOption = {
-                            tooltip: {
-                                trigger: 'axis'
-                            },
-                            //标题
-                            title: {
-                                text: '电量报表'
-                            },
-                            //工具箱
-                            //保存图片
-                            toolbox: {
-                                show: true,
-                                feature: {
-                                    saveAsImage: {
-                                        show: true
-                                    }
-                                }
-                            },
-                            //图例-每一条数据的名字叫电量
-                            legend: {
-                                data: ['电量(百分比)']
-                            },
-                            //x轴
-                            xAxis: {
-                                data: frameIndexArrayData
-                            },
-                            //y轴没有显式设置，根据值自动生成y轴
-                            yAxis: {
-                            },
-                            dataZoom: [
-                                {   // 这个dataZoom组件，默认控制x轴。
-                                    type: 'slider', // 这个 dataZoom 组件是 slider 型 dataZoom 组件
-                                    start: 0,      // 左边在 0% 的位置。
-                                    end: 100         // 右边在 100% 的位置。
-                                }
-                            ],
-                            //数据-data是最终要显示的数据
-                            series: [{
-                                name: '数值',
-                                type: 'line',
-                                data: batteryArrayData
-                            }]
-                        };
-                        //使用刚刚指定的配置项和数据项显示图表
-                        monitorBatteryChart.setOption(batteryOption);
-                        monitorBatteryChart.getZr().on('click', function (params) {
-                            var yOffset = 80;
-                            frameIndex = frameIndexArrayData[monitorBatteryChart.getOption().xAxis[0].axisPointer.value];
-                            console.log("x坐标:" + frameIndex);
-                            funcCallback = function (x, y) {
-                                img.style.display = "block";
-                                img.style.position = "absolute";
-                                img.style.left = x + xOffset + 'px';
-                                img.style.top = y + yOffset + 'px';
-                            }
-                        });
+                        ////电量报表
+                        //var monitorBatteryChart = echarts.init(document.getElementById("MonitorBatteryLevelDiv"));
+                        ////指定图表的配置项和数据
+                        //var batteryOption = {
+                        //    tooltip: {
+                        //        trigger: 'axis'
+                        //    },
+                        //    //标题
+                        //    title: {
+                        //        text: '电量报表'
+                        //    },
+                        //    //工具箱
+                        //    //保存图片
+                        //    toolbox: {
+                        //        show: true,
+                        //        feature: {
+                        //            saveAsImage: {
+                        //                show: true
+                        //            }
+                        //        }
+                        //    },
+                        //    //图例-每一条数据的名字叫电量
+                        //    legend: {
+                        //        data: ['电量(百分比)']
+                        //    },
+                        //    //x轴
+                        //    xAxis: {
+                        //        data: frameIndexArrayData
+                        //    },
+                        //    //y轴没有显式设置，根据值自动生成y轴
+                        //    yAxis: {
+                        //    },
+                        //    dataZoom: [
+                        //        {   // 这个dataZoom组件，默认控制x轴。
+                        //            type: 'slider', // 这个 dataZoom 组件是 slider 型 dataZoom 组件
+                        //            start: 0,      // 左边在 0% 的位置。
+                        //            end: 100         // 右边在 100% 的位置。
+                        //        }
+                        //    ],
+                        //    //数据-data是最终要显示的数据
+                        //    series: [{
+                        //        name: '数值',
+                        //        type: 'line',
+                        //        data: batteryArrayData
+                        //    }]
+                        //};
+                        ////使用刚刚指定的配置项和数据项显示图表
+                        //monitorBatteryChart.setOption(batteryOption);
+                        //monitorBatteryChart.getZr().on('click', function (params) {
+                        //    var yOffset = 80;
+                        //    frameIndex = frameIndexArrayData[monitorBatteryChart.getOption().xAxis[0].axisPointer.value];
+                        //    console.log("x坐标:" + frameIndex);
+                        //    funcCallback = function (x, y) {
+                        //        img.style.display = "block";
+                        //        img.style.position = "absolute";
+                        //        img.style.left = x + xOffset + 'px';
+                        //        img.style.top = y + yOffset + 'px';
+                        //    }
+                        //});
 
                         //内存使用报表
                         var monitorMemoryChart = echarts.init(document.getElementById("MonitorMemoryDiv"));
