@@ -206,7 +206,7 @@
                         var renderChart = echarts.init(document.getElementById("RenderDiv"));
                         var renderOption = {
                             title: {
-                                text: '渲染报告',
+                                text: '',
                                 textStyle: {
                                     fountSize: 12,
                                     fountWeight: 400,
@@ -371,7 +371,7 @@
                         var resMemoryChart = echarts.init(document.getElementById("ResMemoryInfoDiv"));
                         var resMemoryOption = {
                             title: {
-                                text: '资源内存分类报告',
+                                text: '',
                                 textStyle: {
                                     fountSize: 12,
                                     fountWeight: 400,
@@ -386,7 +386,7 @@
                                 show: true,
                                 right: '15%',
                                 top: 12,
-                                width: 300,
+                                width: 1200,
                                 height: 100,
                                 icon: 'rect',
                                 itemWidth: 10,
@@ -395,7 +395,8 @@
                                     color: '#1a1a1a',
                                     fontSize: 12,
                                 },
-                                data: ['TotalSize(MB)', 'TotalCount', 'TextureSize(MB)', 'TextureCount','MeshSize(MB)', 'MeshCount', 'MaterialSize(MB)', 'MaterialCount', 'ShaderSize(MB)', 'ShaderCount', 'AnimationClipSize(MB)', 'AnimationClipCount', 'AudioClipSize(MB)', 'AudioClipCount', 'FontSize(MB)', 'FontCount', 'TextSize(MB)', 'TextCount', 'ScriptableObjectSize(MB)', 'ScriptableObjectCount']
+                                //data的描述要跟下面的series一致
+                                data: ['TotalSize(MB)', 'TotalCount', 'TextureSize(MB)', 'TextureCount', 'MeshSize(MB)', 'MeshCount', 'MaterialSize(MB)', 'MaterialCount', 'ShaderSize(MB)', 'ShaderCount', 'AnimationClipSize(MB)', 'AnimationClipCount', 'AudioClipSize(MB)', 'AudioClipCount', 'FontSize(MB)', 'FontCount', 'TextAssetSize(MB)', 'TextAssetCount', 'ScriptableObjectSize(MB)', 'ScriptableObjectCount']
                             },
                             toolbox: {
                                 feature: {
@@ -417,7 +418,7 @@
                             ],
                             series: [
                                 {
-                                    name: 'TotalSize',
+                                    name: 'TotalSize(MB)',
                                     type: 'line',
                                     //stack: 'Total', //累加属性，这样线不会重叠
                                     data: totalSizeData
@@ -428,7 +429,7 @@
                                     data: totalCountData
                                 },
                                 {
-                                    name: 'TextureSize',
+                                    name: 'TextureSize(MB)',
                                     type: 'line',
                                     data: textureSizeData
                                 },
@@ -438,7 +439,7 @@
                                     data: textureCountData
                                 },
                                 {
-                                    name: 'MeshSize',
+                                    name: 'MeshSize(MB)',
                                     type: 'line',
                                     data: meshSizeData
                                 },
@@ -448,7 +449,7 @@
                                     data: meshCountData
                                 },
                                 {
-                                    name: 'MaterialSize',
+                                    name: 'MaterialSize(MB)',
                                     type: 'line',
                                     data: materialSizeData
                                 },
@@ -458,7 +459,7 @@
                                     data: materialCountData
                                 },
                                 {
-                                    name: 'ShaderSize',
+                                    name: 'ShaderSize(MB)',
                                     type: 'line',
                                     data: shaderSizeData
                                 },
@@ -468,27 +469,27 @@
                                     data: shaderCountData
                                 },
                                 {
-                                    name: 'AnimationSize',
+                                    name: 'AnimationClipSize(MB)',
                                     type: 'line',
                                     data: animationClipSizeData
                                 },
                                 {
-                                    name: 'AnimationCount',
+                                    name: 'AnimationClipCount',
                                     type: 'line',
                                     data: animationClipCountData
                                 },
                                 {
-                                    name: 'AudioSize',
+                                    name: 'AudioClipSize(MB)',
                                     type: 'line',
                                     data: audioClipSizeData
                                 },
                                 {
-                                    name: 'AudioCount',
+                                    name: 'AudioClipCount',
                                     type: 'line',
                                     data: audioClipCountData
                                 },
                                 {
-                                    name: 'FontSize',
+                                    name: 'FontSize(MB)',
                                     type: 'line',
                                     data: fontSizeData
                                 },
@@ -498,7 +499,7 @@
                                     data: fontCountData
                                 },
                                 {
-                                    name: 'TextAssetSize',
+                                    name: 'TextAssetSize(MB)',
                                     type: 'line',
                                     data: textAssetSizeData
                                 },
@@ -508,7 +509,7 @@
                                     data: textAssetCountData
                                 },
                                 {
-                                    name: 'ScriptableObjectSize',
+                                    name: 'ScriptableObjectSize(MB)',
                                     type: 'line',
                                     data: scriptableObjectSizeData
                                 },
