@@ -121,6 +121,7 @@
     <Content Include="Texts\Records\com.Aladdin.MonitorToolRef.txt" />
     <Content Include="Texts\Records\com.Aladdin.Test.txt" />
     <Content Include="Texts\renderInfo_2022_5_1_23_10_50.txt" />
+    <Content Include="Texts\resMemoryDistribution_2022_5_1_23_10_50.txt" />
     <Content Include="Texts\test_2022_5_1_23_10_50.txt" />
     <Content Include="Texts\test_2022_5_1_23_45_43.txt" />
     <Content Include="Texts\test_2022_5_2_23_10_50.txt" />
@@ -170,6 +171,9 @@
     <Compile Include="RenderHandler.ashx.cs">
       <DependentUpon>RenderHandler.ashx</DependentUpon>
     </Compile>
+    <Compile Include="ResMemoryHandler.ashx.cs">
+      <DependentUpon>ResMemoryHandler.ashx</DependentUpon>
+    </Compile>
     <Compile Include="TestInfoHandler.ashx.cs">
       <DependentUpon>TestInfoHandler.ashx</DependentUpon>
     </Compile>
@@ -193,6 +197,7 @@
     <Content Include="Texts\captureFrame_2022_05_04_22_52_28.zip" />
     <Content Include="Texts\captureFrame_2022_5_1_23_10_50.zip" />
     <Content Include="RenderHandler.ashx" />
+    <Content Include="ResMemoryHandler.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

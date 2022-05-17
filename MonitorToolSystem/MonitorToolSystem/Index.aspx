@@ -38,6 +38,10 @@
                 <div id="MonitorMemoryDiv" style="height: 500px"></div>
                 <div id="MonitorProfilerDiv" style="height: 500px"></div>
             </div>
+            <div id="ResMemoryInfoModule">
+                <h2>资源内存占用分类报告</h2>
+                <div id="ResMemoryInfoDiv" style="height: 500px"></div>
+            </div>
             <div id="RenderModule">
                 <h2>渲染报告</h2>
                 <div id="RenderDiv" style="height: 500px"></div>
@@ -288,6 +292,237 @@
                         renderChart.getZr().on('click', function (params) {
                             var yOffset = 145;
                             frameIndex = frameIndexArrayData[renderChart.getOption().xAxis[0].axisPointer.value];
+                            console.log("x坐标:" + frameIndex);
+                            funcCallback = function (x, y, src) {
+                                if (src) {
+                                    console.log("*******funcCallback*******")
+                                    console.log(src);
+                                    img.style.display = "block";
+                                    img.src = src;
+                                    img.style.position = "absolute";
+                                    img.style.left = x + xOffset + 'px';
+                                    img.style.top = y + yOffset + 'px';
+                                }
+                                else {
+                                    img.style.display = "none";
+                                }
+                            };
+                        });
+                    }
+                }
+            });
+            //资源内存占用分类信息
+            $.ajax({
+                type: "POST",
+                url: "/ResMemoryHandler.ashx?PackageName=" + packageNameValue + "&TestTime=" + timeValue,
+                data: JSON,
+                success: function (data) {
+                    if (data.includes('error')) {
+                        HideElement('ResMemoryInfoModule');
+                    }
+                    else {
+                        var myJson = JSON.parse(data);
+                        var frameIndexArrayData = [];
+                        var textureSizeData = [];
+                        var textureCountData = [];
+                        var meshSizeData = [];
+                        var meshCountData = [];
+                        var materialSizeData = [];
+                        var materialCountData = [];
+                        var shaderSizeData = [];
+                        var shaderCountData = [];
+                        var animationClipSizeData = [];
+                        var animationClipCountData = [];
+                        var audioClipSizeData = [];
+                        var audioClipCountData = [];
+                        var fontSizeData = [];
+                        var fontCountData = [];
+                        var textAssetSizeData = [];
+                        var textAssetCountData = [];
+                        var scriptableObjectSizeData = [];
+                        var scriptableObjectCountData = [];
+                        var totalSizeData = [];
+                        var totalCountData = [];
+                        var mb = 1024 * 1024;
+                        for (var i in myJson.RenderInfoList) {
+                            frameIndexArrayData.push(myJson.RecordResInfosList[i].FrameIndex);
+                            textureSizeData.push(myJson.RecordResInfosList[i].TextureSize / mb);
+                            meshSizeData.push(myJson.RecordResInfosList[i].MeshSize / mb);
+                            materialSizeData.push(myJson.RecordResInfosList[i].MaterialSize / mb);
+                            shaderSizeData.push(myJson.RecordResInfosList[i].ShaderSize / mb);
+                            animationClipSizeData.push(myJson.RecordResInfosList[i].AnimationClipSize / mb);
+                            audioClipSizeData.push(myJson.RecordResInfosList[i].AudioClipSize / mb);
+                            fontSizeData.push(myJson.RecordResInfosList[i].FontSize / mb);
+                            textAssetSizeData.push(myJson.RecordResInfosList[i].TextAssetSize / mb);
+                            scriptableObjectSizeData.push(myJson.RecordResInfosList[i].ScriptableObjectSize / mb);
+                            totalSizeData.push(myJson.RecordResInfosList[i].TotalSize / mb);
+                            textureCountData.push(myJson.RecordResInfosList[i].TextureCount);
+                            meshCountData.push(myJson.RecordResInfosList[i].MeshCount);
+                            materialCountData.push(myJson.RecordResInfosList[i].MaterialCount);
+                            shaderCountData.push(myJson.RecordResInfosList[i].ShaderCount);
+                            animationClipCountData.push(myJson.RecordResInfosList[i].AnimationClipCount);
+                            audioClipCountData.push(myJson.RecordResInfosList[i].AudioClipCount);
+                            fontCountData.push(myJson.RecordResInfosList[i].FontCount);
+                            textAssetCountData.push(myJson.RecordResInfosList[i].TextAssetCount);
+                            scriptableObjectCountData.push(myJson.RecordResInfosList[i].ScriptableObjectCount);
+                            totalCountData.push(myJson.RecordResInfosList[i].TotalCount);
+                        }
+                        //渲染
+                        var resMemoryChart = echarts.init(document.getElementById("ResMemoryInfoDiv"));
+                        var resMemoryOption = {
+                            title: {
+                                text: '资源内存分类报告',
+                                textStyle: {
+                                    fountSize: 12,
+                                    fountWeight: 400,
+                                    color: '#000000'
+                                },
+                            },
+                            tooltip: {
+                                trigger: 'axis',
+                            },
+                            color: ['#F80606', '#F806C8', '#BC06F8', '#4B06F8', '#06E4F8', '#06F8AC', '#06F84F', '#CCF806', '#F8BC06', '#F83F06', '#563C3C', '#0B0606', '#A49A63', '#DDE375', '#8BC2BD', '#9BC4E1', '#9E9BE1', '#C79BE1', '#F39DE6', '#DF7897'],
+                            legend: {
+                                show: true,
+                                right: '15%',
+                                top: 12,
+                                width: 300,
+                                height: 100,
+                                icon: 'rect',
+                                itemWidth: 10,
+                                itemHeight: 4,
+                                textStyle: {
+                                    color: '#1a1a1a',
+                                    fontSize: 12,
+                                },
+                                data: ['TotalSize(MB)', 'TotalCount', 'TextureSize(MB)', 'TextureCount','MeshSize(MB)', 'MeshCount', 'MaterialSize(MB)', 'MaterialCount', 'ShaderSize(MB)', 'ShaderCount', 'AnimationClipSize(MB)', 'AnimationClipCount', 'AudioClipSize(MB)', 'AudioClipCount', 'FontSize(MB)', 'FontCount', 'TextSize(MB)', 'TextCount', 'ScriptableObjectSize(MB)', 'ScriptableObjectCount']
+                            },
+                            toolbox: {
+                                feature: {
+                                    saveAsImage: {}
+                                }
+                            },
+                            xAxis: {
+                                data: frameIndexArrayData
+                            },
+                            yAxis: {
+                                type: 'value'
+                            },
+                            dataZoom: [
+                                {   // 这个dataZoom组件，默认控制x轴。
+                                    type: 'slider', // 这个 dataZoom 组件是 slider 型 dataZoom 组件
+                                    start: 0,      // 左边在 0% 的位置。
+                                    end: 100         // 右边在 100% 的位置。
+                                }
+                            ],
+                            series: [
+                                {
+                                    name: 'TotalSize',
+                                    type: 'line',
+                                    //stack: 'Total', //累加属性，这样线不会重叠
+                                    data: totalSizeData
+                                },
+                                {
+                                    name: 'TotalCount',
+                                    type: 'line',
+                                    data: totalCountData
+                                },
+                                {
+                                    name: 'TextureSize',
+                                    type: 'line',
+                                    data: textureSizeData
+                                },
+                                {
+                                    name: 'TextureCount',
+                                    type: 'line',
+                                    data: textureCountData
+                                },
+                                {
+                                    name: 'MeshSize',
+                                    type: 'line',
+                                    data: meshSizeData
+                                },
+                                {
+                                    name: 'MeshCount',
+                                    type: 'line',
+                                    data: meshCountData
+                                },
+                                {
+                                    name: 'MaterialSize',
+                                    type: 'line',
+                                    data: materialSizeData
+                                },
+                                {
+                                    name: 'MaterialCount',
+                                    type: 'line',
+                                    data: materialCountData
+                                },
+                                {
+                                    name: 'ShaderSize',
+                                    type: 'line',
+                                    data: shaderSizeData
+                                },
+                                {
+                                    name: 'ShaderCount',
+                                    type: 'line',
+                                    data: shaderCountData
+                                },
+                                {
+                                    name: 'AnimationSize',
+                                    type: 'line',
+                                    data: animationClipSizeData
+                                },
+                                {
+                                    name: 'AnimationCount',
+                                    type: 'line',
+                                    data: animationClipCountData
+                                },
+                                {
+                                    name: 'AudioSize',
+                                    type: 'line',
+                                    data: audioClipSizeData
+                                },
+                                {
+                                    name: 'AudioCount',
+                                    type: 'line',
+                                    data: audioClipCountData
+                                },
+                                {
+                                    name: 'FontSize',
+                                    type: 'line',
+                                    data: fontSizeData
+                                },
+                                {
+                                    name: 'FontCount',
+                                    type: 'line',
+                                    data: fontCountData
+                                },
+                                {
+                                    name: 'TextAssetSize',
+                                    type: 'line',
+                                    data: textAssetSizeData
+                                },
+                                {
+                                    name: 'TextAssetCount',
+                                    type: 'line',
+                                    data: textAssetCountData
+                                },
+                                {
+                                    name: 'ScriptableObjectSize',
+                                    type: 'line',
+                                    data: scriptableObjectSizeData
+                                },
+                                {
+                                    name: 'ScriptableObjectCount',
+                                    type: 'line',
+                                    data: scriptableObjectCountData
+                                }
+                            ]
+                        };
+                        resMemoryChart.setOption(resMemoryOption);
+                        resMemoryChart.getZr().on('click', function (params) {
+                            var yOffset = 245;
+                            frameIndex = frameIndexArrayData[resMemoryChart.getOption().xAxis[0].axisPointer.value];
                             console.log("x坐标:" + frameIndex);
                             funcCallback = function (x, y, src) {
                                 if (src) {

@@ -20,6 +20,9 @@
         public const string CapturePrefix = "captureFrame_";
         //渲染信息
         public const string RenderPrefix = "renderInfo_";
+        //内存分布
+        public const string ResMemoryDistributionPrefix = "resMemoryDistribution_";
+
     }
     public class Config
     {

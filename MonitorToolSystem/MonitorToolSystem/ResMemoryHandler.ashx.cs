@@ -6,11 +6,10 @@ using System.Web;
 namespace MonitorToolSystem
 {
     /// <summary>
-    /// RenderHandler 的摘要说明
+    /// 资源内存分类数据请求
     /// </summary>
-    public class RenderHandler : IHttpHandler
+    public class ResMemoryHandler : IHttpHandler
     {
-
         public void ProcessRequest(HttpContext context)
         {
             context.Response.ContentType = "text/plain";
@@ -23,14 +22,14 @@ namespace MonitorToolSystem
             else
             {
                 var basePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Texts/");
-                var renderInfo = Path.Combine(basePath, $"{ConstString.RenderPrefix}{testTime}{ConstString.TextExt}");
-                if (!File.Exists(renderInfo))
+                var resMemoryInfo = Path.Combine(basePath, $"{ConstString.ResMemoryDistributionPrefix}{testTime}{ConstString.TextExt}");
+                if (!File.Exists(resMemoryInfo))
                 {
-                    context.Response.Write($"error:RenderInfo:{renderInfo}不存在");
+                    context.Response.Write($"error:resMemoryInfo:{resMemoryInfo}不存在");
                 }
                 else
                 {
-                    var jsonStr = FileManager.ReadAllByLine(renderInfo);
+                    var jsonStr = FileManager.ReadAllByLine(resMemoryInfo);
                     context.Response.Write($"{jsonStr}");
                 }
             }
