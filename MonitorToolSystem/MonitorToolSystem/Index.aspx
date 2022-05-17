@@ -344,18 +344,18 @@
                         var totalSizeData = [];
                         var totalCountData = [];
                         var mb = 1024 * 1024;
-                        for (var i in myJson.RenderInfoList) {
+                        for (var i in myJson.RecordResInfosList) {
                             frameIndexArrayData.push(myJson.RecordResInfosList[i].FrameIndex);
-                            textureSizeData.push(myJson.RecordResInfosList[i].TextureSize / mb);
-                            meshSizeData.push(myJson.RecordResInfosList[i].MeshSize / mb);
-                            materialSizeData.push(myJson.RecordResInfosList[i].MaterialSize / mb);
-                            shaderSizeData.push(myJson.RecordResInfosList[i].ShaderSize / mb);
-                            animationClipSizeData.push(myJson.RecordResInfosList[i].AnimationClipSize / mb);
-                            audioClipSizeData.push(myJson.RecordResInfosList[i].AudioClipSize / mb);
-                            fontSizeData.push(myJson.RecordResInfosList[i].FontSize / mb);
-                            textAssetSizeData.push(myJson.RecordResInfosList[i].TextAssetSize / mb);
-                            scriptableObjectSizeData.push(myJson.RecordResInfosList[i].ScriptableObjectSize / mb);
-                            totalSizeData.push(myJson.RecordResInfosList[i].TotalSize / mb);
+                            textureSizeData.push((myJson.RecordResInfosList[i].TextureSize / mb).toFixed(1));
+                            meshSizeData.push((myJson.RecordResInfosList[i].MeshSize / mb).toFixed(1));
+                            materialSizeData.push((myJson.RecordResInfosList[i].MaterialSize / mb).toFixed(1));
+                            shaderSizeData.push((myJson.RecordResInfosList[i].ShaderSize / mb).toFixed(1));
+                            animationClipSizeData.push((myJson.RecordResInfosList[i].AnimationClipSize / mb).toFixed(1));
+                            audioClipSizeData.push((myJson.RecordResInfosList[i].AudioClipSize / mb).toFixed(1));
+                            fontSizeData.push((myJson.RecordResInfosList[i].FontSize / mb).toFixed(1));
+                            textAssetSizeData.push((myJson.RecordResInfosList[i].TextAssetSize / mb).toFixed(1));
+                            scriptableObjectSizeData.push((myJson.RecordResInfosList[i].ScriptableObjectSize / mb).toFixed(1));
+                            totalSizeData.push((myJson.RecordResInfosList[i].TotalSize / mb).toFixed(1));
                             textureCountData.push(myJson.RecordResInfosList[i].TextureCount);
                             meshCountData.push(myJson.RecordResInfosList[i].MeshCount);
                             materialCountData.push(myJson.RecordResInfosList[i].MaterialCount);
@@ -521,7 +521,7 @@
                         };
                         resMemoryChart.setOption(resMemoryOption);
                         resMemoryChart.getZr().on('click', function (params) {
-                            var yOffset = 245;
+                            var yOffset = 0;
                             frameIndex = frameIndexArrayData[resMemoryChart.getOption().xAxis[0].axisPointer.value];
                             console.log("x坐标:" + frameIndex);
                             funcCallback = function (x, y, src) {
@@ -844,12 +844,12 @@
                             frameIndexArrayData.push(myJson.MonitorInfoList[i].FrameIndex);
                             frameArrayData.push(myJson.MonitorInfoList[i].Frame);
                             batteryArrayData.push(Math.floor(myJson.MonitorInfoList[i].BatteryLevel * 100) / 100 * 100);
-                            memoryArrayData.push(myJson.MonitorInfoList[i].MemorySize);
-                            monoHeapSizeArrayData.push(myJson.MonitorInfoList[i].MonoHeapSize / mb);
-                            monoUsedSizeArrayData.push(myJson.MonitorInfoList[i].MonoUsedSize / mb);
-                            totalAllocatedMemoryArrayData.push(myJson.MonitorInfoList[i].TotalAllocatedMemory / mb);
-                            unityTotalReservedMemoryArrayData.push(myJson.MonitorInfoList[i].UnityTotalReservedMemory / mb);
-                            totalUnusedReservedMemoryArrayData.push(myJson.MonitorInfoList[i].TotalUnusedReservedMemory / mb);
+                            memoryArrayData.push((myJson.MonitorInfoList[i].MemorySize / mb).toFixed(1));
+                            monoHeapSizeArrayData.push((myJson.MonitorInfoList[i].MonoHeapSize / mb).toFixed(1));
+                            monoUsedSizeArrayData.push((myJson.MonitorInfoList[i].MonoUsedSize / mb).toFixed(1));
+                            totalAllocatedMemoryArrayData.push((myJson.MonitorInfoList[i].TotalAllocatedMemory / mb).toFixed(1));
+                            unityTotalReservedMemoryArrayData.push((myJson.MonitorInfoList[i].UnityTotalReservedMemory / mb).toFixed(1));
+                            totalUnusedReservedMemoryArrayData.push((myJson.MonitorInfoList[i].TotalUnusedReservedMemory / mb).toFixed(1));
                         }
                         var monitorchart = echarts.init(document.getElementById("MonitorFrameDiv"));
                         //指定图表的配置项和数据
