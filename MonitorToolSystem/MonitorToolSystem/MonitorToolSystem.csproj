@@ -142,6 +142,9 @@
     <Compile Include="DeviceInfoHandler.ashx.cs">
       <DependentUpon>DeviceInfoHandler.ashx</DependentUpon>
     </Compile>
+    <Compile Include="FileUpload.ashx.cs">
+      <DependentUpon>FileUpload.ashx</DependentUpon>
+    </Compile>
     <Compile Include="FuncAnalysisHandler.ashx.cs">
       <DependentUpon>FuncAnalysisHandler.ashx</DependentUpon>
     </Compile>
@@ -203,6 +206,7 @@
     <Content Include="FuncCodeAnalysisHandler.ashx" />
     <Content Include="CaptureFrameHandler.ashx" />
     <Content Include="PostFileHandler.ashx" />
+    <Content Include="FileUpload.ashx" />
     <None Include="packages.config" />
     <Content Include="ReceiveDataHandler.ashx" />
     <Content Include="PowerConsumeHandler.ashx" />
