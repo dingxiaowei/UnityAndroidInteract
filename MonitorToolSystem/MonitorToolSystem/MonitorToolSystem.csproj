@@ -145,6 +145,9 @@
     <Compile Include="FuncCodeAnalysisHandler.ashx.cs">
       <DependentUpon>FuncCodeAnalysisHandler.ashx</DependentUpon>
     </Compile>
+    <Compile Include="PostFileHandler.ashx.cs">
+      <DependentUpon>PostFileHandler.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Index.aspx.cs">
       <DependentUpon>Index.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -189,6 +192,7 @@
     <Content Include="MonitorHandler.ashx" />
     <Content Include="FuncCodeAnalysisHandler.ashx" />
     <Content Include="CaptureFrameHandler.ashx" />
+    <Content Include="PostFileHandler.ashx" />
     <None Include="packages.config" />
     <Content Include="ReceiveDataHandler.ashx" />
     <Content Include="PowerConsumeHandler.ashx" />
