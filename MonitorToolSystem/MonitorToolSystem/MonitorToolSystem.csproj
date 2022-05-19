@@ -73,7 +73,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="img\loading.gif" />
     <Content Include="Index.aspx" />
+    <Content Include="Modules\ajaxfileupload.js" />
     <Content Include="Modules\echarts-en.common.js" />
     <Content Include="Modules\echarts-en.common.min.js" />
     <Content Include="Modules\echarts-en.js" />
@@ -91,6 +93,7 @@
     <Content Include="Modules\extension\dataTool.js" />
     <Content Include="Modules\extension\dataTool.min.js" />
     <Content Include="Modules\jquery-3.3.1.min.js" />
+    <Content Include="PostFile.aspx" />
     <Content Include="StyleSheet.css" />
     <Content Include="Texts\captureFrame_2022_5_1_23_10_50\img_2022_5_1_23_10_50_100.png" />
     <Content Include="Texts\captureFrame_2022_5_1_23_10_50\img_2022_5_1_23_10_50_200.png" />
@@ -144,6 +147,13 @@
     </Compile>
     <Compile Include="FuncCodeAnalysisHandler.ashx.cs">
       <DependentUpon>FuncCodeAnalysisHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="PostFile.aspx.cs">
+      <DependentUpon>PostFile.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PostFile.aspx.designer.cs">
+      <DependentUpon>PostFile.aspx</DependentUpon>
     </Compile>
     <Compile Include="PostFileHandler.ashx.cs">
       <DependentUpon>PostFileHandler.ashx</DependentUpon>
