@@ -851,7 +851,8 @@
                             totalAllocatedMemoryArrayData.push((myJson.MonitorInfoList[i].TotalAllocatedMemory / mb).toFixed(1));
                             unityTotalReservedMemoryArrayData.push((myJson.MonitorInfoList[i].UnityTotalReservedMemory / mb).toFixed(1));
                             totalUnusedReservedMemoryArrayData.push((myJson.MonitorInfoList[i].TotalUnusedReservedMemory / mb).toFixed(1));
-                        }
+                        }
+
                         var monitorchart = echarts.init(document.getElementById("MonitorFrameDiv"));
                         //指定图表的配置项和数据
                         var option = {
@@ -902,7 +903,8 @@
                                 type: 'line',
                                 data: frameArrayData
                             }]
-                        };
+                        };
+
                         //使用刚刚指定的配置项和数据项显示图表
                         monitorchart.setOption(option);
                         monitorchart.getZr().on('click', function (params) {
@@ -1030,7 +1032,8 @@
                             }]
                         };
                         //使用刚刚指定的配置项和数据项显示图表
-                        monitorMemoryChart.setOption(memoryOption);                        monitorMemoryChart.getZr().on('click', function (params) {
+                        monitorMemoryChart.setOption(memoryOption);
+                        monitorMemoryChart.getZr().on('click', function (params) {
                             var yOffset = 80;
                             frameIndex = frameIndexArrayData[monitorMemoryChart.getOption().xAxis[0].axisPointer.value];
                             console.log("x坐标:" + frameIndex);
@@ -1048,7 +1051,8 @@
                                     img.style.display = "none";
                                 }
                             };
-                        });
+                        });
+
                         //Profiler数据
                         var profilerChart = echarts.init(document.getElementById("MonitorProfilerDiv"));
                         var profilerOption = {
