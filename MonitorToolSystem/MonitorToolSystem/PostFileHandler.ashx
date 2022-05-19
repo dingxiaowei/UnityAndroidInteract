@@ -1,1 +1,1 @@
-﻿<%@ WebHandler Language="C#" CodeBehind="PostFileHandler.ashx.cs" Class="MonitorToolSystem.GetFileHandler" %>
+﻿<%@ WebHandler Language="C#" CodeBehind="PostFileHandler.ashx.cs" Class="MonitorToolSystem.PostFileHandler" %>

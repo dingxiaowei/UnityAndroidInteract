@@ -1,17 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Web;
 
 namespace MonitorToolSystem
 {
     /// <summary>
-    /// GetFileHandler 的摘要说明
+    /// PostFileHandler 的摘要说明
     /// </summary>
     public class PostFileHandler : IHttpHandler
     {
-
         public void ProcessRequest(HttpContext context)
         {
             context.Response.ContentType = "text/plain";
