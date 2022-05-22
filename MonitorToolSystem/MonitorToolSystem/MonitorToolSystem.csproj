@@ -190,6 +190,9 @@
     <Compile Include="ResMemoryHandler.ashx.cs">
       <DependentUpon>ResMemoryHandler.ashx</DependentUpon>
     </Compile>
+    <Compile Include="TestHandler.ashx.cs">
+      <DependentUpon>TestHandler.ashx</DependentUpon>
+    </Compile>
     <Compile Include="TestInfoHandler.ashx.cs">
       <DependentUpon>TestInfoHandler.ashx</DependentUpon>
     </Compile>
@@ -216,6 +219,7 @@
     <Content Include="Texts\captureFrame_2022_5_1_23_10_50.zip" />
     <Content Include="RenderHandler.ashx" />
     <Content Include="ResMemoryHandler.ashx" />
+    <Content Include="TestHandler.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
