@@ -41,10 +41,91 @@
             <div id="ResMemoryInfoModule">
                 <h2>资源内存占用分类报告</h2>
                 <div id="ResMemoryInfoDiv" style="height: 500px"></div>
+                <label style="color: orangered">提示:低端设备例如红米4X,纹理内存使用峰值建议小于140MB，小米8设备上纹理推荐值小于280MB</label>
             </div>
             <div id="RenderModule">
                 <h2>渲染报告</h2>
                 <div id="RenderDiv" style="height: 500px"></div>
+                <center>
+                <label style="color: orangered">提示:低端设备例如魅族M6 Note上，Triangle峰值建议小于15W，中高端设备例如华为Mate20设备上，建议Triangle峰值小于45W</label>
+                <br />
+                <h3>同屏DrawCall不同机型峰值参照表</h3>
+                <table>
+                    <tbody id="DrawCallTBody">
+                        <tr>
+                            <th>机型类型</th>
+                            <th>低优先级</th>
+                            <th>中优先级</th>
+                            <th>高优先级</th>
+                        </tr>
+                        <tr>
+                            <th>低档机</th>
+                            <th>200</th>
+                            <th>250</th>
+                            <th>300</th>
+                        </tr>
+                        <tr>
+                            <th>中低档机</th>
+                            <th>300</th>
+                            <th>450</th>
+                            <th>600</th>
+                        </tr>
+                        <tr>
+                            <th>中档机</th>
+                            <th>500</th>
+                            <th>700</th>
+                            <th>900</th>
+                        </tr>
+                        <tr>
+                            <th>中高档机</th>
+                            <th>700</th>
+                            <th>950</th>
+                            <th>1200</th>
+                        </tr>
+                        <tr>
+                            <th>高档机</th>
+                            <th>900</th>
+                            <th>1200</th>
+                            <th>1500</th>
+                        </tr>
+                    </tbody>
+                </table>
+                    <h3>同屏渲染面片数不同机型峰值参照表</h3>
+                <table>
+                    <tbody id="TriangleTBody">
+                        <tr>
+                            <th>机型类型</th>
+                            <th>中优先级</th>
+                            <th>高优先级</th>
+                        </tr>
+                        <tr>
+                            <th>低档机</th>
+                            <th>15W</th>
+                            <th>25W</th>
+                        </tr>
+                        <tr>
+                            <th>中低档机</th>
+                            <th>25W</th>
+                            <th>35W</th>
+                        </tr>
+                        <tr>
+                            <th>中档机</th>
+                            <th>35W</th>
+                            <th>45W</th>
+                        </tr>
+                        <tr>
+                            <th>中高档机</th>
+                            <th>45W</th>
+                            <th>55W</th>
+                        </tr>
+                        <tr>
+                            <th>高档机</th>
+                            <th>60W</th>
+                            <th>70W</th>
+                        </tr>
+                    </tbody>
+                </table>
+                </center>
             </div>
             <div id="PowerConsumeModule">
                 <h2>手机功耗报告</h2>
