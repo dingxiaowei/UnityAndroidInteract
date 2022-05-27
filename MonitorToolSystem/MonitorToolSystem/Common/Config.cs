@@ -22,7 +22,8 @@
         public const string RenderPrefix = "renderInfo_";
         //内存分布
         public const string ResMemoryDistributionPrefix = "resMemoryDistribution_";
-
+        //PSS内存
+        public const string PssMemoryPrefix = "pssMemoryInfo_";
     }
     public class Config
     {

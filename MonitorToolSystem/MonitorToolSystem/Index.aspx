@@ -35,6 +35,7 @@
                 <h2>性能报告</h2>
                 <div id="MonitorFrameDiv" style="height: 500px"></div>
                 <%--<div id="MonitorBatteryLevelDiv" style="height: 500px"></div>--%>
+                <div id="PssMemoryDiv" style="height: 500px"></div>
                 <div id="MonitorMemoryDiv" style="height: 500px"></div>
                 <div id="MonitorProfilerDiv" style="height: 500px"></div>
             </div>
@@ -898,6 +899,95 @@
                 error: function (jqXHR) {
                     console.error(jqXHR);
                     HideElement('PowerConsumeModule');
+                }
+            });
+            //Pss内存
+            $.ajax({
+                type: "POST",
+                url: "/PssMemoryHandler.ashx?PackageName=" + packageNameValue + "&TestTime=" + timeValue,
+                data: JSON,
+                success: function (data) {
+                    if (data.includes('error')) {
+                        HideElement('PssMemoryDiv');
+                    }
+                    else {
+                        var myJson = JSON.parse(data);
+                        var frameIndexArrayData = [];
+                        var memoryArrayData = [];
+                        for (var i in myJson.MemoryUsedList) {
+                            frameIndexArrayData.push(myJson.MemoryUsedList[i].FrameIndex);
+                            memoryArrayData.push((myJson.MemoryUsedList[i].PssMemorySize).toFixed(1));
+                        }
+                        //内存使用报表
+                        var pssMemoryChart = echarts.init(document.getElementById("PssMemoryDiv"));
+                        //指定图表的配置项和数据
+                        var pssMemoryOption = {
+                            tooltip: {
+                                trigger: 'axis'
+                            },
+                            //标题
+                            title: {
+                                text: 'Pss内存使用报表'
+                            },
+                            //工具箱
+                            toolbox: {
+                                show: true,
+                                feature: {
+                                    saveAsImage: {
+                                        show: true
+                                    }
+                                }
+                            },
+                            legend: {
+                                data: ['内存使用 MB']
+                            },
+                            //x轴
+                            xAxis: {
+                                data: frameIndexArrayData
+                            },
+                            //y轴没有显式设置，根据值自动生成y轴
+                            yAxis: {
+                            },
+                            dataZoom: [
+                                {   // 这个dataZoom组件，默认控制x轴。
+                                    type: 'slider', // 这个 dataZoom 组件是 slider 型 dataZoom 组件
+                                    start: 0,      // 左边在 0% 的位置。
+                                    end: 100         // 右边在 100% 的位置。
+                                }
+                            ],
+                            //数据-data是最终要显示的数据
+                            series: [{
+                                name: '数值',
+                                type: 'line',
+                                data: memoryArrayData
+                            }]
+                        };
+                        //使用刚刚指定的配置项和数据项显示图表
+                        pssMemoryChart.setOption(pssMemoryOption);
+                        pssMemoryChart.getZr().on('click', function (params) {
+                            var yOffset = 80;
+                            frameIndex = frameIndexArrayData[pssMemoryChart.getOption().xAxis[0].axisPointer.value];
+                            console.log("x坐标:" + frameIndex);
+                            funcCallback = function (x, y, src) {
+                                if (src) {
+                                    console.log("*******funcCallback*******")
+                                    console.log(src);
+                                    img.style.display = "block";
+                                    img.src = src;
+                                    img.style.position = "absolute";
+                                    img.style.left = x + xOffset + 'px';
+                                    img.style.top = y + yOffset + 'px';
+                                }
+                                else {
+                                    img.style.display = "none";
+                                }
+                            };
+                        });
+                    }
+                },
+                error: function (jqXHR) {
+                    console.error(jqXHR);
+                    HideElement('PssMemoryDiv');
                 }
             });
 
