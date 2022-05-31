@@ -12,6 +12,7 @@
         public const string DevicePrefix = "device_";
         public const string TestPrefix = "test_";
         public const string MonitorPrefix = "monitor_";
+        public const string FrameRatePrefix = "frameRate_";
         //函数性能分析
         public const string FuncAnalysisPrefix = "funcAnalysis_";
         //函数规划范分析

@@ -19,10 +19,10 @@
       <publishTime>05/24/2018 13:38:22</publishTime>
     </File>
     <File Include="bin/MonitorToolSystem.dll">
-      <publishTime>05/27/2022 13:08:43</publishTime>
+      <publishTime>06/01/2022 00:14:23</publishTime>
     </File>
     <File Include="bin/MonitorToolSystem.pdb">
-      <publishTime>05/27/2022 13:08:43</publishTime>
+      <publishTime>06/01/2022 00:14:23</publishTime>
     </File>
     <File Include="bin/Newtonsoft.Json.dll">
       <publishTime>03/17/2021 20:03:36</publishTime>
@@ -177,6 +177,9 @@
     <File Include="FileUpload.ashx">
       <publishTime>05/19/2022 18:04:23</publishTime>
     </File>
+    <File Include="FrameRateHandler.ashx">
+      <publishTime>05/31/2022 23:22:11</publishTime>
+    </File>
     <File Include="FuncAnalysisHandler.ashx">
       <publishTime>05/02/2022 22:32:32</publishTime>
     </File>
@@ -187,7 +190,7 @@
       <publishTime>07/07/2017 15:32:57</publishTime>
     </File>
     <File Include="Index.aspx">
-      <publishTime>05/27/2022 13:05:26</publishTime>
+      <publishTime>06/01/2022 00:15:06</publishTime>
     </File>
     <File Include="LogHandler.ashx">
       <publishTime>05/02/2022 18:20:47</publishTime>
@@ -321,6 +324,9 @@
     <File Include="Texts/captureFrame_2022_5_1_23_10_50/img_2022_5_1_23_10_50_800.png">
       <publishTime>05/05/2022 22:26:55</publishTime>
     </File>
+    <File Include="Texts/device_2022_05_31_20_54_38.txt">
+      <publishTime>05/31/2022 21:11:58</publishTime>
+    </File>
     <File Include="Texts/device_2022_5_1_17_33_28.txt">
       <publishTime>05/01/2022 19:47:11</publishTime>
     </File>
@@ -338,6 +344,9 @@
     </File>
     <File Include="Texts/device_2022_5_2_23_45_43.txt">
       <publishTime>05/01/2022 23:47:30</publishTime>
+    </File>
+    <File Include="Texts/frameRate_2022_5_1_23_10_50.txt">
+      <publishTime>05/31/2022 23:12:59</publishTime>
     </File>
     <File Include="Texts/funcAnalysis_2022_5_1_17_33_28.csv">
       <publishTime>05/01/2022 17:33:32</publishTime>
@@ -363,6 +372,9 @@
     <File Include="Texts/funcCodeAnalysis_2022_5_1_23_10_50.txt">
       <publishTime>05/04/2022 07:19:57</publishTime>
     </File>
+    <File Include="Texts/log_2022_05_31_20_54_38.txt">
+      <publishTime>05/31/2022 21:12:44</publishTime>
+    </File>
     <File Include="Texts/log_2022_5_1_17_33_28.txt">
       <publishTime>05/01/2022 17:33:32</publishTime>
     </File>
@@ -381,11 +393,14 @@
     <File Include="Texts/log_2022_5_2_23_45_43.txt">
       <publishTime>05/02/2022 21:17:38</publishTime>
     </File>
+    <File Include="Texts/monitor_2022_05_31_20_54_38.txt">
+      <publishTime>05/31/2022 21:07:34</publishTime>
+    </File>
     <File Include="Texts/monitor_2022_5_1_17_33_28.txt">
       <publishTime>05/01/2022 17:33:32</publishTime>
     </File>
     <File Include="Texts/monitor_2022_5_1_23_10_50.txt">
-      <publishTime>05/01/2022 23:47:30</publishTime>
+      <publishTime>05/31/2022 23:12:59</publishTime>
     </File>
     <File Include="Texts/monitor_2022_5_1_23_45_43.txt">
       <publishTime>05/27/2022 12:23:19</publishTime>
@@ -405,20 +420,35 @@
     <File Include="Texts/powerConsume_2022_5_1_23_10_50.txt">
       <publishTime>05/14/2022 16:17:52</publishTime>
     </File>
+    <File Include="Texts/pssMemoryInfo_2022_05_31_20_54_38.txt">
+      <publishTime>05/31/2022 21:06:09</publishTime>
+    </File>
     <File Include="Texts/pssMemoryInfo_2022_5_1_23_10_50.txt">
       <publishTime>05/27/2022 12:05:34</publishTime>
     </File>
     <File Include="Texts/Records/com.Aladdin.MonitorToolRef.txt">
-      <publishTime>05/01/2022 23:47:06</publishTime>
+      <publishTime>06/01/2022 00:17:07</publishTime>
     </File>
     <File Include="Texts/Records/com.Aladdin.Test.txt">
       <publishTime>05/02/2022 10:00:58</publishTime>
     </File>
+    <File Include="Texts/Records/com.cyberverse.hola.txt">
+      <publishTime>05/31/2022 22:16:59</publishTime>
+    </File>
+    <File Include="Texts/renderInfo_2022_05_31_20_54_38.txt">
+      <publishTime>05/31/2022 21:06:05</publishTime>
+    </File>
     <File Include="Texts/renderInfo_2022_5_1_23_10_50.txt">
       <publishTime>05/13/2022 23:25:18</publishTime>
     </File>
+    <File Include="Texts/resMemoryDistribution_2022_05_31_20_54_38.txt">
+      <publishTime>05/31/2022 21:05:58</publishTime>
+    </File>
     <File Include="Texts/resMemoryDistribution_2022_5_1_23_10_50.txt">
       <publishTime>05/17/2022 19:03:18</publishTime>
+    </File>
+    <File Include="Texts/test_2022_05_31_20_54_38.txt">
+      <publishTime>05/31/2022 21:05:46</publishTime>
     </File>
     <File Include="Texts/test_2022_5_1_17_33_28.txt">
       <publishTime>05/01/2022 17:33:32</publishTime>

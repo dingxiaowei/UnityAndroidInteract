@@ -892,8 +892,8 @@ public class MainActivity extends UnityPlayerActivity {
                 memoryInfo.getTotalPss() / 1024.0,
                 memoryInfo.getTotalPrivateDirty() / 1024.0,
                 memoryInfo.getTotalSharedDirty() / 1024.0);
-        Toast.makeText(this,memMessage,Toast.LENGTH_LONG).show();
-        Log.i("log_tag", memMessage);
+//        Toast.makeText(this,memMessage,Toast.LENGTH_LONG).show();
+//        Log.i("log_tag", memMessage);
         return memoryInfo.getTotalPss() / 1024.0f;
     }
 

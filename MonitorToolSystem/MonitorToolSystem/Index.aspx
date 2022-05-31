@@ -991,42 +991,27 @@
                 }
             });
 
-            //Monitor信息
+            //帧率
             $.ajax({
                 type: "POST",
-                url: "/MonitorHandler.ashx?PackageName=" + packageNameValue + "&TestTime=" + timeValue,
+                url: "/FrameRateHandler.ashx?PackageName=" + packageNameValue + "&TestTime=" + timeValue,
                 data: JSON,
                 success: function (data) {
                     if (data.includes('error')) {
-                        HideElement('MonitorInfoModule');
+                        HideElement('MonitorFrameDiv');
                     }
                     else {
                         var myJson = JSON.parse(data);
                         var frameIndexArrayData = [];
                         var frameArrayData = [];
-                        var batteryArrayData = [];
-                        var memoryArrayData = [];
-                        var monoHeapSizeArrayData = [];
-                        var monoUsedSizeArrayData = [];
-                        var totalAllocatedMemoryArrayData = [];
-                        var unityTotalReservedMemoryArrayData = [];
-                        var totalUnusedReservedMemoryArrayData = [];
-                        var mb = 1024 * 1024;
-                        for (var i in myJson.MonitorInfoList) {
-                            frameIndexArrayData.push(myJson.MonitorInfoList[i].FrameIndex);
-                            frameArrayData.push(myJson.MonitorInfoList[i].Frame);
-                            batteryArrayData.push(Math.floor(myJson.MonitorInfoList[i].BatteryLevel * 100) / 100 * 100);
-                            memoryArrayData.push((myJson.MonitorInfoList[i].MemorySize / mb).toFixed(1));
-                            monoHeapSizeArrayData.push((myJson.MonitorInfoList[i].MonoHeapSize / mb).toFixed(1));
-                            monoUsedSizeArrayData.push((myJson.MonitorInfoList[i].MonoUsedSize / mb).toFixed(1));
-                            totalAllocatedMemoryArrayData.push((myJson.MonitorInfoList[i].TotalAllocatedMemory / mb).toFixed(1));
-                            unityTotalReservedMemoryArrayData.push((myJson.MonitorInfoList[i].UnityTotalReservedMemory / mb).toFixed(1));
-                            totalUnusedReservedMemoryArrayData.push((myJson.MonitorInfoList[i].TotalUnusedReservedMemory / mb).toFixed(1));
+                        for (var i in myJson.FrameRateList) {
+                            frameIndexArrayData.push(myJson.FrameRateList[i].FrameIndex);
+                            frameArrayData.push((myJson.FrameRateList[i].Frame));
                         }
-
-                        var monitorchart = echarts.init(document.getElementById("MonitorFrameDiv"));
+                        //内存使用报表
+                        var frameRateChart = echarts.init(document.getElementById("MonitorFrameDiv"));
                         //指定图表的配置项和数据
-                        var option = {
+                        var frameRateOption = {
                             tooltip: {
                                 trigger: 'axis'
                             },
@@ -1035,7 +1020,6 @@
                                 text: '帧率报表'
                             },
                             //工具箱
-                            //保存图片
                             toolbox: {
                                 show: true,
                                 feature: {
@@ -1044,7 +1028,6 @@
                                     }
                                 }
                             },
-                            //图例-每一条数据的名字叫帧率
                             legend: {
                                 data: ['帧率']
                             },
@@ -1053,14 +1036,8 @@
                                 data: frameIndexArrayData
                             },
                             //y轴没有显式设置，根据值自动生成y轴
-                            yAxis: [{
-                                type: 'value',
-                                scale: true,
-                                max: 75,
-                                min: 0,
-                                splitNumber: 5,
-                                boundaryGap: [0.2, 0.2]
-                            }],
+                            yAxis: {
+                            },
                             dataZoom: [
                                 {   // 这个dataZoom组件，默认控制x轴。
                                     type: 'slider', // 这个 dataZoom 组件是 slider 型 dataZoom 组件
@@ -1075,12 +1052,10 @@
                                 data: frameArrayData
                             }]
                         };
-
-                        //使用刚刚指定的配置项和数据项显示图表
-                        monitorchart.setOption(option);
-                        monitorchart.getZr().on('click', function (params) {
-                            var yOffset = 75;
-                            frameIndex = frameIndexArrayData[monitorchart.getOption().xAxis[0].axisPointer.value];
+                        frameRateChart.setOption(frameRateOption);
+                        frameRateChart.getZr().on('click', function (params) {
+                            var yOffset = 80;
+                            frameIndex = frameIndexArrayData[frameRateChart.getOption().xAxis[0].axisPointer.value];
                             console.log("x坐标:" + frameIndex);
                             funcCallback = function (x, y, src) {
                                 if (src) {
@@ -1096,67 +1071,47 @@
                                     img.style.display = "none";
                                 }
                             };
-                        })
+                        });
+                    }
+                },
+                error: function (jqXHR) {
+                    console.error(jqXHR);
+                    HideElement('MonitorFrameDiv');
+                }
+            });
 
-                        ////电量报表
-                        //var monitorBatteryChart = echarts.init(document.getElementById("MonitorBatteryLevelDiv"));
-                        ////指定图表的配置项和数据
-                        //var batteryOption = {
-                        //    tooltip: {
-                        //        trigger: 'axis'
-                        //    },
-                        //    //标题
-                        //    title: {
-                        //        text: '电量报表'
-                        //    },
-                        //    //工具箱
-                        //    //保存图片
-                        //    toolbox: {
-                        //        show: true,
-                        //        feature: {
-                        //            saveAsImage: {
-                        //                show: true
-                        //            }
-                        //        }
-                        //    },
-                        //    //图例-每一条数据的名字叫电量
-                        //    legend: {
-                        //        data: ['电量(百分比)']
-                        //    },
-                        //    //x轴
-                        //    xAxis: {
-                        //        data: frameIndexArrayData
-                        //    },
-                        //    //y轴没有显式设置，根据值自动生成y轴
-                        //    yAxis: {
-                        //    },
-                        //    dataZoom: [
-                        //        {   // 这个dataZoom组件，默认控制x轴。
-                        //            type: 'slider', // 这个 dataZoom 组件是 slider 型 dataZoom 组件
-                        //            start: 0,      // 左边在 0% 的位置。
-                        //            end: 100         // 右边在 100% 的位置。
-                        //        }
-                        //    ],
-                        //    //数据-data是最终要显示的数据
-                        //    series: [{
-                        //        name: '数值',
-                        //        type: 'line',
-                        //        data: batteryArrayData
-                        //    }]
-                        //};
-                        ////使用刚刚指定的配置项和数据项显示图表
-                        //monitorBatteryChart.setOption(batteryOption);
-                        //monitorBatteryChart.getZr().on('click', function (params) {
-                        //    var yOffset = 80;
-                        //    frameIndex = frameIndexArrayData[monitorBatteryChart.getOption().xAxis[0].axisPointer.value];
-                        //    console.log("x坐标:" + frameIndex);
-                        //    funcCallback = function (x, y) {
-                        //        img.style.display = "block";
-                        //        img.style.position = "absolute";
-                        //        img.style.left = x + xOffset + 'px';
-                        //        img.style.top = y + yOffset + 'px';
-                        //    }
-                        //});
+            //Monitor信息
+            $.ajax({
+                type: "POST",
+                url: "/MonitorHandler.ashx?PackageName=" + packageNameValue + "&TestTime=" + timeValue,
+                data: JSON,
+                success: function (data) {
+                    if (data.includes('error')) {
+                        HideElement('MonitorInfoModule');
+                    }
+                    else {
+                        var myJson = JSON.parse(data);
+                        var frameIndexArrayData = [];
+                        //var frameArrayData = [];
+                        var batteryArrayData = [];
+                        var memoryArrayData = [];
+                        var monoHeapSizeArrayData = [];
+                        var monoUsedSizeArrayData = [];
+                        var totalAllocatedMemoryArrayData = [];
+                        var unityTotalReservedMemoryArrayData = [];
+                        var totalUnusedReservedMemoryArrayData = [];
+                        var mb = 1024 * 1024;
+                        for (var i in myJson.MonitorInfoList) {
+                            frameIndexArrayData.push(myJson.MonitorInfoList[i].FrameIndex);
+                            //frameArrayData.push(myJson.MonitorInfoList[i].Frame);
+                            batteryArrayData.push(Math.floor(myJson.MonitorInfoList[i].BatteryLevel * 100) / 100 * 100);
+                            memoryArrayData.push((myJson.MonitorInfoList[i].MemorySize / mb).toFixed(1));
+                            monoHeapSizeArrayData.push((myJson.MonitorInfoList[i].MonoHeapSize / mb).toFixed(1));
+                            monoUsedSizeArrayData.push((myJson.MonitorInfoList[i].MonoUsedSize / mb).toFixed(1));
+                            totalAllocatedMemoryArrayData.push((myJson.MonitorInfoList[i].TotalAllocatedMemory / mb).toFixed(1));
+                            unityTotalReservedMemoryArrayData.push((myJson.MonitorInfoList[i].UnityTotalReservedMemory / mb).toFixed(1));
+                            totalUnusedReservedMemoryArrayData.push((myJson.MonitorInfoList[i].TotalUnusedReservedMemory / mb).toFixed(1));
+                        }
 
                         //内存使用报表
                         var monitorMemoryChart = echarts.init(document.getElementById("MonitorMemoryDiv"));
