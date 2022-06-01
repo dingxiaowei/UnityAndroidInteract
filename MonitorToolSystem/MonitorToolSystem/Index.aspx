@@ -178,11 +178,13 @@
         var funcCallback = null;
         var xOffset = 22;
         var frameIndex = -1;//ECharts的帧率图
-
         window.onload = function () {
             var ttbPageIndex = document.getElementById("ttbPageIndex");
+            var ttbPageNum = document.getElementById("ttbPageNum");
             let pageIndex = localStorage.getItem("pageIndex")
+            let pageNum = localStorage.getItem("pageNum");
             ttbPageIndex.value = pageIndex ? pageIndex : 0
+            ttbPageNum.value = pageNum;
             requestLog(+(ttbPageNum.value), +(ttbPageIndex.value));
         }
 
@@ -190,6 +192,7 @@
             var ttbPageNum = document.getElementById("ttbPageNum");
             var ttbPageIndex = document.getElementById("ttbPageIndex");
             localStorage.setItem("pageIndex", +(ttbPageIndex.value))
+            localStorage.setItem("pageNum",+(ttbPageNum.value))
         }
 
         document.getElementById("btnFormalPage").onclick = function () {
@@ -198,6 +201,7 @@
             if (+(ttbPageIndex.value) > 0)
                 ttbPageIndex.value = +(ttbPageIndex.value) - 1;
             localStorage.setItem("pageIndex", +(ttbPageIndex.value))
+            localStorage.setItem("pageNum",+(ttbPageNum.value))
         }
 
         document.getElementById("btnNextPage").onclick = function () {
@@ -205,6 +209,7 @@
             var ttbPageNum = document.getElementById("ttbPageNum");
             ttbPageIndex.value = +(ttbPageIndex.value) + 1;
             localStorage.setItem("pageIndex", +(ttbPageIndex.value))
+            localStorage.setItem("pageNum",+(ttbPageNum.value))
         }
 
         document.addEventListener('click', function (e) {
