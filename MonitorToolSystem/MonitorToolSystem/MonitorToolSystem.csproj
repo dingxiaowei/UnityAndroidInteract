@@ -108,6 +108,7 @@
     <Content Include="Texts\device_2022_5_1_23_45_43.txt" />
     <Content Include="Texts\device_2022_5_2_23_10_50.txt" />
     <Content Include="Texts\device_2022_5_2_23_45_43.txt" />
+    <Content Include="Texts\frameRate_2022_05_31_20_54_38.txt" />
     <Content Include="Texts\frameRate_2022_5_1_23_10_50.txt" />
     <Content Include="Texts\funcAnalysis_2022_5_1_23_10_50.txt" />
     <Content Include="Texts\funcAnalysis_2022_5_1_23_45_43.txt" />

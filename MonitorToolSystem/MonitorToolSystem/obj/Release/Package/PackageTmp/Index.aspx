@@ -158,6 +158,13 @@
             </div>
             <div id="LogModule">
                 <h2>Log信息</h2>
+                <a>一页展示数量:</a><input id="ttbPageNum" type="text" value="10" />
+                <br />
+                <a>第</a><input id="ttbPageIndex" type="text" value="0" /><a>页</a>
+                <br />
+                <button id="btnLog">点击搜索</button><br />
+                <button id="btnFormalPage">上一页</button><br />
+                <button id="btnNextPage">下一页</button><br />
                 <div id="LogDiv"></div>
             </div>
             <div id="AuthorDiv" style="position: relative">
@@ -171,6 +178,35 @@
         var funcCallback = null;
         var xOffset = 22;
         var frameIndex = -1;//ECharts的帧率图
+
+        window.onload = function () {
+            var ttbPageIndex = document.getElementById("ttbPageIndex");
+            let pageIndex = localStorage.getItem("pageIndex")
+            ttbPageIndex.value = pageIndex ? pageIndex : 0
+            requestLog(+(ttbPageNum.value), +(ttbPageIndex.value));
+        }
+
+        document.getElementById("btnLog").onclick = function () {
+            var ttbPageNum = document.getElementById("ttbPageNum");
+            var ttbPageIndex = document.getElementById("ttbPageIndex");
+            localStorage.setItem("pageIndex", +(ttbPageIndex.value))
+        }
+
+        document.getElementById("btnFormalPage").onclick = function () {
+            var ttbPageIndex = document.getElementById("ttbPageIndex");
+            var ttbPageNum = document.getElementById("ttbPageNum");
+            if (+(ttbPageIndex.value) > 0)
+                ttbPageIndex.value = +(ttbPageIndex.value) - 1;
+            localStorage.setItem("pageIndex", +(ttbPageIndex.value))
+        }
+
+        document.getElementById("btnNextPage").onclick = function () {
+            var ttbPageIndex = document.getElementById("ttbPageIndex");
+            var ttbPageNum = document.getElementById("ttbPageNum");
+            ttbPageIndex.value = +(ttbPageIndex.value) + 1;
+            localStorage.setItem("pageIndex", +(ttbPageIndex.value))
+        }
+
         document.addEventListener('click', function (e) {
             //console.log("clientX:" + e.clientX + "   clentY:" + e.clientY); //屏幕坐标-TOP栏坐标(页面内的屏幕坐标)
             //console.log("pageX:" + e.pageX + "    pageY:" + e.pageY); //页面坐标
@@ -219,6 +255,29 @@
         var packageNameValue = ddlPackageName.options[ddlPackageName.selectedIndex].value;
         var ddlTime = document.getElementById('ddlReportTimeList');
         var timeValue = ddlTime.options[ddlTime.selectedIndex].value;
+
+        function requestLog(pageNum, pageIndex) {
+            //Log信息
+            $.ajax({
+                type: "POST",
+                url: "/LogHandler.ashx?PackageName=" + packageNameValue + "&TestTime=" + timeValue + "&PageNum=" + pageNum + "&PageIndex=" + pageIndex,
+                data: String,
+                success: function (data) {
+                    if (data.includes('error')) {
+                        HideElement('LogModule');
+                    }
+                    else {
+                        let deviceDiv = document.getElementById('LogDiv');
+                        var logInnerText = data.replace(/\n|\r/g, '<br/>');
+                        deviceDiv.innerHTML = logInnerText;
+                    }
+                },
+                error: function (jqXHR) {
+                    console.error(jqXHR);
+                    HideElement('LogModule');
+                }
+            });
+        }
 
         $(function () {
             //测试信息
@@ -1360,26 +1419,8 @@
                     HideElement('FunctionCodeAnalysisModule');
                 }
             });
-            //Log信息
-            $.ajax({
-                type: "POST",
-                url: "/LogHandler.ashx?PackageName=" + packageNameValue + "&TestTime=" + timeValue,
-                data: String,
-                success: function (data) {
-                    if (data.includes('error')) {
-                        HideElement('LogModule');
-                    }
-                    else {
-                        let deviceDiv = document.getElementById('LogDiv');
-                        var logInnerText = data.replace(/\n|\r/g, '<br/>');
-                        deviceDiv.innerHTML = logInnerText;
-                    }
-                },
-                error: function (jqXHR) {
-                    console.error(jqXHR);
-                    HideElement('LogModule');
-                }
-            });
+
+            requestLog(10, 0);
         });
     </script>
 </body>
