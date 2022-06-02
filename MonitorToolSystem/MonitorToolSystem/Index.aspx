@@ -198,7 +198,7 @@
             let pageNum = localStorage.getItem("pageNum");
             let msgTypeV = localStorage.getItem("msgType");
             ttbPageIndex.value = pageIndex ? pageIndex : 0
-            ttbPageNum.value = pageNum;
+            ttbPageNum.value = pageNum ? pageNum : 20;
             let typeValue = localStorage.getItem("msgType");
             // setDefault value 
             if (typeValue) {
