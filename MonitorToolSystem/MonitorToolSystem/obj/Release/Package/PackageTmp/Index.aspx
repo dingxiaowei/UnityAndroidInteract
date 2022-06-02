@@ -11,6 +11,15 @@
     <link href="StyleSheet.css" rel="stylesheet" />
     <%--<script src="https://cdn.staticfile.org/jquery/2.2.4/jquery.min.js"></script>
 	<script src="https://cdn.staticfile.org/echarts/4.3.0/echarts.min.js"></script>--%>
+    <style type="text/css">
+        #ttbPageNum {
+            width: 51px;
+        }
+
+        #ttbPageIndex {
+            width: 29px;
+        }
+    </style>
 </head>
 <body>
     <h1>Unity性能监控报表工具</h1>
@@ -158,6 +167,8 @@
             </div>
             <div id="LogModule">
                 <h2>Log信息</h2>
+                <input id="allMsg" type="radio" name="msgType" value="allMsg" />所有消息
+                <input id="errorMsg" type="radio" name="msgType" value="errorMsg" />Error消息<br />
                 <a>一页展示数量:</a><input id="ttbPageNum" type="text" value="10" />
                 <br />
                 <a>第</a><input id="ttbPageIndex" type="text" value="0" /><a>页</a>
@@ -178,33 +189,63 @@
         var funcCallback = null;
         var xOffset = 22;
         var frameIndex = -1;//ECharts的帧率图
-
         window.onload = function () {
             var ttbPageIndex = document.getElementById("ttbPageIndex");
+            var ttbPageNum = document.getElementById("ttbPageNum");
+            let radios = document.getElementsByName("msgType")
+
             let pageIndex = localStorage.getItem("pageIndex")
+            let pageNum = localStorage.getItem("pageNum");
+            let msgTypeV = localStorage.getItem("msgType");
             ttbPageIndex.value = pageIndex ? pageIndex : 0
-            requestLog(+(ttbPageNum.value), +(ttbPageIndex.value));
+            ttbPageNum.value = pageNum;
+            let typeValue = localStorage.getItem("msgType");
+            // setDefault value 
+            if (typeValue) {
+                for (let i = 0; i < radios.length; i++) {
+                    if (radios[i].value === typeValue) {
+                        radios[i].checked = true
+                    }
+                }
+            }
+            else {
+                localStorage.setItem("msgType", "allMsg");
+                radios[0].checked = true
+                msgTypeV = "allMsg";
+            }
+            requestLog(+(ttbPageNum.value), +(ttbPageIndex.value), msgTypeV);
+        }
+        document.getElementById("allMsg").onclick = function () {
+            localStorage.setItem("msgType", this.value);
+        }
+        document.getElementById("errorMsg").onclick = function () {
+            localStorage.setItem("msgType", this.value);
         }
 
         document.getElementById("btnLog").onclick = function () {
             var ttbPageNum = document.getElementById("ttbPageNum");
             var ttbPageIndex = document.getElementById("ttbPageIndex");
             localStorage.setItem("pageIndex", +(ttbPageIndex.value))
+            localStorage.setItem("pageNum", +(ttbPageNum.value))
         }
 
         document.getElementById("btnFormalPage").onclick = function () {
             var ttbPageIndex = document.getElementById("ttbPageIndex");
             var ttbPageNum = document.getElementById("ttbPageNum");
+
             if (+(ttbPageIndex.value) > 0)
                 ttbPageIndex.value = +(ttbPageIndex.value) - 1;
             localStorage.setItem("pageIndex", +(ttbPageIndex.value))
+            localStorage.setItem("pageNum", +(ttbPageNum.value))
         }
 
         document.getElementById("btnNextPage").onclick = function () {
             var ttbPageIndex = document.getElementById("ttbPageIndex");
             var ttbPageNum = document.getElementById("ttbPageNum");
+
             ttbPageIndex.value = +(ttbPageIndex.value) + 1;
             localStorage.setItem("pageIndex", +(ttbPageIndex.value))
+            localStorage.setItem("pageNum", +(ttbPageNum.value))
         }
 
         document.addEventListener('click', function (e) {
@@ -256,11 +297,11 @@
         var ddlTime = document.getElementById('ddlReportTimeList');
         var timeValue = ddlTime.options[ddlTime.selectedIndex].value;
 
-        function requestLog(pageNum, pageIndex) {
+        function requestLog(pageNum, pageIndex, msgTypeV) {
             //Log信息
             $.ajax({
                 type: "POST",
-                url: "/LogHandler.ashx?PackageName=" + packageNameValue + "&TestTime=" + timeValue + "&PageNum=" + pageNum + "&PageIndex=" + pageIndex,
+                url: "/LogHandler.ashx?PackageName=" + packageNameValue + "&TestTime=" + timeValue + "&PageNum=" + pageNum + "&PageIndex=" + pageIndex + "&MsgType=" + msgTypeV,
                 data: String,
                 success: function (data) {
                     if (data.includes('error')) {
@@ -1420,7 +1461,13 @@
                 }
             });
 
-            requestLog(10, 0);
+            //let typeValue = localStorage.getItem("msgType");
+            //if (typeValue) {
+            //    requestLog(10, 0, typeValue);
+            //}
+            //else {
+            //    requestLog(10, 0, "allMsg");
+            //}
         });
     </script>
 </body>

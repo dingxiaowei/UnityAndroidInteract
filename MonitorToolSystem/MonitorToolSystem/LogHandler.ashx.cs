@@ -20,7 +20,8 @@ namespace MonitorToolSystem
             var testTime = context.Request["TestTime"];
             var pageNumStr = context.Request["PageNum"];
             var pageIndexStr = context.Request["PageIndex"];
-            if (string.IsNullOrEmpty(packageName) || string.IsNullOrEmpty(testTime) || string.IsNullOrEmpty(pageIndexStr) || string.IsNullOrEmpty(pageNumStr))
+            var msgType = context.Request["MsgType"];
+            if (string.IsNullOrEmpty(packageName) || string.IsNullOrEmpty(testTime) || string.IsNullOrEmpty(pageIndexStr) || string.IsNullOrEmpty(pageNumStr) || string.IsNullOrEmpty(msgType))
             {
                 context.Response.Write($"error:packageName:{packageName} error  or testTime:{testTime} error or pageNum:{pageNumStr} error or PageIndex:{pageIndexStr} error");
             }
@@ -39,17 +40,48 @@ namespace MonitorToolSystem
                     var str = FileManager.ReadAllByLine(txt);
                     var strArrays = str.Replace("[20", "~[20").Split('~');
                     int beginIndex = pageNum * pageIndex;
-                    if (beginIndex <= strArrays.Length)
+                    StringBuilder sb = new StringBuilder();
+                    if (msgType.Equals("allMsg"))
                     {
                         int endIndex = (strArrays.Length <= (pageIndex + 1) * pageNum) ? strArrays.Length : ((pageIndex + 1) * pageNum);
-                        StringBuilder sb = new StringBuilder();
-                        for (int i = beginIndex; i <= endIndex; i++)
-                            sb.AppendLine(strArrays[i]);
-                        context.Response.Write($"{sb.ToString()}");
+                        if (beginIndex <= strArrays.Length)
+                        {
+                            for (int i = beginIndex; i <= endIndex; i++)
+                                sb.AppendLine(strArrays[i]);
+                            context.Response.Write($"{sb.ToString()}");
+                        }
+                        else
+                        {
+                            context.Response.Write("没有Log数据了");
+                        }
                     }
-                    else
+                    else //errorMsg
                     {
-                        context.Response.Write("没有Log数据了");
+                        //从头开始遍历，直到满足个数或者说到最后一个记录
+                        int count = 0;
+                        int collectCount = 0;
+                        for (int i = 0; i < strArrays.Length; i++)
+                        {
+                            if (strArrays[i].Contains("[Error]"))
+                            {
+                                count++;
+                                if (collectCount > pageNum)
+                                    break;
+                                if (count >= beginIndex + 1)
+                                {
+                                    sb.Append(strArrays[i]);
+                                    collectCount++;
+                                }
+                            }
+                        }
+                        if(collectCount > 0)
+                        {
+                            context.Response.Write($"{sb.ToString()}");
+                        }
+                        else
+                        {
+                            context.Response.Write("没有Error数据了");
+                        }
                     }
                 }
             }
