@@ -15,7 +15,6 @@ namespace MonitorToolSystem
             context.Response.ContentType = "text/plain";
             var packageName = context.Request["PackageName"];
             var testTime = context.Request["TestTime"];
-            Console.WriteLine("**********");
             if (string.IsNullOrEmpty(packageName) || string.IsNullOrEmpty(testTime))
             {
                 context.Response.Write($"error:packageName:{packageName} error  or testTime:{testTime} error");
