@@ -12,7 +12,6 @@ namespace MonitorToolSystem
     /// </summary>
     public class PowerConsumeHandler : IHttpHandler
     {
-
         public void ProcessRequest(HttpContext context)
         {
             context.Response.ContentType = "text/plain";

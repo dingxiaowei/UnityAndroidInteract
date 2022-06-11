@@ -8,7 +8,6 @@ namespace MonitorToolSystem
     /// </summary>
     public class TestHandler : IHttpHandler
     {
-
         public void ProcessRequest(HttpContext context)
         {
             context.Response.ContentType = "text/plain";
