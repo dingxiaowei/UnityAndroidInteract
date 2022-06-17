@@ -255,6 +255,9 @@
     <Compile Include="FrameRateHandler.ashx.cs">
       <DependentUpon>FrameRateHandler.ashx</DependentUpon>
     </Compile>
+    <Compile Include="TestNetHandler.ashx.cs">
+      <DependentUpon>TestNetHandler.ashx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Modules\echarts-en.js.map" />
@@ -288,6 +291,7 @@
     <Content Include="PssMemoryHandler.ashx" />
     <Content Include="FrameRateHandler.ashx" />
     <Content Include="ReceiveTestInfoHandler.ashx" />
+    <Content Include="TestNetHandler.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
