@@ -182,3 +182,4 @@ D:\Study\github\UnityAndroidInteract\MonitorToolSystem\MonitorToolSystem\bin\Sys
 D:\Study\github\UnityAndroidInteract\MonitorToolSystem\MonitorToolSystem\bin\System.Numerics.Vectors.xml
 D:\Study\github\UnityAndroidInteract\MonitorToolSystem\MonitorToolSystem\bin\System.Runtime.CompilerServices.Unsafe.xml
 D:\Study\github\UnityAndroidInteract\MonitorToolSystem\MonitorToolSystem\bin\System.Text.Encoding.CodePages.xml
+D:\Study\GitHub\UnityAndroidInteract\MonitorToolSystem\MonitorToolSystem\obj\Debug\MonitorToolSystem.csprojAssemblyReference.cache
